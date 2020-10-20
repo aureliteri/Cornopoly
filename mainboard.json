@@ -1,0 +1,238 @@
+{
+  "spaces": [
+    {
+      "id": 1,
+      "name": "Go",
+      "next": "Low Rise 5",
+      "space_type": "go"
+    },
+    {
+      "id": 2,
+      "name": "Low Rise 5",
+      "next": "Donlon",
+      "space_type": "green"
+    },
+    {
+      "id": 3,
+      "name": "Donlon",
+      "next": "CKB",
+      "space_type": "green"
+    },
+    {
+      "id": 4,
+      "name": "CKB",
+      "next": "Pay your Bursar bill :(",
+      "space_type": "penalty"
+    },
+    {
+      "id": 5,
+      "name": "CKB",
+      "next": "Pay your Bursar bill :(",
+      "space_type": "penalty"
+    },
+    {
+      "id": 6,
+      "name": "Klarman Hall",
+      "next": "Goldwin Smith Hall",
+      "space_type": "yellow"
+    },
+    {
+      "id": 7,
+      "name": "Goldwin Smith Hall",
+      "next": "Cafe Jennie",
+      "space_type": "yellow"
+    },
+    {
+      "id": 8,
+      "name": "Cafe Jennie",
+      "next": "CHANCE",
+      "space_type": "yellow"
+    },
+    {
+      "id": 9,
+      "name": "CHANCE",
+      "next": "JAIL",
+      "space_type": "chance"
+    },
+    {
+      "id": 10,
+      "name": "JAIL",
+      "next": "Becker",
+      "space_type": "jail"
+    },
+    {
+      "id": 11,
+      "name": "Becker",
+      "next": "Bethe",
+      "space_type": "orange"
+    },
+    {
+      "id": 12,
+      "name": "Bethe",
+      "next": "Baker Flagpole",
+      "space_type": "orange"
+    },
+    {
+      "id": 13,
+      "name": "Backer Flagpole",
+      "next": "Physical Sciences Buidling",
+      "space_type": "orange"
+    },
+    {
+      "id": 14,
+      "name": "Physical Sciences Buidling",
+      "next": "CHANCE",
+      "space_type": "chance"
+    },
+    {
+      "id": 15,
+      "name": "CHANCE",
+      "next": "Rockefeller Hall",
+      "space_type": "red"
+    },
+    {
+      "id": 16,
+      "name": "Rockefeller Hall",
+      "next": "Baker Lab",
+      "space_type": "red"
+    },
+    {
+      "id": 17,
+      "name": "Baker Lab",
+      "next": "PENALTY",
+      "space_type": "red"
+    },
+    {
+      "id": 18,
+      "name": "PENALTY",
+      "next": "Kennedy Hall",
+      "space_type": "purple"
+    },
+    {
+      "id": 19,
+      "name": "Kennedy Hall",
+      "next": "JUST VISITING",
+      "space_type": "just visiting"
+    },
+    {
+      "id": 20,
+      "name": "JUST VISITING",
+      "next": "Malott Hall",
+      "space_type": "purple"
+    },
+    {
+      "id": 21,
+      "name": "Malott Hall",
+      "next": "Mann Library",
+      "space_type": "purple"
+    },
+    {
+      "id": 22,
+      "name": "Mann Library",
+      "next": "Statler Hall",
+      "space_type": "purple"
+    },
+    {
+      "id": 23,
+      "name": "Statler Hall",
+      "next": "Barton Hall",
+      "space_type": "light blue"
+    },
+    {
+      "id": 24,
+      "name": "Barton Hall",
+      "next": "Uris Hall",
+      "space_type": "light blue"
+    },
+    {
+      "id": 25,
+      "name": "Uris Hall",
+      "next": "CHANCE",
+      "space_type": "light blue"
+    },
+    {
+      "id": 26,
+      "name": "CHANCE",
+      "next": "Cornell Dairy",
+      "space_type": "pink"
+    },
+    {
+      "id": 27,
+      "name": "Cornell Dairy",
+      "next": "Botanical Gardens",
+      "space_type": "pink"
+    },
+    {
+      "id": 28,
+      "name": "Botanical Gardens",
+      "next": "Cow Land",
+      "space_type": "pink"
+    },
+    {
+      "id": 29,
+      "name": "Cow Land",
+      "next": "Cornell Health",
+      "space_type": "cyan"
+    },
+    {
+      "id": 30,
+      "name": "Cornell Health",
+      "next": "McGraw Clock Tower",
+      "space_type": "cyan"
+    },
+    {
+      "id": 31,
+      "name": "McGraw Clock Tower",
+      "next": "CHANCE",
+      "space_type": "cyan"
+    },
+    {
+      "id": 32,
+      "name": "CHANCE",
+      "next": "Willard Straight Hall",
+      "space_type": "chance"
+    },
+    {
+      "id": 33,
+      "name": "Willard Straight Hall",
+      "next": "Hollister Hall",
+      "space_type": "cyan"
+    },
+    {
+      "id": 34,
+      "name": "Hollister Hall",
+      "next": "Duffield Hall",
+      "space_type": "brown"
+    },
+    {
+      "id": 35,
+      "name": "Duffield Hall",
+      "next": "PENALTY",
+      "space_type": "brown"
+    },
+    {
+      "id": 36,
+      "name": "PENALTY",
+      "next": "Rhodes Hall",
+      "space_type": "penalty"
+    },
+    {
+      "id": 37,
+      "name": "Rhodes Hall",
+      "next": "Schwartz Center for the Performing Arts",
+      "space_type": "brown"
+    },
+    {
+      "id": 38,
+      "name": "Schwartz Center for the Performing Arts",
+      "next": "Collegetown Bagels",
+      "space_type": "blue"
+    },
+    {
+      "id": 39,
+      "name": "Collegetown Bagels",
+      "next": "Go",
+      "space_type": "blue"
+    },
+  ]
+}
