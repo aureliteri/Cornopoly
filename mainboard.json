@@ -70,8 +70,8 @@
       ]
     }
   ],
-
-  "spaces": [{
+  "spaces": [
+    {
       "id": 1,
       "name": "Go",
       "next": "Low Rise 5",
@@ -304,6 +304,6 @@
       "name": "Collegetown Bagels",
       "next": "Go",
       "space_type": "blue"
-    },
+    }
   ]
 }
