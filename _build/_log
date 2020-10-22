@@ -29,10 +29,6 @@ ocamlfind ocamldep -modules card.mli > card.mli.depends
 ocamlfind ocamlc -c -o card.cmi card.mli
 # Target: card.ml.depends, tags: { extension:ml, file:card.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules card.ml > card.ml.depends
-+ ocamlfind ocamldep -modules card.ml > card.ml.depends
-File "card.ml", line 4, characters 0-1:
-4 | }
-    ^
-Error: Syntax error
-Command exited with code 2.
-# Compilation unsuccessful.
+# Target: card.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:card.cmo, file:card.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -o card.cmo card.ml
+# Compilation successful.
