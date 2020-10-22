@@ -8,6 +8,10 @@ type player = {
   in_jail: bool;
 }
 
-let move play int' = {
-  let player' = { play with location_id = play.location_id + int' }
-}
+let move play int' = 
+  let player' = { play with location_id = play.location_id + int' } in
+  player'
+
+let is_bankrupt player =
+  if player.balance < 0 then true else false
+
