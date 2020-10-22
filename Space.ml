@@ -1,5 +1,6 @@
 (**The Space module represents a space on the gameboard  *)
 
+
 type property = {
   description : string;
   rent_price : float;
@@ -18,5 +19,5 @@ type cardS = {
 }
 
 type t = Property of property | CardSpace of cardS | 
-         Jail | Penalty of penalty | Go 
+         Jail | Penalty of penalty | Go
 
