@@ -1,12 +1,38 @@
 ### Starting build.
+# Target: board.mli.depends, tags: { extension:mli, file:board.mli, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -modules board.mli > board.mli.depends
+# Target: board.cmi, tags: { byte, compile, extension:mli, file:board.mli, interf, ocaml, quiet }
+ocamlfind ocamlc -c -o board.cmi board.mli
 # Target: board.ml.depends, tags: { extension:ml, file:board.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules board.ml > board.ml.depends
 # Target: board.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:board.cmo, file:board.ml, implem, ocaml, quiet }
 ocamlfind ocamlc -c -o board.cmo board.ml
-+ ocamlfind ocamlc -c -o board.cmo board.ml
-File "board.ml", line 1, characters 5-22:
-1 | open Yojson.Basic.Util
-         ^^^^^^^^^^^^^^^^^
-Error: Unbound module Yojson
+# Target: player.mli.depends, tags: { extension:mli, file:player.mli, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -modules player.mli > player.mli.depends
+# Target: player.cmi, tags: { byte, compile, extension:mli, file:player.mli, interf, ocaml, quiet }
+ocamlfind ocamlc -c -o player.cmi player.mli
+# Target: player.ml.depends, tags: { extension:ml, file:player.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -modules player.ml > player.ml.depends
+# Target: space.mli.depends, tags: { extension:mli, file:space.mli, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -modules space.mli > space.mli.depends
+# Target: space.cmi, tags: { byte, compile, extension:mli, file:space.mli, interf, ocaml, quiet }
+ocamlfind ocamlc -c -o space.cmi space.mli
+# Target: player.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:player.cmo, file:player.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -o player.cmo player.ml
+# Target: space.ml.depends, tags: { extension:ml, file:space.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -modules space.ml > space.ml.depends
+# Target: space.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:space.cmo, file:space.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -o space.cmo space.ml
+# Target: card.mli.depends, tags: { extension:mli, file:card.mli, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -modules card.mli > card.mli.depends
+# Target: card.cmi, tags: { byte, compile, extension:mli, file:card.mli, interf, ocaml, quiet }
+ocamlfind ocamlc -c -o card.cmi card.mli
+# Target: card.ml.depends, tags: { extension:ml, file:card.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -modules card.ml > card.ml.depends
++ ocamlfind ocamldep -modules card.ml > card.ml.depends
+File "card.ml", line 4, characters 0-1:
+4 | }
+    ^
+Error: Syntax error
 Command exited with code 2.
 # Compilation unsuccessful.

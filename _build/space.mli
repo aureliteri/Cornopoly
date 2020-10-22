@@ -1,6 +1,7 @@
 
-type t
-
 type property
 
 type penalty
+
+type t
+
