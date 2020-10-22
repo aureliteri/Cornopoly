@@ -6,7 +6,18 @@ type property = {
   color : string
 }
 
-type t = Property of property | CardSpace | Jail | Penalty | Go
+type penalty = {
+  description : string;
+  penalty_price : float
+}
+
+type cardS = {
+  name : string;
+  card : string (*This field should be of TYPE CARD [Card.t] *)
+}
+
+type t = Property of property | CardSpace of cardS | 
+         Jail | Penalty of penalty | Go
 
 
 
