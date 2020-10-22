@@ -1,5 +1,6 @@
 {
-  "cards": [{
+  "cards": [
+    {
       "card_id": 1,
       "description": "Pay your Bursar Bill! You owe Cornell $200.",
       "command": [
@@ -113,7 +114,8 @@
       ]
     }
   ],
-  "players": [{
+  "players": [
+    {
       "id": 1,
       "name": "Meghana",
       "balance": 1500,
@@ -138,7 +140,8 @@
       "roperty_list": []
     }
   ],
-  "colorset": [{
+  "colorset": [
+    {
       "green": [
         2,
         3,
@@ -208,7 +211,8 @@
       ]
     }
   ],
-  "spaces": [{
+  "spaces": [
+    {
       "id": 1,
       "name": "Go",
       "next": "Low Rise 5",
