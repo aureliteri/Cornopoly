@@ -3,5 +3,5 @@ type property
 
 type penalty
 
-type t
+type space
 

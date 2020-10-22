@@ -1,3 +1,5 @@
 type amount
 
-type action 
+type action
+
+type card 
