@@ -1,6 +1,4 @@
-(**The Space module represents a space on the gameboard  *)
-
-
+(**The Space module represents a space/slot on the gameboard  *)
 type property = {
   description : string;
   rent_price : float;
