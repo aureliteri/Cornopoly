@@ -2,7 +2,6 @@
 type property = {
   description : string;
   rent_price : float;
-  owner : string;
   buy_price : float;
   color : string
 }

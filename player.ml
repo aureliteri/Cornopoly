@@ -4,5 +4,10 @@ type player = {
   name : string;
   location_id : int;
   balance : int;
-  prop_list: property list
+  prop_list: property list;
+  in_jail: bool;
+}
+
+let move play int' = {
+  let player' = { play with location_id = play.location_id + int' }
 }
