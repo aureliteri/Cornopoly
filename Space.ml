@@ -8,7 +8,6 @@ type property = {
 }
 
 type penalty = {
-
   description : string;
   penalty_price : float
 }
@@ -19,9 +18,5 @@ type cardS = {
 }
 
 type t = Property of property | CardSpace of cardS | 
-         Jail | Penalty of penalty | Go
-
-
-
-         >>>>>>> cb331546e6b33adef29fc873be8d85c25cc11ecd
+         Jail | Penalty of penalty | Go 
 
