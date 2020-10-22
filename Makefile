@@ -1,4 +1,4 @@
-MODULES=adventure command state main author
+MODULES=board player space 
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
@@ -12,35 +12,35 @@ default: build
 build:
 	$(OCAMLBUILD) $(OBJECTS)
 
-test:
-	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST)
+# test:
+# 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST)
 
-play:
-	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
+# play:
+# 	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
 
-check:
-	bash checkenv.sh && bash checktypes.sh
+# check:
+# 	bash checkenv.sh && bash checktypes.sh
 	
-finalcheck: check
-	bash checkzip.sh
-	bash finalcheck.sh
+# finalcheck: check
+# 	bash checkzip.sh
+# 	bash finalcheck.sh
 
-zip:
-	zip adventure.zip *.ml* *.json _tags Makefile
+# zip:
+# 	zip adventure.zip *.ml* *.json _tags Makefile
 	
-docs: docs-public docs-private
+# docs: docs-public docs-private
 	
-docs-public: build
-	mkdir -p doc.public
-	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
-		-html -stars -d doc.public $(MLIS)
+# docs-public: build
+# 	mkdir -p doc.public
+# 	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
+# 		-html -stars -d doc.public $(MLIS)
 
-docs-private: build
-	mkdir -p doc.private
-	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
-		-html -stars -d doc.private \
-		-inv-merge-ml-mli -m A $(MLIS) $(MLS)
+# docs-private: build
+# 	mkdir -p doc.private
+# 	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
+# 		-html -stars -d doc.private \
+# 		-inv-merge-ml-mli -m A $(MLIS) $(MLS)
 
 clean:
 	ocamlbuild -clean
-	rm -rf doc.public doc.private adventure.zip
+	# rm -rf doc.public doc.private adventure.zip
