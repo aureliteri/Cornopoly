@@ -12,4 +12,4 @@ val iterate: Player.player list -> Player.player list -> Player.player list
 
 val update_board: Player.player list -> unit
 
-val check_space: Space.space -> Player.player -> unit
+val check_space: Space.space -> Player.player -> Player.player
