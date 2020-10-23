@@ -5,5 +5,5 @@ open Space
 type mainboard =
   {
     all_map : space list;
-    cards: int list;
+    cards: card list;
   }
