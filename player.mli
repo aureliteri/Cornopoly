@@ -10,9 +10,9 @@ val current_location_id: player -> int
 
 val balance: player -> int
 
-val prop_list: player -> Space.property list
+val property_list: player -> Space.property list
 
-val in_jail: bool
+val in_jail: player -> bool
 
 val pass_go : player -> player
 

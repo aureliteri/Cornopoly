@@ -65,7 +65,7 @@ type space =
 
 (*[space_name] returns the name of the space depending on what type it is
   eg. property, cardspace, jail...*)
-let space_name space = function
+let space_name = function
   | Property property -> property.name
   | CardSpace cardspace -> cardspace.name
   | Jail jail -> jail.name

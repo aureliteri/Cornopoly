@@ -28,6 +28,7 @@ let rec print_locations playerlist acc =
   match playerlist with
   | [] -> acc
   | h :: t -> 
+    (* let player_location =  (List.find (fun x -> x.space_id = (current_location_id h)) spacelist) in *)
     let player_location = space_name (List.nth spacelist (current_location_id h)) in
     let complete_string = name h ^ " is currently at " ^ player_location ^ "." in
     print_locations t (acc ^ complete_string)
@@ -49,42 +50,46 @@ let rec iterate playerlist (lst: Player.player list) =
   | h :: t -> iterate playerlist (move h roll_dice :: lst)
 
 let update_board playerlist =
-  iterate playerlist []
+  let new_lst = iterate playerlist [] in 
+  print_endline (print_locations new_lst "");
+  print_endline (print_balances new_lst "")
 
-let check_space (space: space) player =
+let check_space (space: space) (player: Player.player) : unit =
   match space with
-  | Property property -> "" 
-  (* begin
-      if property.owner = ""
-      then "The price of " ^ property.name ^ "is " ^ float_of_string property.rent_price ^ ". Do you want to purchase it?"
-      else begin
-        update_balance player (-1.0 *.property.rent);
-        update_balance (find_player property.owner playerlist) property.rent
-      end
-     end 
-  *)
+  | Property property -> print_endline""; 
+    (* begin
+        if property.owner = ""
+        then "The price of " ^ property.name ^ "is " ^ float_of_string property.rent_price ^ ". Do you want to purchase it?"
+        else begin
+          update_balance player (-1.0 *.property.rent);
+          update_balance (find_player property.owner playerlist) property.rent
+        end
+       end 
+    *)
 
-  (* THIS CURRENTLY ONLY PRINTS, NO FUNCTIONALITY 
-     pick_card 10 for now, because cardlist length  = 10 *)
+    (* THIS CURRENTLY ONLY PRINTS, NO FUNCTIONALITY 
+       pick_card 10 for now, because cardlist length  = 10 *)
   | CardSpace chance -> let chosen_card = (pick_card 10) in
-    "The card you have chosen is: " ^ (card_description chosen_card)
-  (* Functionality to be carried out: 
-      card_act chosen_card*)
+    print_endline ("The card you have chosen is: " ^ (card_description chosen_card));
+    (* Functionality to be carried out: 
+        card_act chosen_card*)
 
-  | Jail jail -> "Bad luck! You have landed in jail, skip your next turn"
-  (* Functionality to be carried out: 
-     Skip the players turn (maybe by skipping them in the queue?*)
+  | Jail jail -> 
+    print_endline "Bad luck! You have landed in jail, skip your next turn";
+    (* Functionality to be carried out: 
+       Skip the players turn (maybe by skipping them in the queue?*)
 
-  | Penalty penalty -> penalty_description penalty
-  (* Functionality to be carried out: 
-     player.update_balance NEGATIVE(penalty_price penalty) *)
+  | Penalty penalty -> print_endline (penalty_description penalty);
+    (* Functionality to be carried out: 
+       player.update_balance NEGATIVE(penalty_price penalty) *)
 
-  | Go go -> "Pass Go! You have collected $200"
-  (* Functionality to be carried out: 
-     player.update_balance 200 *)
+  | Go go -> print_endline "Pass Go! You have collected $200";
+    (* Functionality to be carried out: 
+       player.update_balance 200 *)
 
 
-  | JustVisiting justvisiting -> "Oop. Close call, you are just visiting"
-(* Functionality to be carried out: 
-    None? "end turn??" *)
+  | JustVisiting justvisiting -> 
+    print_endline "Oop. Close call, you are just visiting";
+    (* Functionality to be carried out: 
+        None? "end turn??" *)
 
