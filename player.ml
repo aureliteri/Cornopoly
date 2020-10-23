@@ -9,6 +9,18 @@ type player = {
   in_jail: bool;
 }
 
+let pass_go player = 
+  {player with balance = player.balance + 200}
+
+let move play int' = 
+  { play with current_location_id = play.current_location_id + int' } 
+
+let is_bankrupt player =
+  if player.balance < 0 then true else false
+
+let update_balance player amount = 
+  {player with balance = player.balance + amount}
+
 let player1 : player = {
   id = 1;
   name = "Meghana";
@@ -44,15 +56,3 @@ let player4 : player = {
   prop_list = [];
   in_jail = false
 }
-
-let pass_go player = 
-  {player with balance = player.balance + 200}
-
-let move play int' = 
-  { play with current_location_id = play.current_location_id + int' } 
-
-let is_bankrupt player =
-  if player.balance < 0 then true else false
-
-let update_balance player amount = 
-  {player with balance = player.balance + amount}

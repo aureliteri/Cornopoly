@@ -6,3 +6,11 @@ val move: player -> int -> player
 
 val is_bankrupt: player -> bool
 
+val player1 : player
+
+val player2 : player
+
+val player3 : player
+
+val player4 : player
+
