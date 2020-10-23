@@ -16,7 +16,7 @@ let move play int' =
   { play with current_location_id = play.current_location_id + int' } 
 
 let is_bankrupt player =
-  if player.balance < 0 then true else false
+  player.balance <= 0 
 
 let update_balance player amount = 
   {player with balance = player.balance + amount}
