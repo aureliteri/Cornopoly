@@ -24,3 +24,5 @@ val card8: card
 val card9: card
 
 val card10: card
+
+val cardlist: card array
