@@ -16,3 +16,5 @@ val player3 : player
 
 val player4 : player
 
+val playerlist: player list
+
