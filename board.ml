@@ -74,8 +74,8 @@ let check_space (space: space) (player: Player.player) : Player.player =
       match act_lst with
       | h :: t -> begin
           match h with
-          | Change x -> card_action t (update_balance player x)
-          | Move x -> card_action t (move player x)
+          | Change x -> (*card_action t (update_balance player x) *)
+          | Move x -> (* card_action t (move player x) *)
         end
       | [] -> player
     in
@@ -115,7 +115,7 @@ let rec iterate playerlist (lst: Player.player list) =
       let new_player = (move h roll_dice) in 
       let new_player_id = id new_player in 
       let new_space = get_space new_player_id in 
-      iterate playerlist (check_space new_space new_player:: lst)
+      iterate playerlist (check_space new_space new_player):: lst
     end
 
 let update_board playerlist =
