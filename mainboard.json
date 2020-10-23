@@ -366,7 +366,7 @@
       "id": 26,
       "name": "CHANCE",
       "next": "Cornell Dairy",
-      "space_type": "pink"
+      "space_type": "chance"
     },
     {
       "id": 27,
@@ -384,7 +384,7 @@
       "id": 29,
       "name": "Cow Land",
       "next": "Cornell Health",
-      "space_type": "cyan"
+      "space_type": "pink"
     },
     {
       "id": 30,
@@ -395,20 +395,20 @@
     {
       "id": 31,
       "name": "McGraw Clock Tower",
-      "next": "CHANCE",
+      "next": "Willard Straight Hall",
       "space_type": "cyan"
     },
     {
       "id": 32,
-      "name": "CHANCE",
-      "next": "Willard Straight Hall",
-      "space_type": "chance"
+      "name": "Willard Straight Hall",
+      "next": "CHANCE",
+      "space_type": "cyan"
     },
     {
       "id": 33,
-      "name": "Willard Straight Hall",
+      "name": "CHANCE",
       "next": "Hollister Hall",
-      "space_type": "cyan"
+      "space_type": "chance"
     },
     {
       "id": 34,
