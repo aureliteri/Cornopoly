@@ -11,6 +11,10 @@ type card =
     act: action list;
   }
 
+let card_description card = card.description
+
+let card_act card = card.act
+
 let card1 = {
   card_id = 1;
   description = "Pay your Bursar Bill! You owe Cornell $200.";

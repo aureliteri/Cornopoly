@@ -1,17 +1,23 @@
 
 type property
 
-val property_name: property -> string
+val property_name : property -> string
 
-val rent_price: property -> float
+val rent_price : property -> float
 
-val property_owner: property -> string
+val property_owner : property -> string
 
-val property_color: property -> string
+val property_color : property -> string
 
-val buy_price: property -> float
+val buy_price : property -> float
 
 type penalty
+
+val penalty_name : penalty -> string
+
+val penalty_description : penalty -> string
+
+val penalty_price : penalty -> float
 
 type cardspace
 
@@ -28,6 +34,8 @@ type space =
   | Penalty of penalty 
   | Go of go
   | JustVisiting of justvisiting
+
+val space_name : space -> string
 
 val space1: space
 val space2: space

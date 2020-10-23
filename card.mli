@@ -4,13 +4,16 @@ type action
 
 type card 
 
-(* 1st card *)
+val card_description : card -> string
+
+val card_act : card -> action
+
 val card1: card
-(* 2nd card *)
+
 val card2: card
-(* 3rd room *)
+
 val card3: card
-(* 4th room *)
+
 val card4: card
 
 val card5: card

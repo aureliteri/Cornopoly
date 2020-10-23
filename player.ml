@@ -33,7 +33,7 @@ let pass_go player =
   {player with balance = player.balance + 200}
 
 let move player int' = 
-  { player with current_location_id = player.current_location_id + int' } 
+  {player with current_location_id = player.current_location_id + int'} 
 
 let is_bankrupt player =
   player.balance <= 0 
@@ -41,7 +41,7 @@ let is_bankrupt player =
 let update_balance player amount = 
   {player with balance = player.balance + amount}
 
-(** returns player with name [find] in [playerlist] *)
+(**[find_player] returns player with name [find] in [playerlist] *)
 let rec find_player find playerlist =
   match playerlist with
   | [] -> raise (UnknownPlayer find)

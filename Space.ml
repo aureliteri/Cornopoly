@@ -10,20 +10,17 @@ type property = {
   color : string
 }
 
-let property_name property =
-  property.name
+let property_name property = property.name
 
-let rent_price property =
-  property.rent_price
+let rent_price property = property.rent_price
 
-let property_owner property =
-  property.owner
+let property_owner property = property.owner
 
-let property_color property =
-  property.color
+let property_color property = property.color
 
-let buy_price property =
-  property.buy_price
+let buy_price property = property.buy_price
+
+
 
 type penalty = {
   space_id: int;
@@ -31,6 +28,12 @@ type penalty = {
   description : string;
   penalty_price : float
 }
+
+let penalty_name penalty = penalty.name
+
+let penalty_description penalty = penalty.description
+
+let penalty_price penalty = penalty.penalty_price
 
 type cardspace = {
   space_id: int;
@@ -59,6 +62,16 @@ type space =
   | Penalty of penalty 
   | Go of go
   | JustVisiting of justvisiting
+
+(*[space_name] returns the name of the space depending on what type it is
+  eg. property, cardspace, jail...*)
+let space_name space = function
+  | Property property -> property.name
+  | CardSpace cardspace -> cardspace.name
+  | Jail jail -> jail.name
+  | Penalty penalty -> penalty.name
+  | Go go -> go.name
+  | JustVisiting justvisiting -> justvisiting.name
 
 let space1 : space = Go {
     space_id = 1; 
