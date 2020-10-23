@@ -21,19 +21,32 @@ let pick_card size =
    Michelle is currently at Dickson.
    It is now __'s turn.""
    call [print_locations] with acc as an []
+
+   I AM NOT SURE HOW TO DO NEW LINE. IF SOMEONE DOES, ADD IT AFTER "." PLEASE
 *)
 let rec print_locations playerlist acc = 
   match playerlist with
   | [] -> acc
-  | h :: t -> print_locations t 
-                acc ^ space_name (List.nth spacelist (current_location_id h))
+  | h :: t -> 
+    let player_location = space_name (List.nth spacelist (current_location_id h)) in
+    let complete_string = name h ^ " is currently at " ^ player_location ^ "." in
+    print_locations t (acc ^ complete_string)
+
+
+(* I AM NOT SURE HOW TO DO NEW LINE. IF SOMEONE DOES, ADD IT AFTER "." PLEASE *)
+let rec print_balances playerlist acc = 
+  match playerlist with
+  | [] -> acc
+  | h :: t -> 
+    let player_balance = string_of_int (balance h) in
+    let complete_string = name h ^ " currently has a balance of " ^ player_balance ^ "." in
+    print_balances t (acc ^ complete_string)
+
 
 let rec iterate playerlist (lst: Player.player list) =
   match playerlist with
   | [] -> lst
-  | h :: t -> begin
-      iterate playerlist ((move h roll_dice) :: lst)
-    end
+  | h :: t -> iterate playerlist (move h roll_dice :: lst)
 
 let update_board playerlist =
   iterate playerlist []
@@ -42,8 +55,8 @@ let check_space (space: space) player =
   match space with
   | Property property -> "" 
   (* begin
-      if String.equal property.owner ""
-      then
+      if property.owner = ""
+      then "The price of " ^ property.name ^ "is " ^ float_of_string property.rent_price ^ ". Do you want to purchase it?"
       else begin
         update_balance player (-1.0 *.property.rent);
         update_balance (find_player property.owner playerlist) property.rent
@@ -66,10 +79,12 @@ let check_space (space: space) player =
   (* Functionality to be carried out: 
      player.update_balance NEGATIVE(penalty_price penalty) *)
 
-
   | Go go -> "Pass Go! You have collected $200"
   (* Functionality to be carried out: 
      player.update_balance 200 *)
 
 
   | JustVisiting justvisiting -> "Oop. Close call, you are just visiting"
+(* Functionality to be carried out: 
+    None? "end turn??" *)
+

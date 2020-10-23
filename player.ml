@@ -7,7 +7,7 @@ type player = {
   name : string;
   current_location_id : int; 
   balance : int;
-  prop_list: property list;
+  property_list: property list;
   in_jail: bool;
 }
 
@@ -23,8 +23,8 @@ let current_location_id player =
 let balance player =
   player.balance
 
-let prop_list player =
-  player.prop_list
+let property_list player =
+  player.property_list
 
 let in_jail player =
   player.in_jail
@@ -52,7 +52,7 @@ let player1 : player = {
   name = "Meghana";
   current_location_id = 1;
   balance = 1500;
-  prop_list = [];
+  property_list = [];
   in_jail = false
 }
 
@@ -61,7 +61,7 @@ let player2 : player = {
   name = "Michelle";
   current_location_id = 1;
   balance = 1500;
-  prop_list = [];
+  property_list = [];
   in_jail = false
 }
 
@@ -70,7 +70,7 @@ let player3 : player = {
   name = "Aaron";
   current_location_id = 1;
   balance = 1500;
-  prop_list = [];
+  property_list = [];
   in_jail = false
 }
 
@@ -79,7 +79,7 @@ let player4 : player = {
   name = "Amy";
   current_location_id = 1;
   balance = 1500;
-  prop_list = [];
+  property_list = [];
   in_jail = false
 }
 
