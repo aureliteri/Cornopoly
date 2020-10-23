@@ -6,6 +6,8 @@ val move: player -> int -> player
 
 val is_bankrupt: player -> bool
 
+val update_balance : player -> int -> player
+
 val player1 : player
 
 val player2 : player
