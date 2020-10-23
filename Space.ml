@@ -10,6 +10,21 @@ type property = {
   color : string
 }
 
+let property_name property =
+  property.name
+
+let rent_price property =
+  property.rent_price
+
+let property_owner property =
+  property.owner
+
+let property_color property =
+  property.color
+
+let buy_price property =
+  property.buy_price
+
 type penalty = {
   space_id: int;
   name: string;
@@ -36,6 +51,7 @@ type jail = {
   space_id: int;
   name: string;
 }
+
 type space = 
   | Property of property 
   | CardSpace of cardspace

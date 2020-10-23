@@ -1,5 +1,7 @@
 open Space
 
+exception UnknownPlayer of string
+
 type player = {
   id : int;
   name : string;
@@ -8,6 +10,24 @@ type player = {
   prop_list: property list;
   in_jail: bool;
 }
+
+let id player =
+  player.id
+
+let name player =
+  player.name
+
+let current_location_id player =
+  player.current_location_id
+
+let balance player =
+  player.balance
+
+let prop_list player =
+  player.prop_list
+
+let in_jail player =
+  player.in_jail
 
 let pass_go player = 
   {player with balance = player.balance + 200}
@@ -20,6 +40,12 @@ let is_bankrupt player =
 
 let update_balance player amount = 
   {player with balance = player.balance + amount}
+
+(** returns player with name [find] in [playerlist] *)
+let rec find_player find playerlist =
+  match playerlist with
+  | [] -> raise (UnknownPlayer find)
+  | h :: t -> if String.equal h.name find then h else find_player find t
 
 let player1 : player = {
   id = 1;
