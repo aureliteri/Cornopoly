@@ -234,12 +234,12 @@
       "id": 4,
       "name": "CKB",
       "next": "Pay your Bursar bill :(",
-      "space_type": "penalty"
+      "space_type": "green"
     },
     {
       "id": 5,
-      "name": "CKB",
-      "next": "Pay your Bursar bill :(",
+      "name": "Pay your Bursar bill :(",
+      "next": "Klarman Hall",
       "space_type": "penalty"
     },
     {
@@ -294,13 +294,13 @@
       "id": 14,
       "name": "Physical Sciences Buidling",
       "next": "CHANCE",
-      "space_type": "chance"
+      "space_type": "red"
     },
     {
       "id": 15,
       "name": "CHANCE",
       "next": "Rockefeller Hall",
-      "space_type": "red"
+      "space_type": "chance"
     },
     {
       "id": 16,
@@ -318,19 +318,19 @@
       "id": 18,
       "name": "PENALTY",
       "next": "Kennedy Hall",
-      "space_type": "purple"
+      "space_type": "penalty"
     },
     {
       "id": 19,
       "name": "Kennedy Hall",
       "next": "JUST VISITING",
-      "space_type": "just visiting"
+      "space_type": "purple"
     },
     {
       "id": 20,
       "name": "JUST VISITING",
       "next": "Malott Hall",
-      "space_type": "purple"
+      "space_type": "justvisiting"
     },
     {
       "id": 21,
