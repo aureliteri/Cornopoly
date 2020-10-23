@@ -10,7 +10,7 @@ let roll_dice =
 (* Hi, I am confused regarding size? because isnt this size constant*)
 let pick_card size =
   let ind = Random.int size in
-  Array.get cardlist ind
+  List.find (fun x -> card_id x = ind) cardlist
 
 
 (* [print_locations] returns the location of EACH player. This is to be called

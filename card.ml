@@ -11,6 +11,8 @@ type card =
     act: action list;
   }
 
+let card_id card = card.card_id
+
 let card_description card = card.description
 
 let card_act card = card.act

@@ -4,9 +4,11 @@ type action
 
 type card 
 
+val card_id : card -> int 
+
 val card_description : card -> string
 
-val card_act : card -> action
+val card_act : card -> action list
 
 val card1: card
 
@@ -28,4 +30,4 @@ val card9: card
 
 val card10: card
 
-val cardlist: card array
+val cardlist: card list
