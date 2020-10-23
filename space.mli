@@ -3,13 +3,13 @@ type property
 
 val property_name : property -> string
 
-val rent_price : property -> float
+val rent_price : property -> int
 
 val property_owner : property -> string
 
 val property_color : property -> string
 
-val buy_price : property -> float
+val buy_price : property -> int
 
 type penalty
 
@@ -17,7 +17,7 @@ val penalty_name : penalty -> string
 
 val penalty_description : penalty -> string
 
-val penalty_price : penalty -> float
+val penalty_price : penalty -> int
 
 type cardspace
 

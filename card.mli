@@ -1,6 +1,8 @@
-type amount
+type amount = int
 
-type action
+type action =
+  | Change of amount
+  | Move of amount
 
 type card 
 

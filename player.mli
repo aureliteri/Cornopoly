@@ -8,7 +8,7 @@ val name: player -> string
 
 val current_location_id: player -> int
 
-val balance: player -> float
+val balance: player -> int
 
 val property_list: player -> Space.property list
 
@@ -20,7 +20,7 @@ val move: player -> int -> player
 
 val is_bankrupt: player -> bool
 
-val update_balance : player -> float -> player
+val update_balance : player -> int -> player
 
 val add_property : player -> Space.property -> player
 

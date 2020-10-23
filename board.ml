@@ -3,8 +3,8 @@ open Card
 open Space
 
 let roll_dice =
-  let d1 = Random.int 6 +1 in
-  let d2 = Random.int 6 +1 in
+  let d1 = Random.int 6 + 1 in
+  let d2 = Random.int 6 + 1 in
   d1 + d2
 
 (* Hi, I am confused regarding size? because isnt this size constant*)
@@ -37,7 +37,7 @@ let rec print_balances playerlist acc =
   match playerlist with
   | [] -> acc
   | h :: t -> 
-    let player_balance = string_of_float (balance h) in
+    let player_balance = string_of_int (balance h) in
     let complete_string = name h ^ " currently has a balance of " ^ player_balance ^ "." in
     print_balances t (acc ^ complete_string)
 
@@ -50,7 +50,7 @@ let check_space (space: space) (player: Player.player) : Player.player =
       if property_owner property = ""
       then 
         begin
-          let s = "The price of " ^ (property_name property) ^ "is " ^ (string_of_float (rent_price property)) in
+          let s = "The price of " ^ (property_name property) ^ "is " ^ (string_of_int (rent_price property)) in
           print_endline s;
           print_endline "Do you want to purchase it?"; 
           print_string "> "; 
@@ -61,10 +61,7 @@ let check_space (space: space) (player: Player.player) : Player.player =
           check_buy (read_line())  
         end   
       else 
-        begin
-          (* update_balance player (-1. *. rent_price property); *)
-          update_balance (find_player (property_owner property) playerlist) (-1.  *. rent_price property)
-        end
+        update_balance (find_player (property_owner property) playerlist) (-1  * rent_price property)
     end
 
   (* THIS CURRENTLY ONLY PRINTS, NO FUNCTIONALITY *)
@@ -74,8 +71,8 @@ let check_space (space: space) (player: Player.player) : Player.player =
       match act_lst with
       | h :: t -> begin
           match h with
-          | Change x -> (*card_action t (update_balance player x) *)
-          | Move x -> (* card_action t (move player x) *)
+          | Change x -> card_action t (update_balance player x)
+          | Move x -> card_action t (move player x)
         end
       | [] -> player
     in
@@ -92,10 +89,10 @@ let check_space (space: space) (player: Player.player) : Player.player =
 
 
   | Penalty penalty -> print_endline (penalty_description penalty);
-    update_balance player (-1. *. penalty_price penalty)
+    update_balance player (-1 * penalty_price penalty)
 
   | Go go -> print_endline "Pass Go! You have collected $200";
-    update_balance player 200.
+    update_balance player 200
 
 
   | JustVisiting justvisiting -> 
@@ -110,12 +107,10 @@ let rec iterate playerlist (lst: Player.player list) =
   match playerlist with
   | [] -> lst
   | h :: t -> begin
-      (* let new_loc = move h roll_dice in 
-         let new_bal = update_balance new_loc  *)
-      let new_player = (move h roll_dice) in 
+      let new_player = move h roll_dice in 
       let new_player_id = id new_player in 
       let new_space = get_space new_player_id in 
-      iterate playerlist (check_space new_space new_player):: lst
+      iterate playerlist (check_space new_space new_player :: lst)
     end
 
 let update_board playerlist =
