@@ -57,4 +57,4 @@ let player4 : player = {
   in_jail = false
 }
 
-let playerlist = [player1;player2;player3;player4]
+let playerlist = [player1; player2; player3; player4]
