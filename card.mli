@@ -20,3 +20,7 @@ val card6: card
 val card7: card
 
 val card8: card
+
+val card9: card
+
+val card10: card
