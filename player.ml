@@ -12,8 +12,8 @@ type player = {
 let pass_go player = 
   {player with balance = player.balance + 200}
 
-let move play int' = 
-  { play with current_location_id = play.current_location_id + int' } 
+let move player int' = 
+  {player with current_location_id = player.current_location_id + int'} 
 
 let is_bankrupt player =
   player.balance <= 0 
