@@ -41,6 +41,26 @@ let rec print_balances playerlist acc =
     let complete_string = name h ^ " currently has a balance of " ^ player_balance ^ "." in
     print_balances t (acc ^ complete_string)
 
+(**After every player moves, check_space is called on that updated player BEFORE
+   being added to lst. 
+   From move, we get moved player. From moved_player, we have current_location_id
+   With the id we need the Space type of the id*)
+let rec iterate playerlist (lst: Player.player list) =
+  match playerlist with
+  | [] -> lst
+  | h :: t -> begin
+      (* let new_loc = move h roll_dice in 
+         let new_bal = update_balance new_loc  *)
+      let new_player = (move h roll_dice) in 
+      (* let new_player_id = id new_player in 
+         let new_space = get_space new_player_id in  *)
+      iterate playerlist ((*check_space new_space*) new_player:: lst)
+    end
+
+let update_board playerlist =
+  let new_lst = iterate playerlist [] in 
+  print_endline (print_locations new_lst "");
+  print_endline (print_balances new_lst "")
 
 (**Check space takes the updated l *)
 let check_space (space: space) (player: Player.player) : Player.player =
@@ -68,19 +88,19 @@ let check_space (space: space) (player: Player.player) : Player.player =
     end
 
   (* THIS CURRENTLY ONLY PRINTS, NO FUNCTIONALITY *)
-  | CardSpace chance -> 
-    let chosen_card = pick_card in
-    let rec card_action (act_lst : Card.action list) (player : Player.player) : player = 
-      match act_lst with
-      | h :: t -> begin
-          match h with
-          | Change x -> card_action t (update_balance player x)
-          | Move x -> card_action t (move player x)
-        end
-      | [] -> player
-    in
-    print_endline ("The card you have chosen is: " ^ (card_description chosen_card));
-    card_action (card_act chosen_card) player
+  | CardSpace chance -> player
+  (* let chosen_card = pick_card in
+     let rec card_action (act_lst : Card.action list) (player : Player.player) : player = 
+     match act_lst with
+     | h :: t -> begin
+        match h with
+        | Change x -> card_action t (update_balance player x)
+        | Move x -> card_action t (move player x)
+      end
+     | [] -> player
+     in
+     print_endline ("The card you have chosen is: " ^ (card_description chosen_card));
+     card_action (card_act chosen_card) player *)
   (* Functionality to be carried out: 
       card_act chosen_card*)
 
@@ -103,25 +123,4 @@ let check_space (space: space) (player: Player.player) : Player.player =
     (* Functionality to be carried out: 
         None? "end turn??" *)
     player
-
-(**After every player moves, check_space is called on that updated player BEFORE
-   being added to lst. *)
-let rec iterate playerlist (lst: Player.player list) =
-  match playerlist with
-  | [] -> lst
-  | h :: t -> begin
-      (* let new_loc = move h roll_dice in 
-         let new_bal = update_balance new_loc  *)
-      let new_player = (move h roll_dice) in 
-      let new_player_id = id new_player in 
-      let new_space = get_space new_player_id in 
-      iterate playerlist (check_space new_space new_player:: lst)
-    end
-
-let update_board playerlist =
-  let new_lst = iterate playerlist [] in 
-  print_endline (print_locations new_lst "");
-  print_endline (print_balances new_lst "")
-
-
 
