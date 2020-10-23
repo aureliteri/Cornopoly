@@ -180,7 +180,7 @@ let space14 : space = Property {
     space_id = 14;
     name = "Physical Sciences Buspace_idling";
     rent_price = 34.0;
-    owner = "";
+    owner = ""; 
     buy_price = 30.0;
     color = "red"
   }
