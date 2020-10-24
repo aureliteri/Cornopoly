@@ -27,7 +27,7 @@ let rec print_locations playerlist acc =
   | [] -> acc
   | h :: t -> 
     let player_location = space_name (List.nth spacelist (current_location_id h)) in
-    let complete_string = name h ^ " is currently at " ^ player_location ^ "." in
+    let complete_string = name h ^ " is currently at " ^ player_location ^ ".\n" in
     print_locations t (acc ^ complete_string)
 
 
@@ -37,8 +37,8 @@ let rec print_balances playerlist acc =
   | [] -> acc
   | h :: t -> 
     let player_balance = string_of_int (balance h) in
-    let complete_string = name h ^ " currently has a balance of " ^ player_balance ^ "." in
-    print_balances t (acc ^ complete_string)
+    let complete_string = name h ^ " currently has a balance of $" ^ player_balance ^ ".\n" in
+    print_balances t (acc ^ complete_string )
 
 (**Checks what tyoe of space the player landed on, and updates player information and board
    Outputs: (updated player, updated board)
@@ -50,7 +50,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
       if String.equal (property_owner property) ""
       then 
         begin
-          print_endline ("The price of " ^ (property_name property) ^ "is " ^ (string_of_int (rent_price property)));
+          print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (rent_price property)));
           print_endline "Do you want to purchase it? (Type: Yes or No)"; 
           print_string "> "; 
           let check_buy s =
@@ -143,8 +143,8 @@ let rec print_players = function
     let p_current_loc = string_of_int (current_location_id h) in 
     let p_balance = string_of_int (balance h )in 
     let p_properties = property_list h in 
-    print_endline (p_name ^ "'s ID is" ^p_id ^ "and their current location is
-    " ^ p_current_loc ^ ". Their balance is " ^p_balance^ "and their properties are");
+    print_endline (p_name ^ "'s ID is " ^p_id ^ " and their current location is
+    " ^ p_current_loc ^ ". Their balance is $" ^p_balance^ " and their properties are");
     print_properties p_properties;
     print_players t
 
