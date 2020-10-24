@@ -19,8 +19,6 @@ let pick_card x =
    Michelle is currently at Dickson.
    It is now __'s turn.""
    call [print_locations] with acc as an []
-
-   I AM NOT SURE HOW TO DO NEW LINE. IF SOMEONE DOES, ADD IT AFTER "." PLEASE
 *)
 let rec print_locations playerlist acc = 
   match playerlist with
@@ -31,7 +29,6 @@ let rec print_locations playerlist acc =
     print_locations t (acc ^complete_string)
 
 
-(* I AM NOT SURE HOW TO DO NEW LINE. IF SOMEONE DOES, ADD IT AFTER "." PLEASE *)
 let rec print_balances playerlist acc = 
   match playerlist with
   | [] -> acc
@@ -85,8 +82,6 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
     in
     print_endline ("The card you have chosen is: " ^ (card_description chosen_card));
     (card_action (card_act chosen_card) player,board)
-  (* Functionality to be carried out: 
-      card_act chosen_card*)
 
   | Jail jail -> 
     print_endline "Bad luck! You have landed in jail, skip your next turn";
@@ -104,8 +99,6 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
 
   | JustVisiting justvisiting -> 
     print_endline "Oop. Close call, you are just visiting";
-    (* Functionality to be carried out: 
-        None? "end turn??" *) 
     (player,board)
 
 (** Returns an updated list of all players after one round/iteration *)
@@ -124,18 +117,15 @@ let rec iterate playerlist (lst: (Player.player) list) =
 
 (* Prints all of the property names, space_id, color, & rent_price 
     of a property list *)
-let print_properties (properties : property list) = 
-  let name_lst = List.map (fun prop -> property_name prop) properties in 
-  List.iter (fun name -> print_endline ("Name: " ^ name)) name_lst;
-
-  let id_lst = List.map (fun prop -> property_id prop) properties in 
-  List.iter (fun id -> print_endline ("ID: " ^ string_of_int id)) id_lst;
-
-  let color_lst = List.map (fun prop -> property_color prop) properties in 
-  List. iter (fun color -> print_endline ("Color: " ^ color)) color_lst;
-
-  let rent_lst = List.map (fun prop -> rent_price prop) properties in 
-  List.iter (fun rent -> print_endline ("Rent Price: $" ^ string_of_int rent)) rent_lst
+let rec print_properties (properties : property list) : unit = 
+  match properties with
+  | h :: t -> 
+    print_endline ("Name: " ^ property_name h);
+    print_endline ("ID: " ^ string_of_int (property_id h));
+    print_endline ("Color: " ^ property_color h);
+    print_endline ("Rent Price: $" ^ string_of_int (rent_price h)^"\n");
+    print_properties t 
+  | [] -> print_endline ""
 
 (*[print_players prints all of the information about the players of a player list] *)
 let rec print_players players = 
@@ -147,8 +137,8 @@ let rec print_players players =
     let p_balance = string_of_int (balance h )in 
     let p_properties = property_list h in 
     print_endline ("\n"^ p_name ^ "'s ID is " ^p_id ^ " and their current location is " ^ p_current_loc ^ ". 
-    Their balance is $" ^p_balance^ " and their properties are");
-    print_properties p_properties;
+Their balance is $" ^p_balance^ " and their properties are:" ^"\n");
+    print_properties (List.rev p_properties);
     print_players t
 
 
