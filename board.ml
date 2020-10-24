@@ -113,10 +113,31 @@ let rec iterate playerlist (lst: Player.player list) =
 
 (** Prints all of the property names, space_id, color, & rent_price 
     of a property list *)
-let print_properties_name (properties : property list) = 
+let print_properties (properties : property list) = 
   let name_lst = List.map (fun prop -> property_name prop) properties in 
-  List.iter (fun name -> print_endline ("Name: " ^ name)) name_lst
-(* let id_lst = List.map (fun prop -> (space_id Property(prop)) properties  *)
+  List.iter (fun name -> print_endline ("Name: " ^ name)) name_lst;
+
+  let id_lst = List.map (fun prop -> property_id prop) properties in 
+  List.iter (fun id -> print_endline ("ID: " ^ string_of_int id)) id_lst;
+
+  let color_lst = List.map (fun prop -> property_color prop) properties in 
+  List. iter (fun color -> print_endline ("Color: " ^ color)) color_lst;
+
+  let rent_lst = List.map (fun prop -> rent_price prop) properties in 
+  List.iter (fun rent -> print_endline ("ID: " ^ string_of_int rent)) rent_lst
+
+(**[print_players prints all of the information about the players] *)
+let rec print_players = function
+  | [] -> print_endline ""
+  | h :: t -> let p_id = string_of_int (id h) in 
+    let p_name = name h in 
+    let p_current_loc = string_of_int (current_location_id h) in 
+    let p_balance = string_of_int (balance h )in 
+    let p_properties = property_list h in 
+    print_endline (p_name ^ "'s ID is" ^p_id ^ "and their current location is
+    " ^ p_current_loc ^ ". Their balance is " ^p_balance^ "and their properties are");
+    print_properties p_properties;
+    print_players t
 
 
 let print_initial_board (spaces : space list) (player : player list) : unit = 
@@ -127,18 +148,8 @@ let print_initial_board (spaces : space list) (player : player list) : unit =
     | h :: t -> let id = space_id h in 
       print_endline ((string_of_int id ) ^ ". " ^ space_name h); 
       print_spaces t
-  in print_spaces spaces
-
-let rec print_players = function
-  | [] -> print_endline ""
-  | h :: t -> let p_id = string_of_int (id h) in 
-    let p_name = name h in 
-    let p_current_loc = string_of_int (current_location_id h) in 
-    let p_balance = string_of_int (balance h )in 
-    let p_properties = property_list h in 
-    print_endline (p_name ^ "'s ID is" ^p_id ^ "")
-
-
+  in print_spaces spaces;
+  print_players player
 
 
 let update_board playerlist =
