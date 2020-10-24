@@ -86,4 +86,13 @@ let player4 : player = {
   in_jail = false
 }
 
-let playerlist = [player1; player2; player3; player4]
+let playerlist = [player1; player2; player3; player4;]
+
+let sample_player_test : player = {
+  id = 5;
+  name = "catpotato";
+  current_location_id = 11;
+  balance = 400;
+  property_list = [get_property space3; get_property space7;get_property space39];
+  in_jail = false
+}

@@ -73,6 +73,11 @@ let space_name = function
   | Go go -> go.name
   | JustVisiting justvisiting -> justvisiting.name
 
+let get_property = function
+  | Property property -> property
+  | _ -> failwith "Not a Property"
+
+
 let space1 : space = Go {
     space_id = 1; 
     name = "Go";

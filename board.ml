@@ -7,7 +7,6 @@ let roll_dice =
   let d2 = Random.int 6 + 1 in
   d1 + d2
 
-(* Hi, I am confused regarding size? because isnt this size constant*)
 let pick_card  =
   let ind = Random.int (List.length cardlist) in
   List.find (fun x -> card_id x = ind) cardlist
