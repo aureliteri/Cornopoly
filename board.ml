@@ -47,15 +47,14 @@ let check_space (space: space) (player: Player.player) : Player.player =
   match space with
   | Property property -> 
     begin
-      if property_owner property = ""
+      if String.equal (property_owner property) ""
       then 
         begin
-          let s = "The price of " ^ (property_name property) ^ "is " ^ (string_of_int (rent_price property)) in
-          print_endline s;
-          print_endline "Do you want to purchase it?"; 
+          print_endline ("The price of " ^ (property_name property) ^ "is " ^ (string_of_int (rent_price property)));
+          print_endline "Do you want to purchase it? (Type: Yes or No)"; 
           print_string "> "; 
           let check_buy s = 
-            if s = "Y" || s = "Yes" || s = "yes" || s = "y" then add_property player property
+            if s = "Yes" || s = "yes" then add_property player property
             else player
           in
           check_buy (read_line())  
@@ -64,7 +63,6 @@ let check_space (space: space) (player: Player.player) : Player.player =
         update_balance (find_player (property_owner property) playerlist) (-1  * rent_price property)
     end
 
-  (* THIS CURRENTLY ONLY PRINTS, NO FUNCTIONALITY *)
   | CardSpace chance -> 
     let chosen_card = pick_card in
     let rec card_action (act_lst : Card.action list) (player : Player.player) : player = 
