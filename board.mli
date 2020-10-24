@@ -1,8 +1,8 @@
 (* type mainboard *)
 
-val roll_dice: int
+val roll_dice: int -> int
 
-val pick_card: Card.card 
+val pick_card: int -> Card.card 
 
 val print_locations: Player.player list -> string -> string
 
