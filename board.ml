@@ -111,6 +111,36 @@ let rec iterate playerlist (lst: Player.player list) =
       iterate playerlist (check_space new_space new_player :: lst)
     end
 
+(** Prints all of the property names, space_id, color, & rent_price 
+    of a property list *)
+(* let print_properties_name (properties : property list) = 
+   let name_lst = List.map (fun prop -> property_name prop) properties in 
+   List.iter (fun name -> print_endline ("Name: " ^ name)) name_lst;
+   (* let id_lst = List.map (fun prop -> (space_id Property(prop)) properties  *)
+
+
+   let print_initial_board (spaces : space list) (player : player list) : unit = 
+   (**print all of the space names and ids *)
+   let rec print_spaces lst = 
+    match lst with
+    | [] -> print_endline ""
+    | h :: t -> let id = space_id h in 
+      print_endline ((string_of_int id ) ^ ". " ^ space_name h); 
+      print_spaces t
+   in print_spaces spaces
+
+   let rec print_players = function
+   | [] -> print_endline ""
+   | h :: t -> let p_id = string_of_int (id h) in 
+              let p_name = name h in 
+              let p_current_loc = string_of_int (current_location_id h) in 
+              let p_balance = string_of_int (balance h )in 
+              let p_properties = property_list h in 
+              print_endline (p_name ^ "'s ID is" ^p_id ^ "") *)
+
+
+
+
 let update_board playerlist =
   let new_lst = iterate playerlist [] in 
   print_endline (print_locations new_lst "");
