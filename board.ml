@@ -108,7 +108,7 @@ let rec iterate playerlist (lst: Player.player list) =
       let new_player = move h roll_dice in 
       let new_player_id = id new_player in 
       let new_space = get_space new_player_id in 
-      iterate playerlist (check_space new_space new_player :: lst)
+      iterate t (check_space new_space new_player :: lst)
     end
 
 (** Prints all of the property names, space_id, color, & rent_price 
