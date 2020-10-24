@@ -12,8 +12,8 @@ default: build
 build:
 	$(OCAMLBUILD) $(OBJECTS)
 
-# test:
-# 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST)
+test:
+	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST)
 
 # play:
 # 	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
