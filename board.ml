@@ -7,7 +7,6 @@ let roll_dice =
   let d2 = Random.int 6 + 1 in
   d1 + d2
 
-(* Hi, I am confused regarding size? because isnt this size constant*)
 let pick_card  =
   let ind = Random.int (List.length cardlist) in
   List.find (fun x -> card_id x = ind) cardlist
@@ -53,8 +52,12 @@ let check_space (space: space) (player: Player.player) : Player.player =
           print_endline ("The price of " ^ (property_name property) ^ "is " ^ (string_of_int (rent_price property)));
           print_endline "Do you want to purchase it? (Type: Yes or No)"; 
           print_string "> "; 
-          let check_buy s = 
-            if s = "Yes" || s = "yes" then add_property player property
+          let check_buy s =
+            if s = "Yes" || s = "yes" 
+            then begin 
+              let p = add_property player property in 
+              update_balance p (-1  * buy_price property)
+            end
             else player
           in
           check_buy (read_line())
@@ -108,7 +111,7 @@ let rec iterate playerlist (lst: Player.player list) =
       let new_player = move h roll_dice in 
       let new_player_id = id new_player in 
       let new_space = get_space new_player_id in 
-      iterate playerlist (check_space new_space new_player :: lst)
+      iterate t (check_space new_space new_player :: lst)
     end
 
 (** Prints all of the property names, space_id, color, & rent_price 

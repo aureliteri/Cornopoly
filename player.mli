@@ -36,3 +36,6 @@ val player4 : player
 
 val playerlist: player list
 
+
+(* CAN BE DELETED LATER, USED FOR TESTING PURPOSES FOR NOW*)
+val sample_player_test : player
