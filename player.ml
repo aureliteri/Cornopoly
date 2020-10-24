@@ -33,7 +33,7 @@ let pass_go player =
   {player with balance = player.balance + 200}
 
 let move player int' = 
-  {player with current_location_id = player.current_location_id + int'} 
+  {player with current_location_id = (player.current_location_id + int') mod 39} 
 
 let is_bankrupt player =
   player.balance <= 0
