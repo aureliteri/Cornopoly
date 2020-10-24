@@ -14,8 +14,6 @@ val property_list: player -> Space.property list
 
 val in_jail: player -> bool
 
-val pass_go : player -> player
-
 val move: player -> int -> player
 
 val is_bankrupt: player -> bool
@@ -39,3 +37,5 @@ val playerlist: player list
 
 (* CAN BE DELETED LATER, USED FOR TESTING PURPOSES FOR NOW*)
 val sample_player_test : player
+
+val player6 : player

@@ -29,11 +29,12 @@ let property_list player =
 let in_jail player =
   player.in_jail
 
-let pass_go player = 
-  {player with balance = player.balance + 200}
-
 let move player int' = 
-  {player with current_location_id = (player.current_location_id + int') mod 39} 
+  if (player.current_location_id + int') > 39 then 
+    {player with current_location_id = (player.current_location_id + int') mod 39;
+                 balance = player.balance + 200} 
+  else 
+    {player with current_location_id = (player.current_location_id + int') } 
 
 let is_bankrupt player =
   player.balance <= 0
@@ -94,5 +95,14 @@ let sample_player_test : player = {
   current_location_id = 11;
   balance = 400;
   property_list = [get_property space3; get_property space7;get_property space39];
+  in_jail = false
+}
+
+let player6 : player = {
+  id = 1;
+  name = "Meghana";
+  current_location_id = 1;
+  balance = 1300;
+  property_list = [];
   in_jail = false
 }

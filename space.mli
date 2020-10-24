@@ -3,6 +3,8 @@ type property
 
 val property_name : property -> string
 
+val property_id : property -> int
+
 val rent_price : property -> int
 
 val property_owner : property -> string

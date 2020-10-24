@@ -12,6 +12,8 @@ type property = {
 
 let property_name property = property.name
 
+let property_id property = property.space_id
+
 let rent_price property = property.rent_price
 
 let property_owner property = property.owner

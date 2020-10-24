@@ -36,6 +36,10 @@ let player_balance_test name player expected_output =
   name >:: (fun ctxt -> 
       assert_equal expected_output (balance player)~printer: string_of_int)
 
+let update_balance_test name inplayer amount expected_output = 
+  name >:: (fun ctxt -> 
+      assert_equal expected_output (update_balance inplayer amount))
+
 let player_property_test name player expected_output = 
   let property_list = property_list player in 
   let string_property_list = property_name_printer property_list [] in
@@ -47,7 +51,8 @@ let sample_player = sample_player_test
 let move_player_18 = move sample_player 7 
 let move_player_wraparound_1 = move move_player_18 22
 let move_player_wraparound_9 = move move_player_18 30
-let go_player = pass_go sample_player
+let go_twice = move move_player_wraparound_9 40
+let player_6 = player6
 
 let player_tests =
   [
@@ -62,7 +67,14 @@ let player_tests =
     current_location_test "sample player moved 7 to 18" move_player_18 18;
     current_location_test "move function w/ mod wraparound" move_player_wraparound_1 1;
     current_location_test "move function w/ mod wraparound" move_player_wraparound_9 9;
-    player_balance_test "sample player balance" go_player 600
+    player_balance_test "move function w new GO balance" move_player_wraparound_1 600;
+    player_balance_test "move function w new GO balance" move_player_wraparound_9 600;
+    player_balance_test "Go twice" go_twice 800;
+    current_location_test "go twice w/ mod wraparound" go_twice 10;
+
+    update_balance_test "update balance negative number" player1 (-200) player_6;
+
+
   ]
 
 let board_tests = 
