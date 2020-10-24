@@ -40,30 +40,36 @@ let rec print_balances playerlist acc =
     let complete_string = name h ^ " currently has a balance of " ^ player_balance ^ "." in
     print_balances t (acc ^ complete_string)
 
-
-(**Check space takes the updated l *)
-let check_space (space: space) (player: Player.player) : Player.player =
+(**Checks what tyoe of space the player landed on, and updates player information and board
+   Outputs: (updated player, updated board)
+*)
+let check_space (space: space) (player: Player.player) (board: Space.space list) : (Player.player *  Space.space list)=
   match space with
   | Property property -> 
     begin
       if String.equal (property_owner property) ""
       then 
         begin
-          print_endline ("The price of " ^ (property_name property) ^ " is " ^ (string_of_int (rent_price property)));
+          print_endline ("The price of " ^ (property_name property) ^ "is " ^ (string_of_int (rent_price property)));
           print_endline "Do you want to purchase it? (Type: Yes or No)"; 
           print_string "> "; 
           let check_buy s =
             if s = "Yes" || s = "yes" 
             then begin 
-              let p = add_property player property in 
-              update_balance p (-1  * buy_price property)
+              let p = add_property player property in (** adds property to player's property list *)
+              let p' = update_balance p (-1  * buy_price property) in  (** updates player's balance *)
+              let updated_space = Property(change_owner property (name p')) in
+              let new_space_list = List.map (fun x -> if space_id x = space_id updated_space then updated_space else x) board in
+              (p',new_space_list)
             end
-            else player
+            else (player,board)
           in
           check_buy (read_line())
         end
-      else 
-        update_balance (find_player (property_owner property) playerlist) (-1  * rent_price property)
+      else begin
+        let p = update_balance (find_player (property_owner property) playerlist) (-1  * rent_price property) in
+        (p,board)
+      end
     end
 
   | CardSpace chance -> 
@@ -78,69 +84,48 @@ let check_space (space: space) (player: Player.player) : Player.player =
       | [] -> player
     in
     print_endline ("The card you have chosen is: " ^ (card_description chosen_card));
-    card_action (card_act chosen_card) player
+    (card_action (card_act chosen_card) player,board)
   (* Functionality to be carried out: 
       card_act chosen_card*)
 
   | Jail jail -> 
     print_endline "Bad luck! You have landed in jail, skip your next turn";
-    player
+    (player,board)
   (* Functionality to be carried out: 
      Skip the players turn (maybe by skipping them in the queue?*)
 
 
   | Penalty penalty -> print_endline (penalty_description penalty);
-    update_balance player (-1 * penalty_price penalty)
+    (update_balance player (-1 * penalty_price penalty),board)
 
   | Go go -> print_endline "Pass Go! You have collected $200";
-    update_balance player 200
+    (player, board)
 
 
   | JustVisiting justvisiting -> 
     print_endline "Oop. Close call, you are just visiting";
     (* Functionality to be carried out: 
-        None? "end turn??" *)
-    player
+        None? "end turn??" *) 
+    (player,board)
 
-(**After every player moves, check_space is called on that updated player BEFORE
-   being added to lst. *)
-let rec iterate playerlist (lst: Player.player list)=
+(** Returns an updated list of all players after one round/iteration *)
+let rec iterate playerlist (lst: (Player.player) list) =
   match playerlist with
   | [] -> lst
   | h :: t -> begin
       let new_player = move h roll_dice in 
       let new_player_id = id new_player in 
       let new_space = get_space new_player_id in 
-      iterate t (check_space new_space new_player :: lst)
+      let updated_tuple = check_space new_space new_player spacelist in
+      iterate t ((fst updated_tuple) :: lst)
     end
 
 (** Prints all of the property names, space_id, color, & rent_price 
     of a property list *)
-let print_properties (properties : property list) = 
+let print_properties_name (properties : property list) = 
   let name_lst = List.map (fun prop -> property_name prop) properties in 
-  List.iter (fun name -> print_endline ("Name: " ^ name)) name_lst;
-
-  let id_lst = List.map (fun prop -> property_id prop) properties in 
-  List.iter (fun id -> print_endline ("ID: " ^ string_of_int id)) id_lst;
-
-  let color_lst = List.map (fun prop -> property_color prop) properties in 
-  List. iter (fun color -> print_endline ("Color: " ^ color)) color_lst;
-
-  let rent_lst = List.map (fun prop -> rent_price prop) properties in 
-  List.iter (fun rent -> print_endline ("ID: " ^ string_of_int rent)) rent_lst
-
-(**[print_players prints all of the information about the players] *)
-let rec print_players = function
-  | [] -> print_endline ""
-  | h :: t -> let p_id = string_of_int (id h) in 
-    let p_name = name h in 
-    let p_current_loc = string_of_int (current_location_id h) in 
-    let p_balance = string_of_int (balance h )in 
-    let p_properties = property_list h in 
-    print_endline (p_name ^ "'s ID is " ^p_id ^ " and their current location is
-    " ^ p_current_loc ^ ". Their balance is " ^p_balance^ " and their properties are");
-    print_properties p_properties;
-    print_players t
+  List.iter (fun name -> print_endline ("Name: " ^ name)) name_lst
+(* let id_lst = List.map (fun prop -> (space_id Property(prop)) properties  *)
 
 
 let print_initial_board (spaces : space list) (player : player list) : unit = 
@@ -151,8 +136,16 @@ let print_initial_board (spaces : space list) (player : player list) : unit =
     | h :: t -> let id = space_id h in 
       print_endline ((string_of_int id ) ^ ". " ^ space_name h); 
       print_spaces t
-  in print_spaces spaces;
-  print_players player
+  in print_spaces spaces
+
+let rec print_players = function
+  | [] -> print_endline ""
+  | h :: t -> let p_id = string_of_int (id h) in 
+    let p_name = name h in 
+    let p_current_loc = string_of_int (current_location_id h) in 
+    let p_balance = string_of_int (balance h )in 
+    let p_properties = property_list h in 
+    print_endline (p_name ^ "'s ID is" ^p_id ^ "")
 
 
 let update_board playerlist =
