@@ -52,8 +52,12 @@ let check_space (space: space) (player: Player.player) : Player.player =
           print_endline ("The price of " ^ (property_name property) ^ "is " ^ (string_of_int (rent_price property)));
           print_endline "Do you want to purchase it? (Type: Yes or No)"; 
           print_string "> "; 
-          let check_buy s = 
-            if s = "Yes" || s = "yes" then add_property player property
+          let check_buy s =
+            if s = "Yes" || s = "yes" 
+            then begin 
+              let p = add_property player property in 
+              update_balance p (-1  * buy_price property)
+            end
             else player
           in
           check_buy (read_line())
