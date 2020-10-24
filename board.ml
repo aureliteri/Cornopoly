@@ -54,51 +54,50 @@ let check_space (space: space) (player: Player.player) : Player.player =
           print_endline "Do you want to purchase it? (Type: Yes or No)"; 
           print_string "> "; 
           let check_buy s = 
-            if s = "Yes" || s = "yes" 
-            then add_property player property; update_balance player (-1) * buy_price property
-      else player
-in
-check_buy (read_line())  
-end   
-else 
-  update_balance (find_player (property_owner property) playerlist) (-1  * rent_price property)
-end
+            if s = "Yes" || s = "yes" then add_property player property
+            else player
+          in
+          check_buy (read_line())
+        end
+      else 
+        update_balance (find_player (property_owner property) playerlist) (-1  * rent_price property)
+    end
 
-| CardSpace chance -> 
-  let chosen_card = pick_card in
-  let rec card_action (act_lst : Card.action list) (player : Player.player) : player = 
-    match act_lst with
-    | h :: t -> begin
-        match h with
-        | Change x -> card_action t (update_balance player x)
-        | Move x -> card_action t (move player x)
-      end
-    | [] -> player
-  in
-  print_endline ("The card you have chosen is: " ^ (card_description chosen_card));
-  card_action (card_act chosen_card) player
-(* Functionality to be carried out: 
-    card_act chosen_card*)
-
-| Jail jail -> 
-  print_endline "Bad luck! You have landed in jail, skip your next turn";
-  player
-(* Functionality to be carried out: 
-   Skip the players turn (maybe by skipping them in the queue?*)
-
-
-| Penalty penalty -> print_endline (penalty_description penalty);
-  update_balance player (-1 * penalty_price penalty)
-
-| Go go -> print_endline "Pass Go! You have collected $200";
-  update_balance player 200
-
-
-| JustVisiting justvisiting -> 
-  print_endline "Oop. Close call, you are just visiting";
+  | CardSpace chance -> 
+    let chosen_card = pick_card in
+    let rec card_action (act_lst : Card.action list) (player : Player.player) : player = 
+      match act_lst with
+      | h :: t -> begin
+          match h with
+          | Change x -> card_action t (update_balance player x)
+          | Move x -> card_action t (move player x)
+        end
+      | [] -> player
+    in
+    print_endline ("The card you have chosen is: " ^ (card_description chosen_card));
+    card_action (card_act chosen_card) player
   (* Functionality to be carried out: 
-      None? "end turn??" *)
-  player
+      card_act chosen_card*)
+
+  | Jail jail -> 
+    print_endline "Bad luck! You have landed in jail, skip your next turn";
+    player
+  (* Functionality to be carried out: 
+     Skip the players turn (maybe by skipping them in the queue?*)
+
+
+  | Penalty penalty -> print_endline (penalty_description penalty);
+    update_balance player (-1 * penalty_price penalty)
+
+  | Go go -> print_endline "Pass Go! You have collected $200";
+    update_balance player 200
+
+
+  | JustVisiting justvisiting -> 
+    print_endline "Oop. Close call, you are just visiting";
+    (* Functionality to be carried out: 
+        None? "end turn??" *)
+    player
 
 (**After every player moves, check_space is called on that updated player BEFORE
    being added to lst. *)
@@ -114,30 +113,30 @@ let rec iterate playerlist (lst: Player.player list) =
 
 (** Prints all of the property names, space_id, color, & rent_price 
     of a property list *)
-(* let print_properties_name (properties : property list) = 
-   let name_lst = List.map (fun prop -> property_name prop) properties in 
-   List.iter (fun name -> print_endline ("Name: " ^ name)) name_lst;
-   (* let id_lst = List.map (fun prop -> (space_id Property(prop)) properties  *)
+let print_properties_name (properties : property list) = 
+  let name_lst = List.map (fun prop -> property_name prop) properties in 
+  List.iter (fun name -> print_endline ("Name: " ^ name)) name_lst
+(* let id_lst = List.map (fun prop -> (space_id Property(prop)) properties  *)
 
 
-   let print_initial_board (spaces : space list) (player : player list) : unit = 
-   (**print all of the space names and ids *)
-   let rec print_spaces lst = 
+let print_initial_board (spaces : space list) (player : player list) : unit = 
+  (**print all of the space names and ids *)
+  let rec print_spaces lst = 
     match lst with
     | [] -> print_endline ""
     | h :: t -> let id = space_id h in 
       print_endline ((string_of_int id ) ^ ". " ^ space_name h); 
       print_spaces t
-   in print_spaces spaces
+  in print_spaces spaces
 
-   let rec print_players = function
-   | [] -> print_endline ""
-   | h :: t -> let p_id = string_of_int (id h) in 
-              let p_name = name h in 
-              let p_current_loc = string_of_int (current_location_id h) in 
-              let p_balance = string_of_int (balance h )in 
-              let p_properties = property_list h in 
-              print_endline (p_name ^ "'s ID is" ^p_id ^ "") *)
+let rec print_players = function
+  | [] -> print_endline ""
+  | h :: t -> let p_id = string_of_int (id h) in 
+    let p_name = name h in 
+    let p_current_loc = string_of_int (current_location_id h) in 
+    let p_balance = string_of_int (balance h )in 
+    let p_properties = property_list h in 
+    print_endline (p_name ^ "'s ID is" ^p_id ^ "")
 
 
 
