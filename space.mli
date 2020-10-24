@@ -37,6 +37,20 @@ type space =
 
 val space_name : space -> string
 
+val space_id : space -> int
+
+val get_property : space -> property 
+
+val get_cardspace  : space -> cardspace
+
+val get_jail : space -> jail
+
+val get_go : space -> go
+
+val get_penalty : space -> penalty
+
+val get_justvisiting : space -> justvisiting
+
 val space1: space
 val space2: space
 val space3: space
@@ -78,5 +92,7 @@ val space38: space
 val space39: space
 
 val spacelist: space list
+
+
 
 val get_space : int -> space

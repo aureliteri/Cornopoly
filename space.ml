@@ -73,6 +73,38 @@ let space_name = function
   | Go go -> go.name
   | JustVisiting justvisiting -> justvisiting.name
 
+let space_id = function
+  | Property property -> property.space_id
+  | CardSpace cardspace -> cardspace.space_id
+  | Jail jail -> jail.space_id
+  | Penalty penalty -> penalty.space_id
+  | Go go -> go.space_id
+  | JustVisiting justvisiting -> justvisiting.space_id
+
+let get_property = function
+  | Property property -> property 
+  | _ -> failwith "Not a Property"
+
+let get_cardspace  = function 
+  | CardSpace cardspace -> cardspace
+  | _ -> failwith "Not a Cardspace"
+
+let get_jail = function
+  | Jail jail -> jail 
+  | _ -> failwith "Not a Jail space"
+
+let get_go = function
+  | Go go -> go
+  | _ -> failwith "Not a Go space"
+
+let get_penalty = function
+  | Penalty penalty -> penalty
+  | _ -> failwith "Not a penalty"
+
+let get_justvisiting = function
+  | JustVisiting justvisiting -> justvisiting
+  | _ -> failwith "Not a JustVisiting space"
+
 let space1 : space = Go {
     space_id = 1; 
     name = "Go";
@@ -405,14 +437,6 @@ let spacelist : space list = [
   space26; space27; space28; space29; space30; space31; space32; 
   space33; space34; space35; space36; space37; space38; space39; 
 ]
-
-let space_id = function
-  | Property property -> property.space_id
-  | CardSpace cardspace -> cardspace.space_id
-  | Jail jail -> jail.space_id
-  | Penalty penalty -> penalty.space_id
-  | Go go -> go.space_id
-  | JustVisiting justvisiting -> justvisiting.space_id
 
 let get_space id = 
   List.find (fun s -> (space_id s) = id) spacelist
