@@ -16,4 +16,4 @@ val print_players : Player.player list -> unit
 
 val print_initial_board : Space.space list -> Player.player list -> unit
 
-val check_space: Space.space -> Player.player -> Player.player
+val check_space: Space.space -> Player.player -> Space.space list -> (Player.player *Space.space list)  
