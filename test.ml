@@ -3,17 +3,15 @@ open Board
 open Player
 open Space
 
-(** [cmp_set_like_lists lst1 lst2] compares two lists to see whether
-    they are equivalent set-like lists.  That means checking two things.
-    First, they must both be {i set-like}, meaning that they do not
-    contain any duplicates.  Second, they must contain the same elements,
+(** [property_order list1 list2] compares two lists to see whether
+    they are equivalent lists. list1 and list2 must contain the same elements,
     though not necessarily in the same order. *)
-let cmp_set_like_lists lst1 lst2 =
-  let uniq1 = List.sort_uniq compare lst1 in
-  let uniq2 = List.sort_uniq compare lst2 in
-  List.length lst1 = List.length uniq1
+let property_order list1 list2 =
+  let uniq1 = List.sort_uniq compare list1 in
+  let uniq2 = List.sort_uniq compare list2 in
+  List.length list1 = List.length uniq1
   &&
-  List.length lst2 = List.length uniq2
+  List.length list2 = List.length uniq2
   &&
   uniq1 = uniq2
 
@@ -43,7 +41,7 @@ let player_property_test name player expected_output =
   let string_property_list = property_name_printer property_list [] in
   name >:: (fun ctxt -> 
       assert_equal true 
-        (cmp_set_like_lists expected_output (string_property_list)))
+        (property_order expected_output (string_property_list)))
 
 let sample_player = sample_player_test
 
