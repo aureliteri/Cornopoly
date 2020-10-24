@@ -49,7 +49,7 @@ let check_space (space: space) (player: Player.player) : Player.player =
       if String.equal (property_owner property) ""
       then 
         begin
-          print_endline ("The price of " ^ (property_name property) ^ "is " ^ (string_of_int (rent_price property)));
+          print_endline ("The price of " ^ (property_name property) ^ " is " ^ (string_of_int (rent_price property)));
           print_endline "Do you want to purchase it? (Type: Yes or No)"; 
           print_string "> "; 
           let check_buy s =
@@ -104,7 +104,7 @@ let check_space (space: space) (player: Player.player) : Player.player =
 
 (**After every player moves, check_space is called on that updated player BEFORE
    being added to lst. *)
-let rec iterate playerlist (lst: Player.player list) =
+let rec iterate playerlist (lst: Player.player list)=
   match playerlist with
   | [] -> lst
   | h :: t -> begin
@@ -137,8 +137,8 @@ let rec print_players = function
     let p_current_loc = string_of_int (current_location_id h) in 
     let p_balance = string_of_int (balance h )in 
     let p_properties = property_list h in 
-    print_endline (p_name ^ "'s ID is" ^p_id ^ "and their current location is
-    " ^ p_current_loc ^ ". Their balance is " ^p_balance^ "and their properties are");
+    print_endline (p_name ^ "'s ID is " ^p_id ^ " and their current location is
+    " ^ p_current_loc ^ ". Their balance is " ^p_balance^ " and their properties are");
     print_properties p_properties;
     print_players t
 
