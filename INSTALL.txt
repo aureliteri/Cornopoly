@@ -1,0 +1,17 @@
+Instructions to play Cornopoly:
+
+1. Download source code.
+2. Run "make build" in terminal
+3. Run "make play" in terminal to start the game. This demo version is a TEXT-BASED
+game. Follow the prompts printed in the terminal and type in the appropriate 
+text based on the given prompts.
+4. To QUIT the gme, type "quit" in the terminal. 
+NOTE: you can only quit after a round is completed.
+      The message "Type quit to quit. Type anything else to continue." 
+      indicates when you can type "quit" to exit the game.
+
+NOTE: The players in the game are the default players (our group members).
+NOTE: When you type to continue the game after the first round,
+      notice that each player's information is printed before the next round begins. 
+      This information includes each player's id, current location, current balance, 
+      and information about the properties they own. 
