@@ -11,6 +11,8 @@ val property_color : property -> string
 
 val buy_price : property -> int
 
+val change_owner: property -> string -> property
+
 type penalty
 
 val penalty_name : penalty -> string

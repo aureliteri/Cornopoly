@@ -20,6 +20,8 @@ let property_color property = property.color
 
 let buy_price property = property.buy_price
 
+let change_owner property new_owner = 
+  {property with owner=new_owner}
 
 
 type penalty = {
