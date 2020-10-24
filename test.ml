@@ -3,8 +3,17 @@ open Board
 open Player
 open Space
 
+let space_list = spacelist
+let player_list = playerlist
+
+let first_player = List.nth playerlist 0
+
+
+
+
 let player_tests =
   [
+
 
   ]
 
