@@ -22,4 +22,4 @@ clean:
 	ocamlbuild -clean
 
 zip:
-	zip cornopoly.zip *.ml*  _tags Makefile
+	zip cornopoly.zip *.ml* *.txt _tags Makefile
