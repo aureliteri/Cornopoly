@@ -20,3 +20,6 @@ play:
 
 clean:
 	ocamlbuild -clean
+
+zip:
+	zip cornopoly.zip *.ml*  _tags Makefile
