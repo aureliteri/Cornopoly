@@ -91,7 +91,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
 
   | Jail jail -> 
     print_endline "Bad luck! You have landed in jail, skip your next turn";
-    let p' = go_jail player in
+    let p' = change_jail player true in
     (p',board)
   (* Functionality to be carried out: 
      Skip the players turn (maybe by skipping them in the queue?*)
@@ -131,7 +131,7 @@ let rec iterate playerlist (lst: (Player.player) list) =
     end
     else begin
       print_endline ("You are in jail! Skip a turn.");
-      iterate t (h::lst)
+      iterate t ((change_jail h false)::lst)
     end
 
 (* Prints all of the property names, space_id, color, & rent_price 

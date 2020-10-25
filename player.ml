@@ -45,8 +45,8 @@ let update_balance player amount =
 let add_property player property = 
   {player with property_list =  property :: property_list player}
 
-let go_jail player =
-  {player with in_jail=true}
+let change_jail player bool =
+  {player with in_jail=bool}
 
 (**[find_player] returns player with name [find] in [playerlist] *)
 let rec find_player find playerlist =
