@@ -22,6 +22,8 @@ val update_balance : player -> int -> player
 
 val add_property : player -> Space.property -> player
 
+val go_jail: player -> player
+
 val find_player: String.t -> player list -> player
 
 val player1 : player

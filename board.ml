@@ -5,7 +5,8 @@ open Space
 let roll_dice x =
   let d1 = Random.int x + 1 in
   let d2 = Random.int x + 1 in
-  d1 + d2
+  let bool = if d1==d2 then true else false in
+  (d1 + d2, bool)
 
 let pick_card x =
   let ind = Random.int x in
@@ -90,7 +91,8 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
 
   | Jail jail -> 
     print_endline "Bad luck! You have landed in jail, skip your next turn";
-    (player,board)
+    let p' = go_jail player in
+    (p',board)
   (* Functionality to be carried out: 
      Skip the players turn (maybe by skipping them in the queue?*)
 
@@ -112,14 +114,24 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
 let rec iterate playerlist (lst: (Player.player) list) =
   match playerlist with
   | [] -> lst
-  | h :: t -> begin
+  | h :: t -> 
+    if (in_jail h) = false then begin
       print_endline ("It's "^ name h ^ " turn!");
       let roll = roll_dice 6 in
-      let new_player = move h roll in 
+      let new_player = move h (fst roll) in 
       let new_space_id = current_location_id new_player in 
       let new_space = get_space new_space_id in 
       let updated_tuple = check_space new_space new_player spacelist in
-      iterate t ((fst updated_tuple) :: lst)
+      if (snd roll == false) then
+        iterate t ((fst updated_tuple) :: lst)
+      else begin
+        print_endline ("You rolled a double!");
+        iterate ((fst updated_tuple)::t) (lst)
+      end
+    end
+    else begin
+      print_endline ("You are in jail! Skip a turn.");
+      iterate t (h::lst)
     end
 
 (* Prints all of the property names, space_id, color, & rent_price 

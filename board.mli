@@ -1,6 +1,6 @@
 (* type mainboard *)
 
-val roll_dice: int -> int
+val roll_dice: int -> (int*bool)
 
 val pick_card: int -> Card.card 
 
