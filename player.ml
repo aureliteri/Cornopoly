@@ -29,6 +29,9 @@ let property_list player =
 let in_jail player =
   player.in_jail
 
+let change_jail player value =
+  {player with in_jail = value}
+
 let move player int' = 
   if (player.current_location_id + int') > 39 then 
     {player with current_location_id = (player.current_location_id + int') mod 39;

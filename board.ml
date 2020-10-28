@@ -2,24 +2,19 @@ open Player
 open Card
 open Space
 
+(**TODO: Implement/change this method to account for double rolls (if you roll doubles three time )
+   try to implement random seeds? idk how tho haha
+*)
 let roll_dice x =
   let d1 = Random.int x + 1 in
   let d2 = Random.int x + 1 in
-  d1 + d2
+  let bool = d1=d2 in
+  (d1 + d2, bool)
 
 let pick_card x =
   let ind = Random.int x in
   List.find (fun x -> card_id x = ind) cardlist
 
-(* [print_locations] returns the location of EACH player. This is to be called
-   at the beginning of each turn. Eg:
-   ""Meghana is currently at Cafe Jennie.
-   Aaron is currently at Cow Land.
-   Amy is currently at CKB.
-   Michelle is currently at Dickson.
-   It is now __'s turn.""
-   call [print_locations] with acc as an []
-*)
 let rec print_locations playerlist acc = 
   match playerlist with
   | [] -> acc
@@ -37,9 +32,6 @@ let rec print_balances playerlist acc =
     let complete_string = name h ^ " currently has a balance of $" ^ player_balance ^ ".\n" in
     print_balances t (acc ^ complete_string )
 
-(**Checks what tyoe of space the player landed on, and updates player information and board
-   Outputs: (updated player, updated board)
-*)
 let check_space (space: space) (player: Player.player) (board: Space.space list) : (Player.player *  Space.space list)=
   match space with
   | Property property -> 
@@ -83,11 +75,18 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
     print_endline ("The card you have chosen is: " ^ (card_description chosen_card));
     (card_action (card_act chosen_card) player,board)
 
+
+  (** TODO: Change this implementation to account for players landing in jail and how to leave jail so ??
+      Pay the $50 fine before rolling the dice
+      Use a ‘Get Out Of Jail Free Card’ before rolling the dice
+      Optional Functionality: Roll doubles in an attempt to leave jail.
+      After the 3rd failed turns to attempt to roll doubles, you must pay the $50 fine and leave jail
+
+  *)
   | Jail jail -> 
     print_endline "Bad luck! You have landed in jail, skip your next turn";
-    (player,board)
-  (* Functionality to be carried out: 
-     Skip the players turn (maybe by skipping them in the queue?*)
+    let p' = change_jail player true in
+    (p',board)
 
 
   | Penalty penalty -> print_endline (penalty_description penalty);
@@ -101,22 +100,29 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
     print_endline "Oop. Close call, you are just visiting";
     (player,board)
 
-(** Returns an updated list of all players after one round/iteration *)
 let rec iterate playerlist (lst: (Player.player) list) =
   match playerlist with
   | [] -> lst
-  | h :: t -> begin
+  | h :: t -> 
+    if (in_jail h) = false then begin
       print_endline ("It's "^ name h ^ " turn!");
       let roll = roll_dice 6 in
-      let new_player = move h roll in 
+      let new_player = move h (fst roll) in 
       let new_space_id = current_location_id new_player in 
       let new_space = get_space new_space_id in 
       let updated_tuple = check_space new_space new_player spacelist in
-      iterate t ((fst updated_tuple) :: lst)
+      if (snd roll == false) then
+        iterate t ((fst updated_tuple) :: lst)
+      else begin
+        print_endline ("You rolled a double!");
+        iterate ((fst updated_tuple)::t) (lst)
+      end
+    end
+    else begin
+      print_endline ("You are in jail! Skip a turn.");
+      iterate t ((change_jail h false)::lst)
     end
 
-(* Prints all of the property names, space_id, color, & rent_price 
-    of a property list *)
 let rec print_properties (properties : property list) : unit = 
   match properties with
   | h :: t -> 
@@ -127,7 +133,6 @@ let rec print_properties (properties : property list) : unit =
     print_properties t 
   | [] -> print_endline ""
 
-(*[print_players prints all of the information about the players of a player list] *)
 let rec print_players players = 
   match players with
   | [] -> print_endline ""
@@ -137,13 +142,12 @@ let rec print_players players =
     let p_balance = string_of_int (balance h )in 
     let p_properties = property_list h in 
     print_endline ("\n"^ p_name ^ "'s ID is " ^p_id ^ " and their current location is " ^ p_current_loc ^ ". 
-Their balance is $" ^p_balance^ " and their properties are:" ^"\n");
-    print_properties (List.rev p_properties);
+    Their balance is $" ^p_balance^ " and their properties are");
+    print_properties p_properties;
     print_players t
 
 
 let print_initial_board (spaces : space list) (player : player list) : unit = 
-  (**print all of the space names and ids *)
   let rec print_spaces lst = 
     match lst with
     | [] -> print_endline ""
@@ -152,8 +156,11 @@ let print_initial_board (spaces : space list) (player : player list) : unit =
       print_spaces t
   in print_spaces spaces
 
+(* TODOOOO : Account for winning scenarios- 
+   purchasing entire 1 same-color territories other players are bankrupt - Make lists of same color properties (Hashmap)
+   Implement Colorset in Board --> hashmap where key is a string (color name) and the value is a list of Property.spaces
+   Set appropriate rent prices and buy prices (as well as penalty prices) -> Make sure plyers can pay rent
+*)
 let update_board playerlist  =
   print_endline ("\n"^print_locations playerlist "");
   print_endline (print_balances playerlist "") 
-
-
