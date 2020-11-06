@@ -10,20 +10,17 @@ let roll_dice x =
   let d2 = Random.int x + 1 in 
   (d1 + d2, d1 = d2)
 
-
-let pick_card  =
-  let ind = Random.int (List.length cardlist) in
-  List.find (fun x -> card_id x = ind) cardlist
-
-(**TODO: add a failsafe way to pick a card. No chance of errors *)
+let pick_card =
+  let ind = Random.int (Array.length cardlist) in
+  cardlist.(ind)
 
 let rec print_locations playerlist acc = 
   match playerlist with
   | [] -> acc
   | h :: t -> 
-    let player_location = space_name (get_space (current_location_id h)) in
+    let player_location = space_name (get_space (current_location_id h) spacelist) in
     let complete_string = name h ^ " is currently at " ^ player_location ^ ".\n" in
-    print_locations t (acc ^complete_string)
+    print_locations t (acc ^ complete_string)
 
 let rec print_balances playerlist acc = 
   match playerlist with
@@ -33,12 +30,13 @@ let rec print_balances playerlist acc =
     let complete_string = name h ^ " currently has a balance of $" ^ player_balance ^ ".\n" in
     print_balances t (acc ^ complete_string )
 
+(**new-space with the updated property is not being passed *)
 let check_space (space: space) (player: Player.player) (board: Space.space list) : (Player.player *  Space.space list)=
   match space with
   | Property property -> 
     begin
-      if String.equal (property_owner property) ""
-      then 
+      print_endline ("------------THIS PROPERTY IS OWNED BY:" ^ property_owner property);
+      if (String.equal (property_owner property) "") then 
         begin
           print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (buy_price property)));
           print_endline "Do you want to purchase it? (Type: Yes or No)"; 
@@ -47,8 +45,9 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
             if s = "Yes" || s = "yes" || s = "Y" || s = "y"
             then begin 
               let p = add_property player property in (** adds property to player's property list *)
-              let p' = update_balance p (-1  * buy_price property) in  (** updates player's balance *)
-              let updated_space = Property(change_owner property (name p')) in
+              let p' = update_balance p (-1 * buy_price property) in  (** updates player's balance *)
+              print_endline ("OWNER IS " ^ (property_owner (change_owner property (name p'))));
+              let updated_space = Property((change_owner property (name p'))) in
               let new_space_list = 
                 List.map (fun x -> if space_id x = space_id updated_space 
                            then updated_space else x) board in
@@ -58,15 +57,14 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
           in check_buy (read_line())
         end
       else begin
-        print_endline ("----------------This property is owned by" ^ property_owner property );
-        let p = update_balance (find_player (property_owner property) playerlist) (-1  * rent_price property) in
+        print_endline ("This property is owned by " ^ property_owner property ^ ". You must pay rent of $"^ (string_of_int (rent_price property)));
+        let p = update_balance player (-1  * rent_price property) in
         (p, board)
       end
     end
 
   | CardSpace chance -> 
-    (* let chosen_card = pick_card in *)
-    let chosen_card = choose cardlist in
+    let chosen_card = pick_card in 
     let rec card_action (act_lst : Card.action list) (player : Player.player) : player = 
       match act_lst with
       | h :: t -> begin
@@ -89,9 +87,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
   *)
   | Jail jail -> 
     print_endline "Bad luck! You have landed in jail, skip your next turn";
-    let p' = change_jail player true in
-    (p', board)
-
+    let p' = change_jail player true in (p', board)
 
   | Penalty penalty -> print_endline (penalty_description penalty);
     (update_balance player (-1 * penalty_price penalty),board)
@@ -99,19 +95,16 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
   | Go go -> print_endline "Pass Go! You have collected $200";
     (player, board)
 
-
   | JustVisiting justvisiting -> 
     print_endline "Oop. Close call to Jail, luckily you are just visiting";
     (player, board)
 
-
-
-(**INFINItE LOOP SOMEWHERE. CHECK THE COUNTER STUFF AND JAIL STUFF WE ADDDED 
-   THERE IS ALSO A FATAL ERROR: EXCEPTION NOT_FOUND-> could be because a player 
-   landed on a spot that already has an owner*)
-(**[iterat playerlist lst] is the list of players that undergo 1 turn of Monopoly *)
+(** CHECK THE COUNTER STUFF AND JAIL STUFF WE ADDDED 
+    THERE IS ALSO A FATAL ERROR: EXCEPTION NOT_FOUND-> could be because a player 
+    landed on a spot that already has an owner*)
+(**[iterate playerlist lst] is the list of players that undergo 1 turn of Monopoly *)
 let counter = ref 0 
-let rec iterate playerlist (lst: (Player.player) list) =
+let rec iterate playerlist (lst: (Player.player) list) (sp: space list) =
   match playerlist with
   | [] -> lst
   | h :: t -> 
@@ -121,48 +114,88 @@ let rec iterate playerlist (lst: (Player.player) list) =
       print_endline (string_of_int (fst roll));
       let new_player = move h (fst roll) in 
       let new_space_id = current_location_id new_player in 
-      let new_space = get_space new_space_id in 
-      let updated_tuple = check_space new_space new_player spacelist in
-      if (snd roll) then (**if a double is rolled *)
+      let new_space = get_space new_space_id sp in 
+      let updated_tuple = check_space new_space new_player sp in
+
+      if (snd roll) then (** if a double is rolled *)
         begin
           print_endline ("You rolled a double!");
           incr counter; (**add 1 to the count of doubles rolled *)
           if !counter = 3 then (**if the # of doubles is 3, then send the player to jail. *)
             let jail_player = (change_jail (set_location new_player 10) true )in (**set current location of player to jail. Then change the player's jail property to true  *)
-            iterate t (jail_player :: lst) (**iterate to next player in line. Add jailed player to accumulator *)
-          else iterate ((fst updated_tuple) :: t) (lst) 
+            iterate t (jail_player :: lst)(snd updated_tuple) (**iterate to next player in line. Add jailed player to accumulator *)
+          else iterate ((fst updated_tuple) :: t) (lst) (snd updated_tuple)
           (**if # of doubles rolled per person has not reached three, replace head player with jailed player make  *)
         end 
       else begin
         counter := 0;
-        iterate t ((fst updated_tuple) :: lst)
+        iterate t ((fst updated_tuple) :: lst) (snd updated_tuple)
       end
     end
     else begin
       print_endline ("You are in jail! Skip a turn.");
-      iterate t ((change_jail h false)::lst)
+      iterate t ((change_jail h false)::lst) sp
     end
+
+let rec iterate1 playerlist (sp: space list) (acc: Player.player list * Space.space list )  =
+  match playerlist with
+  | [] -> acc
+  | h :: t -> 
+    if (in_jail h) = false then begin
+      print_endline ("It's "^ name h ^ " turn!");
+      let roll = roll_dice 6 in 
+      print_endline (string_of_int (fst roll));
+      let new_player = move h (fst roll) in 
+      let new_space_id = current_location_id new_player in 
+      let new_space = get_space new_space_id sp in (**get_space *)
+      print_endline ("THE NEW SPACE OWNER IS " ^ (property_owner (get_property new_space)));
+      let updated_tuple = check_space new_space new_player sp in
+      let updated_sp = snd updated_tuple in 
+
+      if (snd roll) then (** if a double is rolled *)
+        begin
+          print_endline ("You rolled a double!");
+          incr counter; (**add 1 to the count of doubles rolled *)
+          if !counter = 3 then (**if the # of doubles is 3, then send the player to jail. *)
+            let jail_player = (change_jail (set_location new_player 10) true )in (**set current location of player to jail. Then change the player's jail property to true  *)
+            iterate1 t (updated_sp) (jail_player :: (fst acc), updated_sp) (**iterate to next player in line. Add jailed player to accumulator *)
+          else iterate1 ((fst updated_tuple) :: t) (updated_sp)  (fst acc, updated_sp) 
+          (**if # of doubles rolled per person has not reached three, replace head player with jailed player make  *)
+        end 
+      else begin
+        counter := 0;
+        iterate1 t (updated_sp) ((fst updated_tuple) :: fst acc , updated_sp) 
+      end
+    end
+    else begin
+      print_endline ("You are in jail! Skip a turn.");
+      iterate1 t sp (((change_jail h false):: fst acc), sp) 
+    end
+
+
+
+
 
 let rec print_properties (properties : property list) : unit = 
   match properties with
   | [] -> print_endline ""
   | h :: t -> 
-    print_string "Their properties are:";
     print_endline ("Name: " ^ property_name h);
     print_endline ("ID: " ^ string_of_int (property_id h));
     print_endline ("Color: " ^ property_color h);
     print_endline ("Rent Price: $" ^ string_of_int (rent_price h)^"\n");
     print_properties t 
 
+(** get space is using Space.spacelist *)
 let rec print_players players = 
   match players with
   | [] -> print_endline ""
   | h :: t -> let p_id = string_of_int (id h) in 
     let p_name = name h in 
-    let p_current_loc = space_name (get_space (current_location_id h)) in 
+    let p_current_loc = space_name (get_space (current_location_id h) spacelist) in 
     let p_balance = string_of_int (balance h )in 
     let p_properties = property_list h in 
-    print_endline ("\n"^ p_name ^ "'s ID is " ^p_id ^ " and their current location is " ^ p_current_loc ^ ". Their balance is $" ^p_balance^ ".");
+    print_endline ("\n"^ p_name ^ "'s ID is " ^p_id ^ " and their current location is " ^ p_current_loc ^ ". Their balance is $" ^p_balance^ "." ^ " Their properties are:");
     print_properties p_properties;
     print_players t
 

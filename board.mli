@@ -21,7 +21,12 @@ val print_balances: Player.player list -> string -> string
    their turn in the game. The die are rolled for each player and they are each 
    moved to new spaces according to die roll result. Each player will undergo 
    specific actions according to the space they land on *)
-val iterate: Player.player list -> Player.player list -> Player.player list
+val iterate: Player.player list -> Player.player list -> Space.space list 
+  -> Player.player list
+
+(** [iterate1 is a helper for play to return the updated playerlist and spacelist] *)
+val iterate1: Player.player list -> Space.space list 
+  -> Player.player list * Space.space list -> Player.player list * Space.space list
 
 (**[update_board] displays the players' current locations and balances after a turn*)
 val update_board: Player.player list -> unit

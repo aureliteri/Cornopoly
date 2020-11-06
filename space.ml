@@ -442,5 +442,5 @@ let spacelist : space list = [
   space33; space34; space35; space36; space37; space38; space39; 
 ]
 
-let get_space id = 
-  List.find (fun s -> (space_id s) = id) spacelist
+let get_space id spacelst = 
+  List.find (fun s -> (space_id s) = id) spacelst

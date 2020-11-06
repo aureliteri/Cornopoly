@@ -88,4 +88,4 @@ let card10 = {
   act = [Move 37]
 }
 
-let cardlist = [card1; card2; card3; card4; card5; card6; card7; card9; card10]
+let cardlist = [|card1; card2; card3; card4; card5; card6; card7; card9; card10|]

@@ -36,4 +36,4 @@ val card9: card
 
 val card10: card
 
-val cardlist: card list
+val cardlist: card array

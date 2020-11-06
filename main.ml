@@ -8,21 +8,22 @@ let main () =
                  Here is the layout of the initial board: ");
 
   print_initial_board Space.spacelist Player.playerlist;
-  let rec play s player_lst : unit= 
+  let rec play s player_lst space_lst : unit = 
     match s with
     | "quit" -> exit 0;
     | _ -> begin
         print_players player_lst;
-        let new_lst = List.rev(iterate player_lst []) in
-        update_board new_lst;
+        let new_lst = iterate1 player_lst space_lst ([], []) in
+        let pl_lst = List.rev (fst new_lst) in
+        update_board pl_lst;
         print_endline "Type quit to quit. Type anything else to continue.";
         let s = read_line() in
-        play s new_lst;
+        play s pl_lst (snd new_lst);
       end
   in
   print_endline "Type quit to quit. Type anything else to play.";
   let s = read_line() in
-  play s Player.playerlist;
+  play s Player.playerlist Space.spacelist;
 
 
   (*1. Print the inital board  - print eveery space: the id's, desciption, board price
