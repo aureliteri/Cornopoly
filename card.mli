@@ -6,11 +6,15 @@ type action =
 
 type card 
 
+val empty : card
+
 val card_id : card -> int 
 
 val card_description : card -> string
 
 val card_act : card -> action list
+
+val choose : card list -> card
 
 val card1: card
 

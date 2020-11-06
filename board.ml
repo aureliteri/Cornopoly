@@ -8,11 +8,14 @@ open Space
 let roll_dice x =
   let d1 = Random.int x + 1 in
   let d2 = Random.int x + 1 in 
-  (d1 + d2, d1=d2)
+  (d1 + d2, d1 = d2)
 
-let pick_card x =
-  let ind = Random.int x in
+
+let pick_card  =
+  let ind = Random.int (List.length cardlist) in
   List.find (fun x -> card_id x = ind) cardlist
+
+(**TODO: add a failsafe way to pick a card. No chance of errors *)
 
 let rec print_locations playerlist acc = 
   match playerlist with
@@ -21,7 +24,6 @@ let rec print_locations playerlist acc =
     let player_location = space_name (get_space (current_location_id h)) in
     let complete_string = name h ^ " is currently at " ^ player_location ^ ".\n" in
     print_locations t (acc ^complete_string)
-
 
 let rec print_balances playerlist acc = 
   match playerlist with
@@ -47,21 +49,24 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
               let p = add_property player property in (** adds property to player's property list *)
               let p' = update_balance p (-1  * buy_price property) in  (** updates player's balance *)
               let updated_space = Property(change_owner property (name p')) in
-              let new_space_list = List.map (fun x -> if space_id x = space_id updated_space then updated_space else x) board in
-              (p',new_space_list)
+              let new_space_list = 
+                List.map (fun x -> if space_id x = space_id updated_space 
+                           then updated_space else x) board in
+              (p', new_space_list)
             end
-            else (player,board)
-          in
-          check_buy (read_line())
+            else (player, board)
+          in check_buy (read_line())
         end
       else begin
+        print_endline ("----------------This property is owned by" ^ property_owner property );
         let p = update_balance (find_player (property_owner property) playerlist) (-1  * rent_price property) in
-        (p,board)
+        (p, board)
       end
     end
 
   | CardSpace chance -> 
-    let chosen_card = pick_card (List.length cardlist) in
+    (* let chosen_card = pick_card in *)
+    let chosen_card = choose cardlist in
     let rec card_action (act_lst : Card.action list) (player : Player.player) : player = 
       match act_lst with
       | h :: t -> begin
@@ -72,7 +77,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
       | [] -> player
     in
     print_endline ("The card you have chosen is: " ^ (card_description chosen_card));
-    (card_action (card_act chosen_card) player,board)
+    (card_action (card_act chosen_card) player, board)
 
 
   (** TODO: Change this implementation to account for players landing in jail and how to leave jail so ??
@@ -85,7 +90,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
   | Jail jail -> 
     print_endline "Bad luck! You have landed in jail, skip your next turn";
     let p' = change_jail player true in
-    (p',board)
+    (p', board)
 
 
   | Penalty penalty -> print_endline (penalty_description penalty);
@@ -96,40 +101,41 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
 
 
   | JustVisiting justvisiting -> 
-    print_endline "Oop. Close call, you are just visiting";
-    (player,board)
+    print_endline "Oop. Close call to Jail, luckily you are just visiting";
+    (player, board)
 
-let counter = ref 0 
+
 
 (**INFINItE LOOP SOMEWHERE. CHECK THE COUNTER STUFF AND JAIL STUFF WE ADDDED 
    THERE IS ALSO A FATAL ERROR: EXCEPTION NOT_FOUND-> could be because a player 
    landed on a spot that already has an owner*)
+(**[iterat playerlist lst] is the list of players that undergo 1 turn of Monopoly *)
+let counter = ref 0 
 let rec iterate playerlist (lst: (Player.player) list) =
   match playerlist with
   | [] -> lst
   | h :: t -> 
     if (in_jail h) = false then begin
       print_endline ("It's "^ name h ^ " turn!");
-      let roll = roll_dice 6 in
+      let roll = roll_dice 6 in 
+      print_endline (string_of_int (fst roll));
       let new_player = move h (fst roll) in 
       let new_space_id = current_location_id new_player in 
       let new_space = get_space new_space_id in 
       let updated_tuple = check_space new_space new_player spacelist in
-      if (not (snd roll)) then 
+      if (snd roll) then (**if a double is rolled *)
         begin
-          incr counter;
-          if !counter = 3 then (**sending the person to jail. *)
-            let jail_player = (change_jail (set_location new_player 10) true )in
-            iterate t (jail_player :: lst)
-            (* let new_sp_id = current_location_id jail_player in 
-               let new_space = get_space new_sp_id in 
-               let tuple = check_space new_space jail_player spacelist in  *)
-          else iterate t ((fst updated_tuple) :: lst)
-        end
+          print_endline ("You rolled a double!");
+          incr counter; (**add 1 to the count of doubles rolled *)
+          if !counter = 3 then (**if the # of doubles is 3, then send the player to jail. *)
+            let jail_player = (change_jail (set_location new_player 10) true )in (**set current location of player to jail. Then change the player's jail property to true  *)
+            iterate t (jail_player :: lst) (**iterate to next player in line. Add jailed player to accumulator *)
+          else iterate ((fst updated_tuple) :: t) (lst) 
+          (**if # of doubles rolled per person has not reached three, replace head player with jailed player make  *)
+        end 
       else begin
         counter := 0;
-        print_endline ("You rolled a double!");
-        iterate ((fst updated_tuple)::t) (lst)
+        iterate t ((fst updated_tuple) :: lst)
       end
     end
     else begin
@@ -139,13 +145,14 @@ let rec iterate playerlist (lst: (Player.player) list) =
 
 let rec print_properties (properties : property list) : unit = 
   match properties with
+  | [] -> print_endline ""
   | h :: t -> 
+    print_string "Their properties are:";
     print_endline ("Name: " ^ property_name h);
     print_endline ("ID: " ^ string_of_int (property_id h));
     print_endline ("Color: " ^ property_color h);
     print_endline ("Rent Price: $" ^ string_of_int (rent_price h)^"\n");
     print_properties t 
-  | [] -> print_endline ""
 
 let rec print_players players = 
   match players with
@@ -155,8 +162,7 @@ let rec print_players players =
     let p_current_loc = space_name (get_space (current_location_id h)) in 
     let p_balance = string_of_int (balance h )in 
     let p_properties = property_list h in 
-    print_endline ("\n"^ p_name ^ "'s ID is " ^p_id ^ " and their current location is " ^ p_current_loc ^ ". 
-    Their balance is $" ^p_balance^ " and their properties are");
+    print_endline ("\n"^ p_name ^ "'s ID is " ^p_id ^ " and their current location is " ^ p_current_loc ^ ". Their balance is $" ^p_balance^ ".");
     print_properties p_properties;
     print_players t
 

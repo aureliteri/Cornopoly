@@ -11,11 +11,22 @@ type card =
     act: action list;
   }
 
+let empty = {
+  card_id = 0;
+  description = "";
+  act = [];
+}
+
 let card_id card = card.card_id
 
 let card_description card = card.description
 
 let card_act card = card.act
+
+let choose cardlist = 
+  match cardlist with
+  | [] -> empty
+  | h :: t -> h
 
 let card1 = {
   card_id = 1;

@@ -9,7 +9,7 @@ val roll_dice: int -> (int * bool)
 
 (**[pick_card] is a random card selected from Card.cardlist. It takes in [x], 
    which is the length of cardlist *)
-val pick_card: int -> Card.card 
+(* val pick_card: int -> Card.card  *)
 
 (**[print_locations] prints the current locations of all of the players  *)
 val print_locations: Player.player list -> string -> string
