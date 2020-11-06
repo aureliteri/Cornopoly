@@ -101,9 +101,6 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
 
 let counter = ref 0 
 
-(**INFINItE LOOP SOMEWHERE. CHECK THE COUNTER STUFF AND JAIL STUFF WE ADDDED 
-   THERE IS ALSO A FATAL ERROR: EXCEPTION NOT_FOUND-> could be because a player 
-   landed on a spot that already has an owner*)
 let rec iterate playerlist (lst: (Player.player) list) =
   match playerlist with
   | [] -> lst
