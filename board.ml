@@ -3,14 +3,16 @@ open Card
 open Space
 
 (**TODO Friday, 11/6: 
-   1. get rid of all of the print statements we dont need.
-   2. LEAVE JAIL SCENARIOS!! like pay the fine, roll a double, or if you have a get out of jail free card
    3. then winner scenarios ahahaha detail later cool
       2a. Players aim to own all properties in ONE color set, or bankrupt all other players.
       Bankruptcy: This is when a player has $0, or cannot no longer afford to pay any dues (eg. rent, tax, fines)
 
    4. unit tests (EXTENSIVE)
 
+
+   TODO: add Command module to parse terminal inputs
+    2. separate out code into more individual functions
+    3. add printing in main
 *)
 
 (**TODO: Implement/change this method to account for double rolls (if you roll doubles three time )
