@@ -2,6 +2,17 @@ open Player
 open Card
 open Space
 
+(**TODO Friday, 11/6: 
+   1. get rid of all of the print statements we dont need.
+   2. LEAVE JAIL SCENARIOS!! like pay the fine, roll a double, or if you have a get out of jail free card
+   3. then winner scenarios ahahaha detail later cool
+      2a. Players aim to own all properties in ONE color set, or bankrupt all other players.
+      Bankruptcy: This is when a player has $0, or cannot no longer afford to pay any dues (eg. rent, tax, fines)
+
+   4. unit tests (EXTENSIVE)
+
+*)
+
 (**TODO: Implement/change this method to account for double rolls (if you roll doubles three time )
    try to implement random seeds? idk how tho haha
 *)
@@ -35,7 +46,6 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
   match space with
   | Property property -> 
     begin
-      print_endline ("------------THIS PROPERTY IS OWNED BY:" ^ property_owner property);
       if (String.equal (property_owner property) "") then 
         begin
           print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (buy_price property)));
@@ -46,7 +56,6 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
             then begin 
               let p = add_property player property in (** adds property to player's property list *)
               let p' = update_balance p (-1 * buy_price property) in  (** updates player's balance *)
-              print_endline ("OWNER IS " ^ (property_owner (change_owner property (name p'))));
               let updated_space = Property((change_owner property (name p'))) in
               let new_space_list = 
                 List.map (fun x -> if space_id x = space_id updated_space 
@@ -57,8 +66,8 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
           in check_buy (read_line())
         end
       else begin
-        print_endline ("This property is owned by " ^ property_owner property ^ ". You must pay rent of $"^ (string_of_int (rent_price property)));
-        let p = update_balance player (-1  * rent_price property) in
+        print_endline ((property_name property)^" is owned by " ^ property_owner property ^ ". You must pay rent of $"^ (string_of_int (rent_price property)));
+        let p = update_balance player (-1 * rent_price property) in
         (p, board)
       end
     end
@@ -71,6 +80,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
           match h with
           | Change x -> card_action t (update_balance player x)
           | Move x -> card_action t (move player x)
+          | Get_out x -> change_jail_card player x
         end
       | [] -> player
     in
@@ -83,7 +93,6 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
       Use a ‘Get Out Of Jail Free Card’ before rolling the dice
       Optional Functionality: Roll doubles in an attempt to leave jail.
       After the 3rd failed turns to attempt to roll doubles, you must pay the $50 fine and leave jail
-
   *)
   | Jail jail -> 
     print_endline "Bad luck! You have landed in jail, skip your next turn";
@@ -137,18 +146,17 @@ let rec iterate playerlist (lst: (Player.player) list) (sp: space list) =
       iterate t ((change_jail h false)::lst) sp
     end
 
+
+
 let rec iterate1 playerlist (sp: space list) (acc: Player.player list * Space.space list )  =
   match playerlist with
   | [] -> acc
-  | h :: t -> 
+  | h :: t -> print_endline ("It's "^ name h ^ " turn!");
     if (in_jail h) = false then begin
-      print_endline ("It's "^ name h ^ " turn!");
       let roll = roll_dice 6 in 
-      print_endline (string_of_int (fst roll));
       let new_player = move h (fst roll) in 
       let new_space_id = current_location_id new_player in 
       let new_space = get_space new_space_id sp in (**get_space *)
-      print_endline ("THE NEW SPACE OWNER IS " ^ (property_owner (get_property new_space)));
       let updated_tuple = check_space new_space new_player sp in
       let updated_sp = snd updated_tuple in 
 
@@ -167,13 +175,44 @@ let rec iterate1 playerlist (sp: space list) (acc: Player.player list * Space.sp
         iterate1 t (updated_sp) ((fst updated_tuple) :: fst acc , updated_sp) 
       end
     end
-    else begin
-      print_endline ("You are in jail! Skip a turn.");
-      iterate1 t sp (((change_jail h false):: fst acc), sp) 
+
+    (* LEAVE JAIL SCENARIOS!! like pay the fine, roll a double, or if you have a get out of jail free card
+    *)
+    else begin (** THE PLAYER IS IN JAIL RIGHT NOW *)
+      print_endline (name h ^ " is in jail! You will be stuck here for three turns. You can pay a fine of $100, use your get out of jail free card, or try to roll a double to leave jail early.");
+      let rec jail_rules s = 
+        print_endline ("Enter PAY, CARD, or ROLL");
+        if (s = "PAY") then 
+          let pay_jail_player = update_balance h (-100) in 
+          let not_in_jail = change_jail pay_jail_player false in 
+          print_endline ("Congrats! You are out of jail.");
+          iterate1 t sp (not_in_jail :: fst acc , snd acc)
+
+        else if (s = "CARD" && jail_card h) then 
+          let used_card = change_jail_card h false in 
+          print_endline ("Congrats! You used your Get Out of Jail Card. You are out of jail.");
+          iterate1 t sp (used_card :: fst acc , snd acc)
+        else if (s = "CARD" && not (jail_card h)) then 
+          let () = print_endline ("You do not have a Get Out of Jail Card. Enter another command.") in
+          jail_rules (read_line())
+        else if (s = "ROLL") then (
+          if (snd (roll_dice 6))
+          then 
+            let not_in_jail = change_jail h false  in
+            print_endline ("Congrats! You rolled a double and are out of jail");
+
+            iterate1 t sp (not_in_jail :: fst acc , snd acc)
+          else 
+            let () =  print_endline ("You didn't roll a double. You are still in jail") in 
+            iterate1 t sp (h :: fst acc , snd acc)
+        )
+        else 
+          let () = print_endline ("Invalid command.") in 
+          jail_rules (read_line())
+      in 
+      print_endline ("Enter PAY, CARD, or ROLL");
+      jail_rules (read_line())
     end
-
-
-
 
 
 let rec print_properties (properties : property list) : unit = 

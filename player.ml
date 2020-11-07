@@ -9,8 +9,9 @@ type player = {
   balance : int;
   property_list: property list;
   in_jail: bool;
-}
 
+  jail_card: bool;
+}
 let id player =
   player.id
 
@@ -31,6 +32,12 @@ let in_jail player =
 
 let change_jail player value =
   {player with in_jail = value}
+
+let jail_card player =
+  player.jail_card
+
+let change_jail_card player bool=
+  {player with jail_card = bool}
 
 let set_location player location_id =
   {player with current_location_id=location_id} 
@@ -63,7 +70,8 @@ let player1 : player = {
   current_location_id = 1;
   balance = 1500;
   property_list = [];
-  in_jail = false
+  in_jail = false;
+  jail_card= false;
 }
 
 let player2 : player = {
@@ -72,7 +80,8 @@ let player2 : player = {
   current_location_id = 1;
   balance = 1500;
   property_list = [];
-  in_jail = false
+  in_jail = false;
+  jail_card= false;
 }
 
 let player3 : player = {
@@ -81,7 +90,8 @@ let player3 : player = {
   current_location_id = 1;
   balance = 1500;
   property_list = [];
-  in_jail = false
+  in_jail = false;
+  jail_card= false;
 }
 
 let player4 : player = {
@@ -90,25 +100,8 @@ let player4 : player = {
   current_location_id = 1;
   balance = 1500;
   property_list = [];
-  in_jail = false
+  in_jail = false;
+  jail_card= false;
 }
 
 let playerlist = [player1; player2; player3; player4;]
-
-let sample_player_test : player = {
-  id = 5;
-  name = "catpotato";
-  current_location_id = 11;
-  balance = 400;
-  property_list = [get_property space3; get_property space7;get_property space39];
-  in_jail = false
-}
-
-let player6 : player = {
-  id = 1;
-  name = "Meghana";
-  current_location_id = 1;
-  balance = 1300;
-  property_list = [];
-  in_jail = false
-}

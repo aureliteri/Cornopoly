@@ -3,6 +3,7 @@ type amount = int
 type action =
   | Change of amount
   | Move of amount
+  | Get_out of bool
 
 type card =
   {
@@ -15,7 +16,7 @@ let empty = {
   card_id = 0;
   description = "";
   act = [];
-}
+} 
 
 let card_id card = card.card_id
 
@@ -86,6 +87,12 @@ let card10 = {
   card_id = 10;
   description = "Take a trip to Rhodes Hall–If you pass Go, collect $200.";
   act = [Move 37]
+}
+
+let card11 = {
+  card_id = 10;
+  description = "Take a trip to Rhodes Hall–If you pass Go, collect $200.";
+  act = [Get_out true]
 }
 
 let cardlist = [|card1; card2; card3; card4; card5; card6; card7; card9; card10|]
