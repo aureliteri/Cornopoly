@@ -95,6 +95,7 @@ let player4 : player = {
 
 let playerlist = [player1; player2; player3; player4;]
 
+(* TEST CASES *)
 let sample_player_test : player = {
   id = 5;
   name = "catpotato";

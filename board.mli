@@ -44,4 +44,4 @@ val print_initial_board : Space.space list -> Player.player list -> unit
    the type of space the player lands on, and updates the player information 
    and board depending on the type of space the player has landed on.
    Outputs: (updated player, updated board)*)
-val check_space: Space.space -> Player.player -> Space.space list -> (Player.player *Space.space list)  
+val check_space: Space.space -> Player.player -> Space.space list -> (Player.player * Space.space list)  
