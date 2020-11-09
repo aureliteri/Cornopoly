@@ -1,4 +1,4 @@
-MODULES=board player space card main
+MODULES=board player space card main command
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

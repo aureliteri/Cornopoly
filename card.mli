@@ -3,6 +3,7 @@ type amount = int
 type action =
   | Change of amount
   | Move of amount
+  | Get_out of bool
 
 type card 
 
@@ -35,5 +36,8 @@ val card8: card
 val card9: card
 
 val card10: card
+
+val card11: card
+
 
 val cardlist: card array

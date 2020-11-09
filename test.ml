@@ -47,11 +47,10 @@ let sample_player = sample_player_test
 let move_player_18 = move sample_player 7 
 let move_player_wraparound_1 = move move_player_18 22
 let move_player_wraparound_9 = move move_player_18 30
-(* let go_player = pass_go sample_player *)
+
 
 let player_tests =
-  [
-    current_location_test "player1 curr loc id" player1 1;
+  [ current_location_test "player1 curr loc id" player1 1;
     player_name_test "player1 name - Meghana" player1 "Meghana";
     player_balance_test "player1 initial balance" player1 1500;
     player_property_test "player1 intiial [] property" player1 [];
@@ -62,12 +61,26 @@ let player_tests =
     current_location_test "sample player moved 7 to 18" move_player_18 18;
     current_location_test "move function w/ mod wraparound" move_player_wraparound_1 1;
     current_location_test "move function w/ mod wraparound" move_player_wraparound_9 9;
-    (* player_balance_test "sample player balance" go_player 600 *)
   ]
+
+
+let check_space_test 
+    (name : string)
+    (space: Space.space)
+    (player: Player.player)
+    (spacelist : Space.space list)
+    (expected_output : Player.player * Space.space list) = 
+  name >:: (fun ctxt -> 
+      assert_equal expected_output (check_space space player spacelist))
 
 
 let board_tests = 
   [
+    (* test roll dice *)
+    (* test check_space *)
+    check_space_test "player lands on unowned property" space2 player1 space_list 
+      ??
+
   ]
 
 let suite =
