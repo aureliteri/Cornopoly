@@ -444,3 +444,14 @@ let spacelist : space list = [
 
 let get_space id spacelst = 
   List.find (fun s -> (space_id s) = id) spacelst
+
+let green : space list = [space2; space3; space4]
+let yellow : space list = [space6; space7; space8]
+let orange : space list = [space11; space12; space13]
+let red : space list = [space14; space16; space17]
+let purple : space list = [space19; space21; space22]
+let light_blue : space list = [space23; space24; space25]
+let pink : space list = [space27; space28; space29]
+let cyan : space list = [space30; space31; space32]
+let brown : space list = [space34; space35; space37]
+let blue : space list = [space38; space39]

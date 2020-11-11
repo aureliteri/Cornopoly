@@ -63,9 +63,31 @@ let rec card_action (act_lst : Card.action list) (player : Player.player) : play
 
 
 (* TODOOOO : Account for winning scenarios- 
-   purchasing entire 1 same-color territories other players are bankrupt - Make lists of same color properties (Hashmap)
-   Implement Colorset in Board --> hashmap where key is a string (color name) and the value is a list of Property.spaces
-   Set appropriate rent prices and buy prices (as well as penalty prices) -> Make sure plyers can pay rent
+   purchasing entire 1 same-color territories other players are 
+   bankrupt - Make lists of same color properties (Hashmap)
+   Implement Colorset in Board --> hashmap where 
+   key is a string (color name) and the value is a list of Property.spaces
+   Set appropriate rent prices and buy prices 
+   (as well as penalty prices) -> Make sure plyers can pay rent
 *)
+
+(* ONLY CALL THIS FUNCTION WHEN A PROPERTY HAS BEEN BOUGHT.
+   USE THAT PROPERTY TO CHECK THE COLOR OF THAT PROPERTY (other wise we have to 
+   loop through every single color. This way, it just matches the color of
+   the property that was bought) *)
+let if_full_set (player : Player.player) (property_just_bought : Space.property) =
+  let color = property_color property_just_bought in
+  let full_size = if color = "blue" then 2 else 3 in
+  let rec extract_color_property color_just_bought property_list acc = 
+    match property_list with
+    | h :: t -> if (property_color h) = color_just_bought 
+      then extract_color_property color_just_bought property_list (h :: acc)
+      else extract_color_property color_just_bought property_list acc
+    | [] -> acc
+  in if List.length (extract_color_property color (property_list player) [] ) 
+        = full_size 
+  then "WINNER and end game"
+  else "? nothing"
+
 
 
