@@ -58,6 +58,16 @@ let print_initial_board (spaces : space list) (player : player list) : unit =
       print_spaces t
   in print_spaces spaces
 
+let rec delete_player_record board player acc=
+  match board with 
+  | [] -> acc
+  | h :: t -> 
+    match h with
+    |Property x -> if property_owner x = name player 
+      then delete_player_record t player (Property(change_owner x "")::acc) 
+      else delete_player_record t player acc
+    | _ ->  delete_player_record t player acc
+
 let update_board playerlist  =
   print_endline ("\n"^print_locations playerlist "");
   print_endline (print_balances playerlist "") 
@@ -139,7 +149,8 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
       if (balance (fst updated_tuple) < 0) then 
         let () = print_endline (string_of_int (balance (fst updated_tuple))) in
         let () = print_endline "You're bankrupt! You're out of the game." in 
-        iterate (remove_player (fst updated_tuple) playerlist) sp ( fst acc , snd acc)
+        let new_board = List.rev(delete_player_record sp (fst updated_tuple) []) in
+        iterate (remove_player (fst updated_tuple) playerlist) new_board (fst acc , snd acc)
       else
         let updated_sp = snd updated_tuple in 
 
