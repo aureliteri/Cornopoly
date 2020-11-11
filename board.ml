@@ -20,6 +20,7 @@ open Command
    try to implement random seeds? idk how tho haha
 *)
 let roll_dice x =
+  (* Random.self_init (); *)
   let d1 = Random.int x + 1 in
   let d2 = Random.int x + 1 in 
   (d1 + d2, d1 = d2)
@@ -58,6 +59,8 @@ let rec card_action (act_lst : Card.action list) (player : Player.player) : play
       | Get_out x -> change_jail_card player x
     end
   | [] -> player
+
+
 
 (* TODOOOO : Account for winning scenarios- 
    purchasing entire 1 same-color territories other players are bankrupt - Make lists of same color properties (Hashmap)

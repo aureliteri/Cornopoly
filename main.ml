@@ -170,6 +170,7 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
             iterate t sp (used_card :: fst acc , snd acc)
           else
             let () = print_endline ("You do not have a Get Out of Jail Card. Enter another command.") in
+            print_string (">");
             jail_rules (parse_jail (read_line()))
 
         | Roll -> (
