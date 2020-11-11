@@ -105,3 +105,6 @@ let player4 : player = {
 }
 
 let playerlist = [player1; player2; player3; player4;]
+
+let remove_player player plist=
+  List.filter (fun x -> (x.id != player.id)) plist

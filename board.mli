@@ -10,6 +10,7 @@ val roll_dice: int -> (int * bool)
 val buy_property : Command.buy_command ->
   Player.player -> Space.space list -> Space.property -> Player.player * Space.space list
 
+val if_full_set : Player.player -> Space.property -> unit
 (**[pick_card] is a random card selected from Card.cardlist. It takes in [x], 
    which is the length of cardlist *)
 val pick_card : Card.card 

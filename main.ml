@@ -1,6 +1,9 @@
 (** [main ()] prompts for the game to play, then starts it. *)
+(* TODO: if player does not have enough money they should not be able to buy
 
-open Board 
+   add function if a player is broke, then they should be removed from teh playerlist
+*)
+open Board  
 open Player
 open Space
 open Card
@@ -132,22 +135,28 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
       let new_space_id = current_location_id new_player in 
       let new_space = get_space new_space_id sp in 
       let updated_tuple = check_space new_space new_player sp in
-      let updated_sp = snd updated_tuple in 
 
-      if (snd roll) then (** if a double is rolled *)
-        begin
-          print_endline ("You rolled a double!");
-          incr counter; (**add 1 to the count of doubles rolled *)
-          if !counter = 3 then (**if the # of doubles is 3, then send the player to jail. *)
-            let jail_player = (change_jail (set_location new_player 10) true )in (**set current location of player to jail. Then change the player's jail property to true  *)
-            iterate t (updated_sp) (jail_player :: (fst acc), updated_sp) (**iterate to next player in line. Add jailed player to accumulator *)
-          else iterate ((fst updated_tuple) :: t) (updated_sp)  (fst acc, updated_sp) 
-          (**if # of doubles rolled per person has not reached three, replace head player with jailed player make  *)
-        end 
-      else begin
-        counter := 0;
-        iterate t (updated_sp) ((fst updated_tuple) :: fst acc , updated_sp) 
-      end
+      if (balance (fst updated_tuple) < 0) then 
+        let () = print_endline (string_of_int (balance (fst updated_tuple))) in
+        let () = print_endline "You're bankrupt! You're out of the game." in 
+        iterate (remove_player (fst updated_tuple) playerlist) sp ( fst acc , snd acc)
+      else
+        let updated_sp = snd updated_tuple in 
+
+        if (snd roll) then (** if a double is rolled *)
+          begin
+            print_endline ("You rolled a double!");
+            incr counter; (**add 1 to the count of doubles rolled *)
+            if !counter = 3 then (**if the # of doubles is 3, then send the player to jail. *)
+              let jail_player = (change_jail (set_location new_player 10) true )in (**set current location of player to jail. Then change the player's jail property to true  *)
+              iterate t (updated_sp) (jail_player :: (fst acc), updated_sp) (**iterate to next player in line. Add jailed player to accumulator *)
+            else iterate ((fst updated_tuple) :: t) (updated_sp)  (fst acc, updated_sp) 
+            (**if # of doubles rolled per person has not reached three, replace head player with jailed player make  *)
+          end 
+        else begin
+          counter := 0;
+          iterate t (updated_sp) ((fst updated_tuple) :: fst acc , updated_sp) 
+        end
     end
 
     (* LEAVE JAIL SCENARIOS!! like pay the fine, roll a double, or if you have a get out of jail free card
@@ -159,10 +168,16 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
         match command with
         | Pay ->
           (**parse s into PAY commnd. Pass the command into a function that moves the player out of jail *)
+
           let pay_jail_player = update_balance h (-100) in 
-          let not_in_jail = change_jail pay_jail_player false in 
-          print_endline ("Congrats! You are out of jail.");
-          iterate t sp (not_in_jail :: fst acc , snd acc)
+          if (balance pay_jail_player < 100) then 
+            let () = print_endline "You do not have enough in your balance! Sorry!" in 
+            iterate t sp ( fst acc , snd acc)
+          else begin
+            let not_in_jail = change_jail pay_jail_player false in 
+            print_endline ("Congrats! You are out of jail.");
+            iterate t sp (not_in_jail :: fst acc , snd acc)
+          end
 
         | Card -> if (jail_card h) then 
             let used_card = change_jail_card h false in 
@@ -212,7 +227,7 @@ let main () =
   let rec play s player_lst space_lst : unit = 
     match s with
     | "quit" -> exit 0;
-    | _ -> begin
+    | _ -> begin 
         print_players player_lst;
         let new_lst = iterate player_lst space_lst ([], []) in
         let pl_lst = List.rev (fst new_lst) in

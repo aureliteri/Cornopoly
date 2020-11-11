@@ -29,26 +29,52 @@ let pick_card =
   let ind = Random.int (Array.length cardlist) in
   cardlist.(ind)
 
+
+(* ONLY CALL THIS FUNCTION WHEN A PROPERTY HAS BEEN BOUGHT.
+   USE THAT PROPERTY TO CHECK THE COLOR OF THAT PROPERTY (other wise we have to 
+   loop through every single color. This way, it just matches the color of
+   the property that was bought) *)
+let if_full_set (player : Player.player) (property_just_bought : Space.property) : unit =
+  let color = property_color property_just_bought in
+  let full_size = if color = "blue" then 2 else 3 in
+  let rec extract_color_property color_just_bought property_list acc = 
+    match property_list with
+    | h :: t -> if (property_color h) = color_just_bought 
+      then extract_color_property color_just_bought t (h :: acc)
+      else extract_color_property color_just_bought t acc
+    | [] -> acc
+  in if List.length (extract_color_property color (property_list player) [] ) 
+        = full_size 
+  then begin print_endline ("Winner is " ^ name player ^"! Congratulations!");
+    exit 0; end
+  else print_string ""
+
+
 (**new-space with the updated property is not being passed *)
 (**Helpers: 1. buy_property function `2. pay_rent function`
    3.  *)
 
 let buy_property command player board property= 
   match command with 
-  | Yes -> let p = add_property player property in (** adds property to player's property list *)
+  | Yes ->  
+    let p = add_property player property in (** adds property to player's property list *)
     let p' = update_balance p (-1 * buy_price property) in  (** updates player's balance *)
     let updated_space = Property((change_owner property (name p'))) in
     let new_space_list = 
       List.map (fun x -> if space_id x = space_id updated_space 
                  then updated_space else x) board in
-    (p', new_space_list)
+    if (balance p' <= 0) then 
+      let () = print_endline "You do not have enough in your balance! Sorry!" in
+      (player, board)
+    else 
+      let () = if_full_set player property in
+      (p', new_space_list)
   | No -> (player, board)
 
 let rec try_buy s = 
   print_endline "Do you want to purchase it? (Type: Yes or No)"; 
   print_string "> "; 
   buy_property (parse_buy s)
-
 
 let rec card_action (act_lst : Card.action list) (player : Player.player) : player = 
   match act_lst with
@@ -70,24 +96,3 @@ let rec card_action (act_lst : Card.action list) (player : Player.player) : play
    Set appropriate rent prices and buy prices 
    (as well as penalty prices) -> Make sure plyers can pay rent
 *)
-
-(* ONLY CALL THIS FUNCTION WHEN A PROPERTY HAS BEEN BOUGHT.
-   USE THAT PROPERTY TO CHECK THE COLOR OF THAT PROPERTY (other wise we have to 
-   loop through every single color. This way, it just matches the color of
-   the property that was bought) *)
-let if_full_set (player : Player.player) (property_just_bought : Space.property) =
-  let color = property_color property_just_bought in
-  let full_size = if color = "blue" then 2 else 3 in
-  let rec extract_color_property color_just_bought property_list acc = 
-    match property_list with
-    | h :: t -> if (property_color h) = color_just_bought 
-      then extract_color_property color_just_bought property_list (h :: acc)
-      else extract_color_property color_just_bought property_list acc
-    | [] -> acc
-  in if List.length (extract_color_property color (property_list player) [] ) 
-        = full_size 
-  then "WINNER and end game"
-  else "? nothing"
-
-
-

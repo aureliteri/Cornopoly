@@ -73,6 +73,13 @@ let check_space_test
   name >:: (fun ctxt -> 
       assert_equal expected_output (check_space space player spacelist))
 
+    (* let buy_property command player board property=  *)
+    (space: Space.space)
+    (player: Player.player)
+    (spacelist : Space.space list)
+    (expected_output : Player.player * Space.space list) = 
+  name >:: (fun ctxt -> 
+      assert_equal expected_output (check_space space player spacelist))
 
 let board_tests = 
   [
