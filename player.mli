@@ -24,11 +24,15 @@ val set_location: player -> int -> player
 
 val move: player -> int -> player
 
+val move_to_space : player -> int -> player
+
 val is_bankrupt: player -> bool
 
 val update_balance : player -> int -> player
 
 val add_property : player -> Space.property -> player
+
+val remove_property: player -> Space.property -> player
 
 val find_player: String.t -> player list -> player
 

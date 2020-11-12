@@ -9,7 +9,6 @@ type player = {
   balance : int;
   property_list: property list;
   in_jail: bool;
-
   jail_card: bool;
 }
 let id player =
@@ -49,6 +48,9 @@ let move player int' =
   else 
     {player with current_location_id = (player.current_location_id + int') } 
 
+let move_to_space player int' =
+  {player with current_location_id = int'}
+
 let is_bankrupt player =
   player.balance <= 0
 
@@ -57,6 +59,11 @@ let update_balance player amount =
 
 let add_property player property = 
   {player with property_list =  property :: property_list player}
+
+let remove_property player property =
+  let new_property_list = List.filter (fun x -> property_id property != property_id x) (property_list player) in
+  {player with property_list = new_property_list}
+
 
 (**[find_player] returns player with name [find] in [playerlist] *)
 let rec find_player find playerlist =
@@ -68,7 +75,7 @@ let player1 : player = {
   id = 1;
   name = "Meghana";
   current_location_id = 1;
-  balance = 500;
+  balance = 1500;
   property_list = [];
   in_jail = false;
   jail_card= false;
@@ -78,7 +85,7 @@ let player2 : player = {
   id = 2;
   name = "Michelle";
   current_location_id = 1;
-  balance = 500;
+  balance = 1500;
   property_list = [];
   in_jail = false;
   jail_card= false;
@@ -98,7 +105,7 @@ let player4 : player = {
   id = 4;
   name = "Amy";
   current_location_id = 1;
-  balance = 1500;
+  balance = 100;
   property_list = [];
   in_jail = false;
   jail_card= false;

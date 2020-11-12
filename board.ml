@@ -2,6 +2,7 @@ open Player
 open Card
 open Space
 open Command
+(* IF ALL OTHER PLAYERSS BANKRUPT FUNCTION *)
 
 (**TODO Friday, 11/6: 
    3. then winner scenarios ahahaha detail later cool
@@ -16,19 +17,17 @@ open Command
     3. add printing in main
 *)
 
-(**TODO: Implement/change this method to account for double rolls (if you roll doubles three time )
+(**TODO: Implement/change th  is method to account for double rolls (if you roll doubles three time )
    try to implement random seeds? idk how tho haha
 *)
 let roll_dice x =
-  (* Random.self_init (); *)
   let d1 = Random.int x + 1 in
   let d2 = Random.int x + 1 in 
   (d1 + d2, d1 = d2)
 
-let pick_card =
-  let ind = Random.int (Array.length cardlist) in
+let pick_card x =
+  let ind = Random.int x in
   cardlist.(ind)
-
 
 (* ONLY CALL THIS FUNCTION WHEN A PROPERTY HAS BEEN BOUGHT.
    USE THAT PROPERTY TO CHECK THE COLOR OF THAT PROPERTY (other wise we have to 
@@ -57,6 +56,8 @@ let if_full_set (player : Player.player) (property_just_bought : Space.property)
 let buy_property command player board property= 
   match command with 
   | Yes ->  
+    (**get old owner name. then go through property list and remove this property. get old owner back*)
+
     let p = add_property player property in (** adds property to player's property list *)
     let p' = update_balance p (-1 * buy_price property) in  (** updates player's balance *)
     let updated_space = Property((change_owner property (name p'))) in
@@ -81,12 +82,10 @@ let rec card_action (act_lst : Card.action list) (player : Player.player) : play
   | h :: t -> begin
       match h with
       | Change x -> card_action t (update_balance player x)
-      | Move x -> card_action t (move player x)
+      | Move x -> card_action t (move_to_space player x) 
       | Get_out x -> change_jail_card player x
     end
   | [] -> player
-
-
 
 
 (* TODOOOO : Account for winning scenarios- 

@@ -90,9 +90,9 @@ let card10 = {
 }
 
 let card11 = {
-  card_id = 10;
-  description = "Take a trip to Rhodes Hall–If you pass Go, collect $200.";
+  card_id = 11;
+  description = "You have a Get Out of Jail Free card!";
   act = [Get_out true]
 }
 
-let cardlist = [|card1; card2; card3; card4; card5; card6; card7; card9; card10|]
+let cardlist = [|card1; card2; card3; card4; card5; card6; card7; card9; card10; card11|]

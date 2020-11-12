@@ -214,7 +214,7 @@ let space13 : space = Property {
 
 let space14 : space = Property { 
     space_id = 14;
-    name = "Physical Sciences Buspace_idling";
+    name = "Physical Sciences Building";
     rent_price = 34;
     owner = ""; 
     buy_price = 30;

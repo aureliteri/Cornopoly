@@ -13,7 +13,7 @@ val buy_property : Command.buy_command ->
 val if_full_set : Player.player -> Space.property -> unit
 (**[pick_card] is a random card selected from Card.cardlist. It takes in [x], 
    which is the length of cardlist *)
-val pick_card : Card.card 
+val pick_card : int -> Card.card 
 
 val card_action : Card.action list -> Player.player -> Player.player
 (** [iterate1 is a helper for play to return the updated playerlist and spacelist] *)
