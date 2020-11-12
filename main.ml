@@ -106,6 +106,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
           (*print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (buy_price property)));
             print_endline "Do you want to purchase it? (Type: Yes or No)"; 
             print_string "> ";  *)
+          print_string "> "; 
           try_command (read_line()) pl
         end
       end
@@ -250,10 +251,10 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
       try_command (read_line())
     end
 
-let end_game lst = 
+let end_game lst : unit = 
   match lst with 
   | [] -> print_endline ("No winner sorry."); exit 0;
-  | h :: t -> (if List.length t = 0 then print_endline (name h^ " is the winner."); exit 0;)
+  | h :: t -> if List.length t = 0 then (print_endline (name h^ " is the winner."); exit 0; ) else ()
 
 let main () = 
   Random.self_init ();
