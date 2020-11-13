@@ -187,7 +187,7 @@ let space10 : space = Jail {
 
 let space11 : space = Property { 
     space_id = 11;
-    name = "Becker";
+    name = "Becker Hall";
     rent_price = 30;
     owner = "";
     buy_price = 25;
@@ -196,7 +196,7 @@ let space11 : space = Property {
 
 let space12 : space = Property { 
     space_id = 12;
-    name = "Bethe";
+    name = "Bethe Hall";
     rent_price = 30;
     owner = "";
     buy_price = 25;

@@ -42,9 +42,11 @@ let set_location player location_id =
   {player with current_location_id=location_id} 
 
 let move player int' = 
-  if (player.current_location_id + int') > 39 then 
+  if (player.current_location_id + int') > 39 then begin
+    print_endline "You have passed go! $50 has been added to your balance.";
     {player with current_location_id = (player.current_location_id + int') mod 39;
-                 balance = player.balance + 200} 
+                 balance = player.balance + 50}
+  end
   else 
     {player with current_location_id = (player.current_location_id + int') } 
 
@@ -75,7 +77,7 @@ let player1 : player = {
   id = 1;
   name = "Meghana";
   current_location_id = 1;
-  balance = 1500;
+  balance = 200;
   property_list = [];
   in_jail = false;
   jail_card= false;
@@ -85,7 +87,7 @@ let player2 : player = {
   id = 2;
   name = "Michelle";
   current_location_id = 1;
-  balance = 1500;
+  balance = 200;
   property_list = [];
   in_jail = false;
   jail_card= false;
@@ -95,7 +97,7 @@ let player3 : player = {
   id = 3;
   name = "Aaron";
   current_location_id = 1;
-  balance = 1500;
+  balance = 200;
   property_list = [];
   in_jail = false;
   jail_card= false;
@@ -105,7 +107,7 @@ let player4 : player = {
   id = 4;
   name = "Amy";
   current_location_id = 1;
-  balance = 1500;
+  balance = 200;
   property_list = [];
   in_jail = false;
   jail_card= false;

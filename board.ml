@@ -44,7 +44,7 @@ let if_full_set (player : Player.player) (property_just_bought : Space.property)
     | [] -> acc
   in if List.length (extract_color_property color (property_list player) [] ) 
         = full_size 
-  then begin print_endline ("Winner is " ^ name player ^"! Congratulations!");
+  then begin print_endline ("Winner is " ^ name player ^"! They have a full set of " ^ color ^ "! \nCongratulations!");
     exit 0; end
   else print_string ""
 
