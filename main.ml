@@ -103,7 +103,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
           (player,board)
         end
         else begin
-          print_endline ("You have landed on " ^(property_name property)^". It is is owned by " ^ property_owner property ^ ". You must pay rent of $"^ (string_of_int (rent_price property)^ "."));
+          print_endline ("You have landed on " ^(property_name property)^". It is owned by " ^ property_owner property ^ ". You must pay rent of $"^ (string_of_int (rent_price property)^ "."));
           let pl = update_balance player (-1 * rent_price property) in
           (*print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (buy_price property)));
             print_endline "Do you want to purchase it? (Type: Yes or No)"; 
