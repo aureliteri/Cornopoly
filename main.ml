@@ -157,7 +157,8 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
   | h :: t -> print_endline ("It's "^ name h ^ " turn!");
     if (in_jail h) = false then begin
       let roll = roll_dice 6 in 
-      let new_player = move h (fst roll) in 
+      let new_player = qmove h (fst roll) in 
+      print_endline (name h ^ " has rolled a " ^ string_of_int (fst roll) ^ "!");
       let new_space_id = current_location_id new_player in 
       let new_space = get_space new_space_id sp in 
       let updated_tuple = check_space new_space new_player sp in
