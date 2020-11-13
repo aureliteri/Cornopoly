@@ -53,24 +53,39 @@ let if_full_set (player : Player.player) (property_just_bought : Space.property)
 (**Helpers: 1. buy_property function `2. pay_rent function`
    3.  *)
 
-let buy_property command player board property= 
+let buy_property command player playerList board property: (Player.player list * Space.space list) = 
   match command with 
   | Yes ->  
-    (**get old owner name. then go through property list and remove this property. get old owner back*)
+    begin
+      let p = add_property player property in (** adds property to player's property list *)
+      let p' = update_balance p (-1 * buy_price property) in  (** updates player's balance *)
+      let updated_pL = replace_player playerList p' in  
+      if (balance p' <= 0) then 
+        let () = print_endline "You do not have enough in your balance! Sorry!" in
+        (playerList, board)
+      else begin
+        let updated_space = Property((change_owner property (name p'))) in
+        let new_space_list = 
+          List.map (fun x -> if space_id x = space_id updated_space 
+                     then updated_space else x) board 
+        in
+        (**get old owner name. then go through property list and remove this property. get old owner back
+           replace the updated old owner with non updated old owner in [updated_pl] -> playerlist where all of the owners balances
+           and properties are updated*)
+        let old_owner = property_owner property in 
+        if not (String.equal old_owner "") then
+          let removed_prop_owner = remove_property (find_player old_owner updated_pL) property in 
+          let owner_balance_update = update_balance removed_prop_owner (buy_price property) in
+          let new_playerlist = replace_player updated_pL owner_balance_update in
+          let () = if_full_set player property in
+          (new_playerlist, new_space_list)
 
-    let p = add_property player property in (** adds property to player's property list *)
-    let p' = update_balance p (-1 * buy_price property) in  (** updates player's balance *)
-    let updated_space = Property((change_owner property (name p'))) in
-    let new_space_list = 
-      List.map (fun x -> if space_id x = space_id updated_space 
-                 then updated_space else x) board in
-    if (balance p' <= 0) then 
-      let () = print_endline "You do not have enough in your balance! Sorry!" in
-      (player, board)
-    else 
-      let () = if_full_set player property in
-      (p', new_space_list)
-  | No -> (player, board)
+        else
+          let () = if_full_set player property in
+          (updated_pL, new_space_list)
+      end
+    end 
+  | No -> (playerList, board)
 
 let rec try_buy s = 
   print_endline "Do you want to purchase it? (Type: Yes or No)"; 

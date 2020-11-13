@@ -72,51 +72,62 @@ let rec delete_player_record board player acc=
 
 let update_board playerlist  =
   print_endline ("\n"^print_locations playerlist "");
-  print_endline (print_balances playerlist "") 
+  print_endline (print_balances playerlist "")
 
-let check_space (space: space) (player: Player.player) (board: Space.space list) : (Player.player *  Space.space list)=
+
+(**[check_space].... pass in 
+   [space] which the current space that the player is on, pass in 
+   [player] which is the current player, 
+   [player_lst] which is ALLLLL of the players in the CURRENT turn,
+   pass in [board] which is the CURRENT board. *)
+let check_space (space: space) (player: Player.player) (playerList: Player.player list) 
+    (board: Space.space list) : (Player.player list * Space.space list) =
   match space with
   | Property property ->  
     begin
-      let rec try_command s p =         
+      let rec try_command s p pl =         
         try 
-          buy_property (parse_buy s) p board property
+          buy_property (parse_buy s) p pl board property
         with 
         | Malformed -> print_endline "Invalid command! Try Again"; 
           print_string "> "; 
-          try_command (read_line()) p
+          try_command (read_line()) p pl
         | Empty -> print_endline "Please enter a command!"; 
           print_string "> "; 
-          try_command (read_line()) p
+          try_command (read_line()) p pl
       in 
       if (String.equal (property_owner property) "") then 
         begin
           print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (buy_price property)));
           print_endline "Do you want to purchase it? (Type: Yes or No)"; 
           print_string "> ";
-          try_command (read_line()) player
+          try_command (read_line()) player playerList
         end 
       else begin (**pay_rent stuff *)
         if String.equal (property_owner property) (name player)
         then begin
           print_endline ("You own this property. You get to stay for free!");
-          (player,board)
+          (playerList, board)
         end
         else begin
           print_endline ("You have landed on " ^(property_name property)^". It is owned by " ^ property_owner property ^ ". You must pay rent of $"^ (string_of_int (rent_price property)^ "."));
           let pl = update_balance player (-1 * rent_price property) in
-          (*print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (buy_price property)));
-            print_endline "Do you want to purchase it? (Type: Yes or No)"; 
-            print_string "> ";  *)
-          (pl,board)
+          let updated_owner = update_balance (find_player (property_owner property) playerList) (rent_price property) in
+          let lst = replace_player playerList pl in
+          let lst2 = replace_player lst updated_owner in
+          print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (buy_price property)));
+          print_endline "Do you want to purchase it? (Type: Yes or No)"; 
+          print_string "> ";
+          try_command (read_line()) pl lst2
+          (* (lst2, board) *)
         end
-      end
+      end  
     end
-
   | CardSpace chance -> 
     let chosen_card = pick_card (Array.length cardlist) in
     print_endline ("The card you have chosen is:  \n" ^ (card_description chosen_card));
-    (card_action (card_act chosen_card) player, board)
+    let card_action_player = card_action (card_act chosen_card) player in 
+    (replace_player playerList card_action_player , board)
 
   (** TODO: Change this implementation to account for players landing in jail and how to leave jail so ??
       Pay the $50 fine before rolling the dice
@@ -126,17 +137,18 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
   *)
   | Jail jail -> 
     let () = print_endline "Bad luck! You have landed in jail." in
-    let p' = change_jail player true in (p', board)
+    let p' = change_jail player true in (replace_player playerList p', board)
 
   | Penalty penalty -> print_endline (penalty_description penalty);
-    (update_balance player (-1 * penalty_price penalty),board)
+    let penalty_update = update_balance player (-1 * penalty_price penalty) in 
+    (replace_player playerList penalty_update, board)
 
-  | Go go -> print_endline "Pass Go! You have collected $200";
-    (player, board)
+  | Go go -> print_endline "Pass Go! You have collected $50.";
+    (playerList, board)
 
   | JustVisiting justvisiting -> 
-    print_endline "Oop. Close call to Jail, luckily you are just visiting";
-    (player, board)
+    print_endline "Oop. Close call to Jail, luckily you are just visiting.";
+    (playerList, board)
 
 (** CHECK THE COUNTER STUFF AND JAIL STUFF WE ADDDED 
     THERE IS ALSO A FATAL ERROR: EXCEPTION NOT_FOUND-> could be because a player 
@@ -152,6 +164,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
 let counter = ref 0 
 let counter_jail = ref 0
 
+
 let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.space list )  =
   match playerlist with
   | [] -> acc
@@ -162,13 +175,20 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
       print_endline (name h ^ " has rolled a " ^ string_of_int (fst roll) ^ "!");
       let new_space_id = current_location_id new_player in 
       let new_space = get_space new_space_id sp in 
-      let updated_tuple = check_space new_space new_player sp in
+      let updated_tuple = check_space new_space new_player ((fst acc) @ playerlist) sp in
+      let current_player = find_player (name h) (fst updated_tuple) in 
 
-      if (balance (fst updated_tuple) <= 0) then 
-        let () = print_endline (string_of_int (balance (fst updated_tuple))) in
-        let () = print_endline "You're bankrupt! You're out of the game." in 
-        let new_board = List.rev(delete_player_record sp (fst updated_tuple) []) in
-        iterate (remove_player (fst updated_tuple) playerlist) new_board (fst acc , new_board)
+      (* if old players - use new_acc, if new players, use acc 
+         if old players - use t , if new players, use new_t *)
+      let old_players_list = List.filter (fun x -> id x < id h) (fst updated_tuple) in 
+      let new_acc = (old_players_list, sp) in 
+      let new_t = List.filter (fun x -> id x > id h) (fst updated_tuple) in 
+
+      if (balance (current_player) <= 0) then 
+        let () = print_endline ("Your balance is now " ^(string_of_int (balance (current_player)))) in
+        let () = print_endline "You have gone bankrupt. You're out of the game!" in 
+        let new_board = List.rev(delete_player_record sp (current_player) []) in
+        iterate (remove_player current_player playerlist) new_board (fst new_acc, new_board)
       else
         let updated_sp = snd updated_tuple in 
 
@@ -179,13 +199,13 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
             if !counter = 3 then (**if the # of doubles is 3, then send the player to jail. *)
               let () = print_endline ("You rolled 3 doubles! Go to Jail.") in
               let jail_player = (change_jail (set_location new_player 10) true )in (**set current location of player to jail. Then change the player's jail property to true  *)
-              iterate t (updated_sp) (jail_player :: (fst acc), updated_sp) (**iterate to next player in line. Add jailed player to accumulator *)
-            else iterate ((fst updated_tuple) :: t) (updated_sp)  (fst acc, updated_sp) 
+              iterate new_t (updated_sp) (jail_player :: (fst new_acc), updated_sp) (**iterate to next player in line. Add jailed player to accumulator *)
+            else iterate (current_player :: new_t) (updated_sp) (fst new_acc, updated_sp) 
             (**if # of doubles rolled per person has not reached three, replace head player with jailed player make  *)
           end 
         else begin
           counter := 0;
-          iterate t (updated_sp) ((fst updated_tuple) :: fst acc , updated_sp) 
+          iterate new_t (updated_sp) (current_player :: fst new_acc, updated_sp) 
         end
     end
 
@@ -202,12 +222,11 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
         match command with
         | Pay ->
           (**parse s into PAY commnd. Pass the command into a function that moves the player out of jail *)
-
-          let pay_jail_player = update_balance h (-100) in 
-          if (balance pay_jail_player < 100) then 
-            let () = print_endline "You do not have enough in your balance! Sorry!" in 
-            iterate t sp ( fst acc , snd acc)
+          if (balance h < 100) then 
+            let () = print_endline "You do not have enough in your balance to pay! Type in another command." in 
+            jail_rules (parse_jail (read_line()))
           else begin
+            let pay_jail_player = update_balance h (-100) in
             counter_jail := 0;
             let not_in_jail = change_jail pay_jail_player false in 
             print_endline ("Congrats! You are out of jail.");
@@ -216,9 +235,10 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
 
         | Card -> if (jail_card h) then 
             let used_card = change_jail_card h false in 
+            let updated_player = change_jail used_card false in
             print_endline ("Congrats! You used your Get Out of Jail Card. You are out of jail.");
             counter_jail := 0;
-            iterate t sp (used_card :: fst acc , snd acc)
+            iterate t sp (updated_player :: fst acc , snd acc)
           else
             let () = print_endline ("You do not have a Get Out of Jail Card. Enter another command.") in
             print_string (">");
@@ -256,7 +276,8 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
 let end_game lst : unit = 
   match lst with 
   | [] -> print_endline ("No winner sorry."); exit 0;
-  | h :: t -> if List.length t = 0 then (print_endline (name h^ " is the winner."); exit 0; ) else ()
+  | h :: t -> if List.length t = 0 then 
+      (print_endline (name h ^ " is the winner! Everyone else has gone bankrupt."); exit 0; ) else ()
 
 let main () = 
   Random.self_init ();

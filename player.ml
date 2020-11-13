@@ -66,6 +66,8 @@ let remove_property player property =
   let new_property_list = List.filter (fun x -> property_id property != property_id x) (property_list player) in
   {player with property_list = new_property_list}
 
+let replace_player playerlist new_player =
+  List.map(fun x -> if id x = id new_player then new_player else x) playerlist
 
 (**[find_player] returns player with name [find] in [playerlist] *)
 let rec find_player find playerlist =
@@ -80,7 +82,7 @@ let player1 : player = {
   balance = 200;
   property_list = [];
   in_jail = false;
-  jail_card= false;
+  jail_card= true;
 }
 
 let player2 : player = {
@@ -90,7 +92,7 @@ let player2 : player = {
   balance = 200;
   property_list = [];
   in_jail = false;
-  jail_card= false;
+  jail_card= true;
 }
 
 let player3 : player = {
@@ -100,7 +102,7 @@ let player3 : player = {
   balance = 200;
   property_list = [];
   in_jail = false;
-  jail_card= false;
+  jail_card= true;
 }
 
 let player4 : player = {
@@ -110,7 +112,7 @@ let player4 : player = {
   balance = 200;
   property_list = [];
   in_jail = false;
-  jail_card= false;
+  jail_card= true;
 }
 
 let playerlist = [player1; player2; player3; player4;]

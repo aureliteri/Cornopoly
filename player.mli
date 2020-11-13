@@ -34,6 +34,8 @@ val add_property : player -> Space.property -> player
 
 val remove_property: player -> Space.property -> player
 
+val replace_player: player list -> player -> player list
+
 val find_player: String.t -> player list -> player
 
 val player1 : player
