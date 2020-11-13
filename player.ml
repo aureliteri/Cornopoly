@@ -82,7 +82,7 @@ let player1 : player = {
   balance = 300;
   property_list = [];
   in_jail = false;
-  jail_card= false;
+  jail_card = false;
 }
 
 let player2 : player = {
@@ -92,7 +92,7 @@ let player2 : player = {
   balance = 300;
   property_list = [];
   in_jail = false;
-  jail_card= false;
+  jail_card = false;
 }
 
 let player3 : player = {
@@ -102,7 +102,7 @@ let player3 : player = {
   balance = 300;
   property_list = [];
   in_jail = false;
-  jail_card= false;
+  jail_card = false;
 }
 
 let player4 : player = {
@@ -112,7 +112,7 @@ let player4 : player = {
   balance = 300;
   property_list = [];
   in_jail = false;
-  jail_card= false;
+  jail_card = false;
 }
 
 let playerlist = [player1; player2; player3; player4;]

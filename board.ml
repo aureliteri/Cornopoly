@@ -77,11 +77,11 @@ let buy_property command player playerList board property: (Player.player list *
           let removed_prop_owner = remove_property (find_player old_owner updated_pL) property in 
           let owner_balance_update = update_balance removed_prop_owner (buy_price property) in
           let new_playerlist = replace_player updated_pL owner_balance_update in
-          let () = if_full_set player property in
+          let () = if_full_set p property in
           (new_playerlist, new_space_list)
 
         else
-          let () = if_full_set player property in
+          let () = if_full_set p property in
           (updated_pL, new_space_list)
       end
     end 
