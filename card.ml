@@ -61,7 +61,7 @@ let card5 = {
 
 let card6 = {
   card_id = 6;
-  description = "Go to Jail–Go directly to Jail–Do not pass Go, do not collect $200.";
+  description = "Go directly to Jail – Do not pass Go, do not collect $200.";
   act = [Move 10]
 }
 

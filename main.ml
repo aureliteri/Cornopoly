@@ -45,8 +45,10 @@ let rec print_players players =
     let p_current_loc = space_name (get_space (current_location_id h) spacelist) in 
     let p_balance = string_of_int (balance h )in 
     let p_properties = property_list h in 
-    print_endline ("\n"^ p_name ^ "'s ID is " ^p_id ^ " and their current location is " ^ p_current_loc ^ ". Their balance is $" ^p_balance^ "." ^ " Their properties are:");
-    print_properties p_properties;
+    print_endline ("\n"^ p_name ^ "'s ID is " ^p_id ^ " and their current location is " ^ p_current_loc ^ ". \nTheir balance is $" ^p_balance^ "." ^ " Their properties are:");
+    if List.length p_properties = 0 then 
+      print_endline "None" else 
+      print_properties p_properties;
     print_players t
 
 let print_initial_board (spaces : space list) (player : player list) : unit = 
@@ -101,7 +103,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
           (player,board)
         end
         else begin
-          print_endline ((property_name property)^" is owned by " ^ property_owner property ^ ". You must pay rent of $"^ (string_of_int (rent_price property)^ "."));
+          print_endline ("You have landed on " ^(property_name property)^". It is is owned by " ^ property_owner property ^ ". You must pay rent of $"^ (string_of_int (rent_price property)^ "."));
           let pl = update_balance player (-1 * rent_price property) in
           (*print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (buy_price property)));
             print_endline "Do you want to purchase it? (Type: Yes or No)"; 
@@ -114,7 +116,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
 
   | CardSpace chance -> 
     let chosen_card = pick_card (Array.length cardlist) in
-    print_endline ("The card you have chosen is: " ^ (card_description chosen_card));
+    print_endline ("The card you have chosen is:  \n" ^ (card_description chosen_card));
     (card_action (card_act chosen_card) player, board)
 
   (** TODO: Change this implementation to account for players landing in jail and how to leave jail so ??
@@ -154,10 +156,10 @@ let counter_jail = ref 0
 let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.space list )  =
   match playerlist with
   | [] -> acc
-  | h :: t -> print_endline ("It's "^ name h ^ " turn!");
+  | h :: t -> print_endline (" \nIt's "^ name h ^ " turn!");
     if (in_jail h) = false then begin
       let roll = roll_dice 6 in 
-      let new_player = qmove h (fst roll) in 
+      let new_player = move h (fst roll) in 
       print_endline (name h ^ " has rolled a " ^ string_of_int (fst roll) ^ "!");
       let new_space_id = current_location_id new_player in 
       let new_space = get_space new_space_id sp in 
@@ -194,7 +196,7 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
       (**if counter = 1 then print this *)
       incr counter_jail;
       if !counter_jail = 1 then 
-        print_endline (name h ^ " is in jail! You will be stuck here for three turns. You can pay a fine of $100, use your get out of jail free card, or try to roll a double to leave jail early.");
+        print_endline (name h ^ " is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, or try to roll a double to leave jail early.");
 
 
       let rec jail_rules command = 
