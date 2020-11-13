@@ -79,40 +79,40 @@ let player1 : player = {
   id = 1;
   name = "Meghana";
   current_location_id = 1;
-  balance = 200;
+  balance = 300;
   property_list = [];
   in_jail = false;
-  jail_card= true;
+  jail_card= false;
 }
 
 let player2 : player = {
   id = 2;
   name = "Michelle";
   current_location_id = 1;
-  balance = 200;
+  balance = 300;
   property_list = [];
   in_jail = false;
-  jail_card= true;
+  jail_card= false;
 }
 
 let player3 : player = {
   id = 3;
   name = "Aaron";
   current_location_id = 1;
-  balance = 200;
+  balance = 300;
   property_list = [];
   in_jail = false;
-  jail_card= true;
+  jail_card= false;
 }
 
 let player4 : player = {
   id = 4;
   name = "Amy";
   current_location_id = 1;
-  balance = 200;
+  balance = 300;
   property_list = [];
   in_jail = false;
-  jail_card= true;
+  jail_card= false;
 }
 
 let playerlist = [player1; player2; player3; player4;]
