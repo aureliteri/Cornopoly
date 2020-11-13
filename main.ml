@@ -108,8 +108,7 @@ let check_space (space: space) (player: Player.player) (board: Space.space list)
           (*print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (buy_price property)));
             print_endline "Do you want to purchase it? (Type: Yes or No)"; 
             print_string "> ";  *)
-          print_string "> "; 
-          try_command (read_line()) pl
+          (pl,board)
         end
       end
     end
