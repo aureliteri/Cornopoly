@@ -51,9 +51,7 @@ let move player int' =
     {player with current_location_id = (player.current_location_id + int') } 
 
 let move_to_space player int' =
-  if (int' = 10) then {player with current_location_id = int'; in_jail = true}
-  else
-    {player with current_location_id = int'}
+  {player with current_location_id = int'}
 
 let is_bankrupt player =
   player.balance <= 0
