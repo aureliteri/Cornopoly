@@ -14,7 +14,8 @@ exception Malformed
 
 let parse_jail str =
   let to_lst = 
-    str |> String.lowercase_ascii |> String.split_on_char ' '|> List.filter (fun x -> x <> "") in 
+    str |> String.lowercase_ascii |> String.split_on_char ' '
+    |> List.filter (fun x -> x <> "") in 
   match to_lst with
   | h :: t -> begin
       if h = "pay" && t == [] then Pay
@@ -27,7 +28,8 @@ let parse_jail str =
 
 let parse_buy str =
   let to_lst = 
-    str |> String.lowercase_ascii |> String.split_on_char ' '|> List.filter (fun x -> x <> "") in 
+    str |> String.lowercase_ascii |> String.split_on_char ' '
+    |> List.filter (fun x -> x <> "") in 
   match to_lst with
   | h :: t -> begin
       if h = "yes" && t == [] then Yes

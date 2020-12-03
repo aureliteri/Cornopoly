@@ -73,7 +73,8 @@ let card7 = {
 
 let card8 = {
   card_id = 8;
-  description = "Take a walk on the Engineering Quad–Advance character to Duffield Hall – If you pass Go, collect $200.";
+  description = "Take a walk on the Engineering Quad–Advance character 
+  to Duffield Hall – If you pass Go, collect $200.";
   act = [Move 35]
 }
 
@@ -95,4 +96,5 @@ let card11 = {
   act = [Get_out true]
 }
 
-let cardlist = [|card1; card2; card3; card4; card5; card6; card7; card9; card10; card11|]
+let cardlist = [|card1; card2; card3; card4; card5; card6; card7; 
+                 card9; card10; card11|]
