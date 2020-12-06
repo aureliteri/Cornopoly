@@ -26,7 +26,7 @@ let roll_dice x =
   (d1 + d2, d1 = d2)
 
 let pick_card x =
-  let ind = 3 in(*Random.int x in *)
+  let ind = Random.int x in
   cardlist.(ind)
 
 (* ONLY CALL THIS FUNCTION WHEN A PROPERTY HAS BEEN BOUGHT.
