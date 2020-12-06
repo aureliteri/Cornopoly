@@ -65,10 +65,10 @@ let rec print_players players =
     let p_name = name h in 
     let p_cur_loc = space_name (get_space (current_location_id h) spacelist) in 
     let p_balance = string_of_int (balance h )in 
-    let p_properties = property_list h in 
-    print_endline ("\n" ^ p_name ^ "'s ID is " ^ p_id ^ " and their current 
-    location is " ^ p_cur_loc ^ ".\nTheir balance is $" ^ p_balance ^ "." 
-                   ^ " Their properties are:");
+    let p_properties = property_list h in print_endline 
+      ("\n" ^ p_name ^ "'s ID is " ^ p_id ^ " and their current location is " 
+       ^ p_cur_loc ^ ".\nTheir balance is $" ^ p_balance ^ 
+       ". Their properties are:");
     if List.length p_properties = 0 then 
       print_endline "None" else 
       print_properties p_properties;
@@ -121,6 +121,52 @@ let check_space_justvisiting jv player playerList board  =
   print_endline "Oop. Close call to Jail, luckily you are just visiting.";
   (playerList, board)
 
+let rec try_command_property s p pl board property =      
+  try 
+    buy_property (parse_buy s) p pl board property
+  with 
+  | Malformed -> print_endline "Invalid command! Try Again"; 
+    print_string "> "; 
+    try_command_property (read_line()) p pl board property
+  | Empty -> print_endline "Please enter a command!"; 
+    print_string "> "; 
+    try_command_property (read_line()) p pl board property
+
+let land_someone_else_property player playerList board property = 
+  print_endline ("You have landed on " ^(property_name property) ^ 
+                 ". It is owned by " ^ property_owner property ^ 
+                 ". You must pay rent of $" ^ 
+                 (string_of_int  (rent_price property)  ^ "."));
+  let pl = update_balance player (-1 * rent_price property) in
+  let updated_owner = update_balance (find_player (property_owner property) 
+                                        playerList) (rent_price property) in
+  let lst = replace_player playerList pl in
+  let lst2 = replace_player lst updated_owner in
+  print_endline ("The price of " ^ (property_name property) ^ " is $" ^
+                 (string_of_int (buy_price property)));
+  print_endline "Do you want to purchase it? (Type: Yes or No)"; 
+  print_string "> ";
+  try_command_property (read_line()) pl lst2 board property
+
+let check_space_property space player playerList board property = 
+  if (String.equal (property_owner property) "") then 
+    begin
+      print_endline ("The price of " ^ (property_name property) ^ " is $" ^ 
+                     (string_of_int (buy_price property)) ^ 
+                     "\nDo you want to purchase it? (Type: Yes or No)");
+      print_string "> ";
+      try_command_property (read_line()) player playerList board property 
+    end
+  else begin 
+    if String.equal (property_owner property) (name player)
+    then begin
+      print_endline ("You own this property. You get to stay for free!");
+      (playerList, board)
+    end
+    else
+      land_someone_else_property player playerList board property
+  end  
+
 (**[check_space].... pass in 
    [space] which the current space that the player is on, pass in 
    [player] which is the current player, 
@@ -130,45 +176,7 @@ let check_space (space: space) player (playerList: Player.player list)
     (board: Space.space list) : (Player.player list * Space.space list) =
   match space with
   | Property property ->  
-    begin
-      let rec try_command s p pl =         
-        try 
-          buy_property (parse_buy s) p pl board property
-        with 
-        | Malformed -> print_endline "Invalid command! Try Again"; 
-          print_string "> "; 
-          try_command (read_line()) p pl
-        | Empty -> print_endline "Please enter a command!"; 
-          print_string "> "; 
-          try_command (read_line()) p pl
-      in 
-      if (String.equal (property_owner property) "") then 
-        begin
-          print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (buy_price property)));
-          print_endline "Do you want to purchase it? (Type: Yes or No)"; 
-          print_string "> ";
-          try_command (read_line()) player playerList
-        end 
-      else begin (**pay_rent stuff *)
-        if String.equal (property_owner property) (name player)
-        then begin
-          print_endline ("You own this property. You get to stay for free!");
-          (playerList, board)
-        end
-        else begin
-          print_endline ("You have landed on " ^(property_name property)^". It is owned by " ^ property_owner property ^ ". You must pay rent of $"^ (string_of_int (rent_price property)^ "."));
-          let pl = update_balance player (-1 * rent_price property) in
-          let updated_owner = update_balance (find_player (property_owner property) playerList) (rent_price property) in
-          let lst = replace_player playerList pl in
-          let lst2 = replace_player lst updated_owner in
-          print_endline ("The price of " ^ (property_name property) ^ " is $" ^ (string_of_int (buy_price property)));
-          print_endline "Do you want to purchase it? (Type: Yes or No)"; 
-          print_string "> ";
-          try_command (read_line()) pl lst2
-          (* (lst2, board) *)
-        end
-      end  
-    end
+    check_space_property space player playerList board property
   | CardSpace chance -> check_space_chance chance player playerList board 
   | Jail jail -> check_space_jail jail player playerList board 
   | Penalty penalty -> check_space_penalty penalty player playerList board 
@@ -228,7 +236,6 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
           iterate new_t (updated_sp) (current_player :: fst new_acc, updated_sp) 
         end
     end
-
     (* LEAVE JAIL SCENARIOS!! like pay the fine, roll a double, or if you have a get out of jail free card
     *)
     else begin (** THE PLAYER IS IN JAIL RIGHT NOW *)
@@ -237,24 +244,23 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
       if !counter_jail = 1 then 
         print_endline (name h ^ " is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, or try to roll a double to leave jail early.");
 
-
-      let rec jail_rules command = 
+      let rec jail_rules command player acc sp = 
         match command with
         | Pay ->
           (**parse s into PAY commnd. Pass the command into a function that moves the player out of jail *)
-          if (balance h < 100) then 
+          if (balance player < 100) then 
             let () = print_endline "You do not have enough in your balance to pay! Type in another command." in 
-            jail_rules (parse_jail (read_line()))
+            jail_rules (parse_jail (read_line())) player acc
           else begin
-            let pay_jail_player = update_balance h (-100) in
+            let pay_jail_player = update_balance player (-100) in
             counter_jail := 0;
             let not_in_jail = change_jail pay_jail_player false in 
             print_endline ("Congrats! You are out of jail.");
             iterate t sp (not_in_jail :: fst acc , snd acc)
           end
 
-        | Card -> if (jail_card h) then 
-            let used_card = change_jail_card h false in 
+        | Card -> if (jail_card player) then 
+            let used_card = change_jail_card player false in 
             let updated_player = change_jail used_card false in
             print_endline ("Congrats! You used your Get Out of Jail Card. You are out of jail.");
             counter_jail := 0;
@@ -262,24 +268,26 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
           else
             let () = print_endline ("You do not have a Get Out of Jail Card. Enter another command.") in
             print_string (">");
-            jail_rules (parse_jail (read_line()))
+            jail_rules (parse_jail (read_line())) player acc sp
 
-        | Roll -> (
-            if (snd (roll_dice 6) || !counter_jail = 3)
-            then (
-              counter_jail := 0;
-              let not_in_jail = change_jail h false  in
-              let () = print_endline ("Congrats! You are out of jail") in
-              iterate t sp (not_in_jail :: fst acc , snd acc)
-            )
-            else 
-              let () =  print_endline ("You didn't roll a double. You are still in jail.") in 
-              iterate t sp (h :: fst acc , snd acc)
-          ) in
+        | Roll -> 
+          if (snd (roll_dice 6) || !counter_jail = 3)
+          then (
+            counter_jail := 0;
+            let not_in_jail = change_jail h false  in
+            let () = print_endline ("Congrats! You are out of jail") in
+            iterate t sp (not_in_jail :: fst acc , snd acc)
+          )
+          else 
+            let () =  print_endline ("You didn't roll a double. You are still in jail.") in 
+            iterate t sp (player :: fst acc , snd acc)
+      in
+
+
       let rec try_command s =         
         print_string (">");
         try 
-          jail_rules (parse_jail s)
+          jail_rules (parse_jail s) h acc sp
         with 
         | Malformed -> print_endline "Invalid command! Try Again"; 
           print_string "> "; 
