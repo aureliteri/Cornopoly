@@ -45,25 +45,22 @@ let set_location player location_id =
 let move player int' = 
   if (player.current_location_id + int') > 39 then begin
     print_endline "You have passed go! $50 has been added to your balance.";
-    {player with current_location_id = 
-                   (player.current_location_id + int') mod 39;
+    {player with current_location_id = (player.current_location_id + int') mod 39;
                  balance = player.balance + 50}
   end
-  else 
-    {player with current_location_id = (player.current_location_id + int')} 
+  else {player with current_location_id = (player.current_location_id + int')} 
 
 let move_to_space player int' =
   if (int' = 10) then {player with current_location_id = int'; in_jail = true}
   else {player with current_location_id = int'}
 
-let is_bankrupt player =
-  player.balance <= 0
 
 let update_balance player amount = 
   {player with balance = player.balance + amount}
 
 let add_property player property = 
   {player with property_list =  property :: property_list player}
+
 
 let remove_property player property =
   let new_property_list = List.filter 
@@ -78,6 +75,9 @@ let rec find_player find playerlist =
   match playerlist with
   | [] -> raise (UnknownPlayer find)
   | h :: t -> if String.equal h.name find then h else find_player find t
+
+let is_bankrupt player =
+  player.balance <= 0
 
 let player1 : player = {
   id = 1;

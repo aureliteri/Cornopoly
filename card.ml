@@ -50,7 +50,7 @@ let card3 = {
 let card4 = {
   card_id = 4;
   description = "Advance to Go — Collect $50.";
-  act = [Move 1]
+  act = [Move 1; Change 50]
 }
 
 let card5 = {

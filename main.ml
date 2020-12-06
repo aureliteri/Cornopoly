@@ -114,7 +114,8 @@ let check_space_penalty penalty player playerList board  =
   let penalty_update = update_balance player (-1 * penalty_price penalty) in 
   (replace_player playerList penalty_update, board)
 
-let check_space_go go player playerList board  = 
+let check_space_go go player playerList board = 
+
   print_endline "Pass Go! You have collected $50."; (playerList, board)
 
 let check_space_justvisiting jv player playerList board  = 
@@ -135,7 +136,7 @@ let rec try_command_property s p pl board property =
 let land_someone_else_property player playerList board property = 
   print_endline ("You have landed on " ^(property_name property) ^ 
                  ". It is owned by " ^ property_owner property ^ 
-                 ". You must pay rent of $" ^ 
+                 ". \nYou must pay rent of $" ^ 
                  (string_of_int  (rent_price property)  ^ "."));
   let pl = update_balance player (-1 * rent_price property) in
   let updated_owner = update_balance (find_player (property_owner property) 
@@ -192,7 +193,6 @@ let check_space (space: space) player (playerList: Player.player list)
 let counter = ref 0 
 let counter_jail = ref 0
 
-
 let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.space list )  =
   match playerlist with
   | [] -> acc
@@ -244,13 +244,13 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
       if !counter_jail = 1 then 
         print_endline (name h ^ " is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, or try to roll a double to leave jail early.");
 
-      let rec jail_rules command player acc sp = 
-        match command with
-        | Pay ->
+      (* let rec jail_rules command player acc sp = 
+         match command with
+         | Pay ->
           (**parse s into PAY commnd. Pass the command into a function that moves the player out of jail *)
           if (balance player < 100) then 
             let () = print_endline "You do not have enough in your balance to pay! Type in another command." in 
-            jail_rules (parse_jail (read_line())) player acc
+            jail_rules (parse_jail (read_line())) player acc sp
           else begin
             let pay_jail_player = update_balance player (-100) in
             counter_jail := 0;
@@ -259,7 +259,7 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
             iterate t sp (not_in_jail :: fst acc , snd acc)
           end
 
-        | Card -> if (jail_card player) then 
+         | Card -> if (jail_card player) then 
             let used_card = change_jail_card player false in 
             let updated_player = change_jail used_card false in
             print_endline ("Congrats! You used your Get Out of Jail Card. You are out of jail.");
@@ -270,24 +270,22 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
             print_string (">");
             jail_rules (parse_jail (read_line())) player acc sp
 
-        | Roll -> 
+         | Roll -> 
           if (snd (roll_dice 6) || !counter_jail = 3)
           then (
             counter_jail := 0;
-            let not_in_jail = change_jail h false  in
+            let not_in_jail = change_jail player false  in
             let () = print_endline ("Congrats! You are out of jail") in
             iterate t sp (not_in_jail :: fst acc , snd acc)
           )
           else 
             let () =  print_endline ("You didn't roll a double. You are still in jail.") in 
-            iterate t sp (player :: fst acc , snd acc)
-      in
-
+            iterate t sp (player :: fst acc , snd acc) *)
 
       let rec try_command s =         
         print_string (">");
         try 
-          jail_rules (parse_jail s) h acc sp
+          jail_rules (parse_jail s) h acc sp t
         with 
         | Malformed -> print_endline "Invalid command! Try Again"; 
           print_string "> "; 
@@ -300,6 +298,44 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
       print_string (">");
       try_command (read_line())
     end
+
+and jail_rules command player acc sp playerlist = 
+  match command with
+  | Pay ->
+    (**parse s into PAY commnd. Pass the command into a function that moves the player out of jail *)
+    if (balance player < 100) then 
+      let () = print_endline "You do not have enough in your balance to pay! Type in another command." in 
+      jail_rules (parse_jail (read_line())) player acc sp playerlist
+    else begin
+      let pay_jail_player = update_balance player (-100) in
+      counter_jail := 0;
+      let not_in_jail = change_jail pay_jail_player false in 
+      print_endline ("Congrats! You are out of jail.");
+      iterate playerlist sp (not_in_jail :: fst acc , snd acc)
+    end
+
+  | Card -> if (jail_card player) then 
+      let used_card = change_jail_card player false in 
+      let updated_player = change_jail used_card false in
+      print_endline ("Congrats! You used your Get Out of Jail Card. You are out of jail.");
+      counter_jail := 0;
+      iterate playerlist sp (updated_player :: fst acc , snd acc)
+    else
+      let () = print_endline ("You do not have a Get Out of Jail Card. Enter another command.") in
+      print_string (">");
+      jail_rules (parse_jail (read_line())) player acc sp playerlist
+
+  | Roll -> 
+    if (snd (roll_dice 6) || !counter_jail = 3)
+    then (
+      counter_jail := 0;
+      let not_in_jail = change_jail player false  in
+      let () = print_endline ("Congrats! You are out of jail") in
+      iterate playerlist sp (not_in_jail :: fst acc , snd acc)
+    )
+    else 
+      let () =  print_endline ("You didn't roll a double. You are still in jail.") in 
+      iterate playerlist sp (player :: fst acc , snd acc)
 
 let end_game lst : unit = 
   match lst with 
@@ -324,8 +360,9 @@ let rec play s player_lst space_lst : unit =
 let main () = 
   Random.self_init ();
   print_endline("Welcome to Cornopoly!!");
-  (* TODO: add instructions?? explanation to the players??
-     let users to add their own name?? *)
+  print_endline("The goal of this game is to win a full color set, or bankrupt the rest of your players.");
+  print_endline("You can do this by purchasing properties on the board.");
+  (* TODO: let users to add their own name?? *)
   print_endline("There are four players: Meghana, Michelle, Aaron, Amy. \n 
   Here is the layout of the initial board: ");
   print_initial_board Space.spacelist Player.playerlist;
