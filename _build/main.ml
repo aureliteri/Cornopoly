@@ -153,15 +153,15 @@ let check_space (space: space) player (playerList: Player.player list)
       else begin (**pay_rent stuff *)
         if String.equal (property_owner property) (name player)
         then begin
-          print_endline (name player ^" owns "^ property_name property ^
+          print_endline (name player ^" owns "^property_name property ^
                          ". You get to stay for free!");
           (playerList, board)
         end
         else begin
-          print_endline ("You have landed on " ^ (property_name property) ^ 
+          print_endline ("You have landed on " ^(property_name property)^ 
                          ". It is owned by " ^ property_owner property ^ 
-                         ". You must pay rent of $" ^ 
-                         (string_of_int (rent_price property) ^ "."));
+                         ". You must pay rent of $" ^ (string_of_int (rent_price property) 
+                                                       ^ "."));
           let pl = update_balance player (-1 * rent_price property) in
           let updated_owner = update_balance (find_player 
                                                 (property_owner property) playerList) (rent_price property) in
@@ -205,7 +205,7 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
 
     if (in_jail h) = false then 
       not_in_jail_iterate playerlist sp acc h
-    else
+    else 
       player_in_jail t sp acc h
 
 (* let roll = roll_dice 6 in 
@@ -306,15 +306,15 @@ and player_in_jail playerlist sp acc player = (** this is the else helpers *)
     if !counter_jail = 1 then 
       print_endline (name player ^ 
                      " is in jail! You will be stuck here for three turns. 
-        You can pay a fine of $100, use your get out of jail free card," ^
-                     " or try to roll a double to leave jail early."); 
+        \nYou can pay a fine of $100, use your get out of jail free card " ^
+                     "or try to roll a double to leave jail early."); 
     let rec jail_rules command = 
       match command with
       | Pay ->
         (**parse s into PAY commnd. Pass the command into a function that moves the player out of jail *)
         if (balance player < 100) then 
-          let () = print_endline ("You do not have enough in your balance " ^ 
-                                  "to pay! Type in another command.") in 
+          let () = print_endline "You do not have enough in your balance to pay! 
+      Type in another command." in 
           jail_rules (parse_jail (read_line()))
         else begin
           let pay_jail_player = update_balance player (-100) in
