@@ -1,6 +1,3 @@
-(* Note: You may introduce new code anywhere in this file. *) 
-
-(* type object_phrase = string list *)
 
 type jail_command = 
   | Pay | Card | Roll
@@ -11,6 +8,7 @@ type buy_command =
 exception Empty
 
 exception Malformed
+
 
 let parse_jail str =
   let to_lst = 

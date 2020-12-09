@@ -1,0 +1,32 @@
+{
+  "players": [
+    {
+      "id": 1,
+      "name": "Meghana"
+    },
+    {
+      "id": 2,
+      "name": "Michelle"
+    },
+    {
+      "id": 3,
+      "name": "Aaron"
+    },
+    {
+      "id": 4,
+      "name": "Amy"
+    }
+  ],
+  "space": [
+    {
+      "first name": "Ezra",
+      "last name": "Cornell",
+      "arrived": 1865
+    },
+    {
+      "first name": "Martha",
+      "last name": "Pollack",
+      "arrived": 2017
+    }
+  ]
+}

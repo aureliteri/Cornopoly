@@ -28,6 +28,8 @@ val move_to_space : player -> int -> player
 
 val is_bankrupt: player -> bool
 
+val update_name : player -> string -> player
+
 val update_balance : player -> int -> player
 
 val add_property : player -> Space.property -> player
