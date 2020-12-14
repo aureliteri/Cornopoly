@@ -217,18 +217,18 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
         (* player_not_bankrupt current_player new_player new_t (snd updated_tuple) 
            new_acc roll *)
         let updated_sp = snd updated_tuple in  
-
         if (snd roll) then (** if a double is rolled *)
-          begin
-            print_endline ("You rolled a double!");
-            incr counter; (**add 1 to the count of doubles rolled *)
-            if !counter = 3 then (**if the # of doubles is 3, then send the player to jail. *)
+          double_rolled new_player new_t updated_sp new_acc current_player
+          (* begin
+             print_endline ("You rolled a double!");
+             incr counter; (**add 1 to the count of doubles rolled *)
+             if !counter = 3 then (**if the # of doubles is 3, then send the player to jail. *)
               let () = print_endline ("You rolled 3 doubles! Go to Jail.") in
               let jail_player = (change_jail (set_location new_player 10) true )in (**set current location of player to jail. Then change the player's jail property to true  *)
               iterate new_t (updated_sp) (jail_player :: (fst new_acc), updated_sp) (**iterate to next player in line. Add jailed player to accumulator *)
-            else iterate (current_player :: new_t) (updated_sp) (fst new_acc, updated_sp) 
-            (**if # of doubles rolled per person has not reached three, replace head player with jailed player make  *)
-          end 
+             else iterate (current_player :: new_t) (updated_sp) (fst new_acc, updated_sp) 
+             (**if # of doubles rolled per person has not reached three, replace head player with jailed player make  *)
+             end  *)
         else begin
           counter := 0;
           iterate new_t (updated_sp) (current_player :: fst new_acc, updated_sp) 
@@ -240,27 +240,60 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
 
     (* LEAVE JAIL SCENARIOS!! like pay the fine, roll a double, or if you have a get out of jail free card
     *)
-    else begin (** THE PLAYER IS IN JAIL RIGHT NOW *)
-      (**if counter = 1 then print this *)
-      incr counter_jail;
-      if !counter_jail = 1 then 
-        print_endline (name h ^ " is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, or try to roll a double to leave jail early.");
-      let rec try_command s =         
-        print_string (">");
-        try 
-          jail_rules (parse_jail s) h acc sp t
-        with 
-        | Malformed -> print_endline "Invalid command! Try Again"; 
-          print_string "> "; 
-          try_command (read_line())
-        | Empty -> print_endline "Please enter a command!"; 
-          print_string "> "; 
-          try_command (read_line())
-      in 
-      print_endline ("Enter PAY, CARD, or ROLL");
-      print_string (">");
+    else 
+      (** THE PLAYER IS IN JAIL RIGHT NOW *)
+      player_in_jail h acc sp t
+(**if counter = 1 then print this *)
+(* incr counter_jail;
+   if !counter_jail = 1 then 
+   print_endline (name h ^ " is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, \nor try to roll a double to leave jail early.");
+   let rec try_command s =         
+   print_string (">");
+   try 
+    jail_rules (parse_jail s) h acc sp t
+   with 
+   | Malformed -> print_endline "Invalid command! Try Again"; 
+    print_string "> "; 
+    try_command (read_line())
+   | Empty -> print_endline "Please enter a command!"; 
+    print_string "> "; 
+    try_command (read_line())
+   in 
+   print_endline ("Enter PAY, CARD, or ROLL");
+   print_string (">");
+   try_command (read_line())
+   end *)
+
+and double_rolled new_player new_t updated_sp new_acc current_player = 
+  (** if a double is rolled *)
+  print_endline ("You rolled a double!");
+  incr counter; (**add 1 to the count of doubles rolled *)
+  if !counter = 3 then (**if the # of doubles is 3, then send the player to jail. *)
+    let () = print_endline ("You rolled 3 doubles in total! Go to Jail.") in
+    let jail_player = (change_jail (set_location new_player 10) true )in (**set current location of player to jail. Then change the player's jail property to true  *)
+    iterate new_t (updated_sp) (jail_player :: (fst new_acc), updated_sp) (**iterate to next player in line. Add jailed player to accumulator *)
+  else iterate (current_player :: new_t) (updated_sp) (fst new_acc, updated_sp)
+
+and player_in_jail h acc sp t = 
+  incr counter_jail;
+  if !counter_jail = 1 then 
+    print_endline (name h ^ " is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, \nor try to roll a double to leave jail early.");
+  let rec try_command s =         
+    print_string (">");
+    try 
+      jail_rules (parse_jail s) h acc sp t
+    with 
+    | Malformed -> print_endline "Invalid command! Try Again"; 
+      print_string "> "; 
       try_command (read_line())
-    end
+    | Empty -> print_endline "Please enter a command!"; 
+      print_string "> "; 
+      try_command (read_line())
+  in 
+  print_endline ("Enter PAY, CARD, or ROLL");
+  print_string (">");
+  try_command (read_line())
+
 
 and jail_rules command player acc sp playerlist = 
   match command with
@@ -277,7 +310,7 @@ and jail_pay_command player acc sp playerlist =
     let pay_jail_player = update_balance player (-100) in
     counter_jail := 0;
     let not_in_jail = change_jail pay_jail_player false in 
-    print_endline ("Congrats! You are out of jail.");
+    print_endline ("Congrats! You have paid $100 to get out of jail.");
     iterate playerlist sp (not_in_jail :: fst acc , snd acc)
 
 and jail_card_command player acc sp playerlist = 
@@ -293,16 +326,21 @@ and jail_card_command player acc sp playerlist =
     jail_rules (parse_jail (read_line())) player acc sp playerlist
 
 and jail_roll_command player acc sp playerlist = 
-  if (snd (roll_dice 6) || !counter_jail = 3)
-  then (
-    counter_jail := 0;
-    let not_in_jail = change_jail player false  in
-    let () = print_endline ("Congrats! You are out of jail") in
-    iterate playerlist sp (not_in_jail :: fst acc , snd acc)
-  )
-  else 
-    let () =  print_endline ("You didn't roll a double. You are still in jail.") in 
-    iterate playerlist sp (player :: fst acc , snd acc)
+  if snd (roll_dice 6)
+  then (counter_jail := 0;
+        let not_in_jail = change_jail player false  in
+        let () = print_endline ("Congrats! You have rolled a double - you are out of jail!") in
+        iterate playerlist sp (not_in_jail :: fst acc , snd acc))
+  else begin 
+    if !counter_jail = 3 then 
+      (counter_jail := 0;
+       let not_in_jail = change_jail player false  in
+       let () = print_endline ("You have stayed in jail for three turns. You are now out of jail") in
+       iterate playerlist sp (not_in_jail :: fst acc , snd acc))
+    else
+      let () =  print_endline ("You didn't roll a double. You are still in jail.") in 
+      iterate playerlist sp (player :: fst acc , snd acc)
+  end
 
 and player_bankrupt player playerlist sp acc = 
   let () = print_endline ("Your balance is now $" ^(string_of_int (balance (player)))) in
@@ -347,13 +385,9 @@ let rec play s player_lst space_lst : unit =
       let s = read_line() in
       play s pl_lst (snd new_lst);)
 
-let main () = 
-  Random.self_init ();
-  print_endline("Welcome to Cornopoly!!");
-  print_endline("The goal of this game is to win a full color set,"^
-                " or bankrupt the rest of your players.");
-  print_endline("You can do this by purchasing properties on the board.");
-  print_endline("Player 1, please insert your name:");
+
+let main () = Random.self_init ();
+  print_endline("Welcome to Cornopoly!! \nThe goal of this game is to win a full color set, or bankrupt the rest of your players. \nYou can do this by purchasing properties on the board, and staying out of jail. \nPlayer 1, please insert your name:");
   let p1_name = read_line () in
   let p1 = update_name (List.nth Player.playerlist 0) p1_name in
   print_endline("Player 2, please insert your name:");
@@ -363,49 +397,15 @@ let main () =
   let p3_name = read_line () in
   let p3 = update_name (List.nth Player.playerlist 2) p3_name in
   print_endline("Player 4, please insert your name:");
-  let p4_name = read_line () in
+  let p4_name = read_line () in 
   let p4 = update_name (List.nth Player.playerlist 3) p4_name in
-  let named_playerlist = [p1;p2;p3;p4] in
-  print_endline("The players for this game are: " ^p1_name^", " ^p2_name^", "^
-                p3_name^", " ^p4_name ^".\nHere is the layout of the initial board: ");
-  print_initial_board Space.spacelist named_playerlist;
+  print_endline("The players are: "^p1_name^", "^p2_name^", "^p3_name^", " ^
+                p4_name^".\nHere is the layout of the initial board: ");
+  print_initial_board Space.spacelist [p1;p2;p3;p4];
   print_endline "Type quit to quit. Type anything else to play.";
-  let s = read_line () in
-  play s named_playerlist Space.spacelist;
-  match read_line () with
-  | exception End_of_file -> ()
-  | file_name -> failwith "hi"
-(* BELOW IS THE FUNCTION TO INPUT PLAYER'S OWN NAMES, BUT DW ABOUT THIS FIRST, 
-   CAN UNCOMMENT THIS LATER!
-
-   let main () = 
-   Random.self_init ();
-   print_endline("Welcome to Cornopoly!!");
-   print_endline("The goal of this game is to win a full color set,"^
-   " or bankrupt the rest of your players.");
-   print_endline("You can do this by purchasing properties on the board.");
-   print_endline("Player 1, please insert your name:");
-   let p1_name = read_line () in
-   let p1 = update_name (List.nth Player.playerlist 0) p1_name in
-   print_endline("Player 2, please insert your name:");
-   let p2_name = read_line () in
-   let p2 = update_name (List.nth Player.playerlist 1) p2_name in
-   print_endline("Player 3, please insert your name:");
-   let p3_name = read_line () in
-   let p3 = update_name (List.nth Player.playerlist 2) p3_name in
-   print_endline("Player 4, please insert your name:");
-   let p4_name = read_line () in
-   let p4 = update_name (List.nth Player.playerlist 3) p4_name in
-   let named_playerlist = [p1;p2;p3;p4] in
-   print_endline("The players for this game are: " ^p1_name^", " ^p2_name^", "^
-   p3_name^", " ^p4_name ^".\nHere is the layout of the initial board: ");
-   print_initial_board Space.spacelist named_playerlist;
-   print_endline "Type quit to quit. Type anything else to play.";
-   let s = read_line () in
-   play s named_playerlist Space.spacelist;
-   match read_line () with
-   | exception End_of_file -> ()
-   | file_name -> failwith "hi" *)
+  let s = read_line () in play s [p1;p2;p3;p4] Space.spacelist;
+  match read_line () with | exception End_of_file -> ()
+                          | file_name -> failwith "hi"
 
 (* Execute the game engine. *)
 let () = main ()
