@@ -1,8 +1,7 @@
-type amount = int
 
 type action =
-  | Change of amount
-  | Move of amount
+  | Change of int
+  | Move of int
   | Get_out of bool
 
 type card =

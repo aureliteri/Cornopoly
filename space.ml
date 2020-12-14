@@ -1,4 +1,3 @@
-(**The Space module represents a space/slot on the gameboard  *)
 open Card
 
 type property = {
@@ -444,14 +443,32 @@ let spacelist : space list = [
 
 let get_space id spacelst = 
   List.find (fun s -> (space_id s) = id) spacelst
-
+(**[green] is the list of spaces with green property spaces *)
 let green : space list = [space2; space3; space4]
+
+(**[yellow] is the list of spaces with yellow property spaces *)
 let yellow : space list = [space6; space7; space8]
+
+(**[orange] is the list of spaces with orange property spaces *)
 let orange : space list = [space11; space12; space13]
+
+(**[red] is the list of spaces with red property spaces *)
 let red : space list = [space14; space16; space17]
+
+(**[purple] is the list of spaces with purple property spaces *)
 let purple : space list = [space19; space21; space22]
+
+(** [light_blue] is the list of spaces with light blue property spaces*)
 let light_blue : space list = [space23; space24; space25]
+
+(** [pink] is the list of spaces with pink property spaces*)
 let pink : space list = [space27; space28; space29]
+
+(** [cyan] is the list of spaces with cyan property spaces*)
 let cyan : space list = [space30; space31; space32]
+
+(** [brown] is the list of spaces with brown property spaces*)
 let brown : space list = [space34; space35; space37]
+
+(** [blue] is the list of spaces with blue property spaces*)
 let blue : space list = [space38; space39]

@@ -32,11 +32,17 @@ let player_name_test fun_name player expected_output =
   fun_name >:: (fun ctxt -> 
       assert_equal expected_output (name player)~printer: String.escaped)
 
-let player_balance_test name player expected_output = 
+let player_balance_test 
+    (name )
+    player 
+    expected_output = 
   name >:: (fun ctxt -> 
       assert_equal expected_output (balance player)~printer: string_of_int)
 
-let player_property_test name player expected_output = 
+let player_property_test 
+    (name : string )
+    (player : Player.player)
+    (expected_output : string list) = 
   let property_list = property_list player in 
   let string_property_list = property_name_printer property_list [] in
   name >:: (fun ctxt -> 

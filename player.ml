@@ -74,7 +74,7 @@ let remove_property player property =
 let replace_player playerlist new_player =
   List.map(fun x -> if id x = id new_player then new_player else x) playerlist
 
-(**[find_player] returns player with name [find] in [playerlist] *)
+
 let rec find_player find playerlist =
   match playerlist with
   | [] -> raise (UnknownPlayer find)

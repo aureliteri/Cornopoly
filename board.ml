@@ -3,8 +3,6 @@ open Card
 open Space
 open Command
 
-(** [roll dice x] returns a tuple of a random value from 1 to 12 (inclusive) 
-    and a boolean indicating if a roll is a double  *)
 let roll_dice x =
   let d1 = Random.int x + 1 in
   let d2 = Random.int x + 1 in 
@@ -14,10 +12,6 @@ let pick_card x =
   let ind = Random.int x in
   cardlist.(ind)
 
-(* ONLY CALL THIS FUNCTION WHEN A PROPERTY HAS BEEN BOUGHT.
-   USE THAT PROPERTY TO CHECK THE COLOR OF THAT PROPERTY (other wise we have to 
-   loop through every single color. This way, it just matches the color of
-   the property that was bought) *)
 let if_full_set (player : Player.player) 
     (property_just_bought : Space.property) : unit =
   let color = property_color property_just_bought in
@@ -37,9 +31,9 @@ let if_full_set (player : Player.player)
 
 
 
-(* [yes_buy_property p plist board prop] returns a tuple of a Player.player list and a Space.space list
-   that contains the updated information of the lsit of all players [plist] and the game board [board] after
-   player [player] purchases the [prop] property *)
+(** [yes_buy_property p plist board prop] returns a tuple of a Player.player list and a Space.space list
+    that contains the updated information of the lsit of all players [plist] and the game board [board] after
+    player [player] purchases the [prop] property *)
 let yes_buy_property player plst board prop =
   let p = add_property player prop in (** adds property to player's property list *)
   let p' = update_balance p (-1 * buy_price prop) in  (** updates player's balance *)
@@ -65,18 +59,16 @@ let yes_buy_property player plst board prop =
 
 let buy_property command player playerList board property  = 
   match command with 
-  | Yes ->  yes_buy_property player playerList board property
+  | Yes -> yes_buy_property player playerList board property
   | No -> (playerList, board)
 
-(* [try_buy s] takes in a string [s] and prompts the user for user input. According to the user input
-   [try_buy s] returns a tuple of updated Player.player list and Space.space list. *)
+(** [try_buy s] takes in a string [s] and prompts the user for user input. According to the user input
+    [try_buy s] returns a tuple of updated Player.player list and Space.space list. *)
 let rec try_buy s = 
   print_endline "Do you want to purchase it? (Type: Yes or No)"; 
   print_string "> "; 
   buy_property (parse_buy s)
 
-(* [card_action act_lst player] takes in a list of commands in [act_lst] and applies them
-   to [player] then returns the updated player *)
 let rec card_action (act_lst : Card.action list) 
     (player : Player.player) : player = 
   match act_lst with
