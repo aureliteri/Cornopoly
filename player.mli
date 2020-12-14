@@ -30,6 +30,8 @@ val is_bankrupt: player -> bool
 
 val update_balance : player -> int -> player
 
+val update_name : player -> string -> player
+
 val add_property : player -> Space.property -> player
 
 val remove_property: player -> Space.property -> player

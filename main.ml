@@ -301,41 +301,49 @@ let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.spa
 
 and jail_rules command player acc sp playerlist = 
   match command with
-  | Pay ->
-    (**parse s into PAY commnd. Pass the command into a function that moves the player out of jail *)
-    if (balance player < 100) then 
-      let () = print_endline "You do not have enough in your balance to pay! Type in another command." in 
+  | Pay -> jail_pay_command player acc sp playerlist
+   (**parse s into PAY commnd. Pass the command into a function that moves the player out of jail *)
+  | Card -> jail_card_command player acc sp playerlist
+  | Roll -> jail_roll_command player acc sp playerlist
+    
+and jail_pay_command player acc sp playerlist = 
+if (balance player < 100) then 
+      let () = print_endline ("You do not have enough in your balance to pay! "
+      ^"Type in another command.") in 
       jail_rules (parse_jail (read_line())) player acc sp playerlist
-    else begin
+    else 
       let pay_jail_player = update_balance player (-100) in
       counter_jail := 0;
       let not_in_jail = change_jail pay_jail_player false in 
       print_endline ("Congrats! You are out of jail.");
       iterate playerlist sp (not_in_jail :: fst acc , snd acc)
-    end
 
-  | Card -> if (jail_card player) then 
+and jail_card_command player acc sp playerlist = 
+if (jail_card player) then 
       let used_card = change_jail_card player false in 
       let updated_player = change_jail used_card false in
-      print_endline ("Congrats! You used your Get Out of Jail Card. You are out of jail.");
+      print_endline ("Congrats! You used your Get Out of Jail Card. " 
+      ^"You are out of jail.");
       counter_jail := 0;
       iterate playerlist sp (updated_player :: fst acc , snd acc)
     else
-      let () = print_endline ("You do not have a Get Out of Jail Card. Enter another command.") in
+      let () = print_endline ("You do not have a Get Out of Jail Card. "
+      ^"Enter another command.") in
       print_string (">");
       jail_rules (parse_jail (read_line())) player acc sp playerlist
 
-  | Roll -> 
-    if (snd (roll_dice 6) || !counter_jail = 3)
+and jail_roll_command player acc sp playerlist = 
+if (snd (roll_dice 6) || !counter_jail = 3)
     then (
       counter_jail := 0;
       let not_in_jail = change_jail player false  in
-      let () = print_endline ("Congrats! You are out of jail") in
-      iterate playerlist sp (not_in_jail :: fst acc , snd acc)
-    )
+      let () = print_endline("Congrats! You are out of jail") in
+      iterate playerlist sp (not_in_jail :: fst acc , snd acc) )
     else 
-      let () =  print_endline ("You didn't roll a double. You are still in jail.") in 
+      let () = print_endline("You didn't roll a double. "^ 
+      "You are still in jail.") in 
       iterate playerlist sp (player :: fst acc , snd acc)
+
 
 let end_game lst : unit = 
   match lst with 
@@ -360,15 +368,28 @@ let rec play s player_lst space_lst : unit =
 let main () = 
   Random.self_init ();
   print_endline("Welcome to Cornopoly!!");
-  print_endline("The goal of this game is to win a full color set, or bankrupt the rest of your players.");
+  print_endline("The goal of this game is to win a full color set,"^
+  " or bankrupt the rest of your players.");
   print_endline("You can do this by purchasing properties on the board.");
-  (* TODO: let users to add their own name?? *)
-  print_endline("There are four players: Meghana, Michelle, Aaron, Amy. \n 
-  Here is the layout of the initial board: ");
-  print_initial_board Space.spacelist Player.playerlist;
+  print_endline("Player 1, please insert your name:");
+  let p1_name = read_line () in
+  let p1 = update_name (List.nth Player.playerlist 0) p1_name in
+  print_endline("Player 2, please insert your name:");
+  let p2_name = read_line () in
+  let p2 = update_name (List.nth Player.playerlist 1) p2_name in
+  print_endline("Player 3, please insert your name:");
+  let p3_name = read_line () in
+  let p3 = update_name (List.nth Player.playerlist 2) p3_name in
+   print_endline("Player 4, please insert your name:");
+  let p4_name = read_line () in
+  let p4 = update_name (List.nth Player.playerlist 3) p4_name in
+  let named_playerlist = [p1;p2;p3;p4] in
+  print_endline("The players for this game are: " ^p1_name^", " ^p2_name^", "^
+  p3_name^", " ^p4_name ^".\nHere is the layout of the initial board: ");
+  print_initial_board Space.spacelist named_playerlist;
   print_endline "Type quit to quit. Type anything else to play.";
-  let s = read_line() in
-  play s Player.playerlist Space.spacelist;
+  let s = read_line () in
+  play s named_playerlist Space.spacelist;
   match read_line () with
   | exception End_of_file -> ()
   | file_name -> failwith "hi"

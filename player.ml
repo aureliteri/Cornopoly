@@ -61,6 +61,8 @@ let update_balance player amount =
 let add_property player property = 
   {player with property_list =  property :: property_list player}
 
+let update_name player new_name = 
+  {player with name = new_name }
 
 let remove_property player property =
   let new_property_list = List.filter 
