@@ -191,78 +191,26 @@ let check_space (space: space) player (playerList: Player.player list)
 
 let counter = ref 0 
 let counter_jail = ref 0
-
-let rec iterate playerlist (sp: space list) (acc: Player.player list * Space.space list )  =
+let rec iterate playerlist (sp: space list) acc =
   match playerlist with
-  | [] -> acc
-  | h :: t -> print_endline (" \nIt's "^ name h ^ " turn!");
-    if (in_jail h) = false then begin
-      let roll = roll_dice 6 in 
+  | [] -> acc | h :: t -> print_endline (" \nIt's "^ name h ^ " turn!");
+    if (in_jail h) = false then begin let roll = roll_dice 6 in 
       let new_player = move h (fst roll) in 
-      print_endline (name h ^ " has rolled a " ^ string_of_int (fst roll) ^"!");
-      let new_space = get_space (current_location_id new_player) sp in (**NOT_FOUND? *)
-      let updated_tuple = check_space new_space new_player
+      print_endline (name h ^ " has rolled a "^ string_of_int (fst roll) ^"!");
+      let new_space = get_space (current_location_id new_player) sp in 
+      let upd_tup = check_space new_space new_player
           ((fst acc) @ playerlist) sp in
-      let current_player = find_player (name h) (fst updated_tuple) in 
-      let new_acc = (List.filter (fun x -> id x < id h) 
-                       (fst updated_tuple), sp) in 
-      let new_t = List.filter (fun x -> id x > id h) (fst updated_tuple) in 
+      let current_player = find_player (name h) (fst upd_tup) in 
+      let new_acc = (List.filter (fun x -> id x < id h) (fst upd_tup), sp) in 
+      let new_t = List.filter (fun x -> id x > id h) (fst upd_tup) in 
       if (balance (current_player) <= 0) then 
         player_bankrupt current_player playerlist sp new_acc
-        (* let () = print_endline ("Your balance is now " ^(string_of_int (balance (current_player)))) in
-           let () = print_endline "You have gone bankrupt. You're out of the game!" in 
-           let new_board = List.rev(delete_player_record sp (current_player) []) in *)
-        (* iterate (remove_player current_player playerlist) new_board (fst new_acc, new_board) *)
-      else (** updated_space player playerlist spacelist acc*)
-        (* player_not_bankrupt current_player new_player new_t (snd updated_tuple) 
-           new_acc roll *)
-        let updated_sp = snd updated_tuple in  
+      else let upd_sp = snd upd_tup in  
         if (snd roll) then (** if a double is rolled *)
-          double_rolled new_player new_t updated_sp new_acc current_player
-          (* begin
-             print_endline ("You rolled a double!");
-             incr counter; (**add 1 to the count of doubles rolled *)
-             if !counter = 3 then (**if the # of doubles is 3, then send the player to jail. *)
-              let () = print_endline ("You rolled 3 doubles! Go to Jail.") in
-              let jail_player = (change_jail (set_location new_player 10) true )in (**set current location of player to jail. Then change the player's jail property to true  *)
-              iterate new_t (updated_sp) (jail_player :: (fst new_acc), updated_sp) (**iterate to next player in line. Add jailed player to accumulator *)
-             else iterate (current_player :: new_t) (updated_sp) (fst new_acc, updated_sp) 
-             (**if # of doubles rolled per person has not reached three, replace head player with jailed player make  *)
-             end  *)
-        else begin
-          counter := 0;
-          iterate new_t (updated_sp) (current_player :: fst new_acc, updated_sp) 
-        end 
-    end
-
-
-    (** ------------------------------------THIS IS THE FIRST P ART ---------------------------------*)
-
-    (* LEAVE JAIL SCENARIOS!! like pay the fine, roll a double, or if you have a get out of jail free card
-    *)
-    else 
-      (** THE PLAYER IS IN JAIL RIGHT NOW *)
-      player_in_jail h acc sp t
-(**if counter = 1 then print this *)
-(* incr counter_jail;
-   if !counter_jail = 1 then 
-   print_endline (name h ^ " is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, \nor try to roll a double to leave jail early.");
-   let rec try_command s =         
-   print_string (">");
-   try 
-    jail_rules (parse_jail s) h acc sp t
-   with 
-   | Malformed -> print_endline "Invalid command! Try Again"; 
-    print_string "> "; 
-    try_command (read_line())
-   | Empty -> print_endline "Please enter a command!"; 
-    print_string "> "; 
-    try_command (read_line())
-   in 
-   print_endline ("Enter PAY, CARD, or ROLL");
-   print_string (">");
-   try_command (read_line())
-   end *)
+          double_rolled new_player new_t upd_sp new_acc current_player
+        else begin counter := 0;
+          iterate new_t (upd_sp) (current_player :: fst new_acc, upd_sp) 
+        end end else player_in_jail h acc sp t
 
 and double_rolled new_player new_t updated_sp new_acc current_player = 
   (** if a double is rolled *)
