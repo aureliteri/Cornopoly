@@ -54,6 +54,8 @@ let move_to_space player int' =
   if (int' = 10) then {player with current_location_id = int'; in_jail = true}
   else {player with current_location_id = int'}
 
+let update_name player new_name = 
+  {player with name = new_name }
 
 let update_balance player amount = 
   {player with balance = player.balance + amount}
