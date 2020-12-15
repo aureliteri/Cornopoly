@@ -39,8 +39,8 @@ let rec print_locations playerlist acc =
   match playerlist with
   | [] -> acc
   | h :: t -> 
-    let player_loc = space_name (get_space (current_location_id h) spacelist)in
-    let complete_string = name h ^ " is currently at " ^ player_loc ^ ".\n" in
+    let player_loc = space_name (get_space(current_location_id h)spacelist)in
+    let complete_string = name h ^ " is currently at " ^ player_loc^".\n" in
     print_locations t (acc ^ complete_string)
 
 (** [print_balances playerlist acc] iterates through [playerlist] and accumulates 
@@ -73,8 +73,8 @@ let rec print_players players =
   | [] -> print_endline ""
   | h :: t -> let p_id = string_of_int (id h) in 
     let p_name = name h in 
-    let p_cur_loc = space_name (get_space (current_location_id h) spacelist) in 
-    let p_balance = string_of_int (balance h )in 
+    let p_cur_loc = space_name (get_space(current_location_id h) spacelist) in 
+    let p_balance = string_of_int (balance h)in 
     let p_properties = property_list h in print_endline 
       ("\n" ^ p_name ^ "'s ID is " ^ p_id ^ " and their current location is " 
        ^ p_cur_loc ^ ".\nTheir balance is $" ^ p_balance ^ 
@@ -139,7 +139,7 @@ let check_space_jail player playerList (board: Space.space list)  =
 (** [check_space_penalty penalty player playerList board] updates [player] according to
     what [penalty] player landed on and retuns (Player.player list * Space.space list) that 
     contains all updated players and spaces *)
-let check_space_penalty penalty player playerList (board : Space.space list)  = 
+let check_space_penalty penalty player playerList (board : Space.space list) = 
   print_endline "You have landed on a Penalty space.";
   print_endline (penalty_description penalty);
   let penalty_update = update_balance player (-1 * penalty_price penalty) in 
@@ -381,7 +381,8 @@ and jail_roll_command player acc sp playerlist =
     the updated [playerlist] with [player] removed as they are bankrupt 
     and updated [sp] *)
 and player_bankrupt player playerlist sp acc = 
-  let () = print_endline ("Your balance is now $" ^(string_of_int (balance (player)))) in
+  let () = print_endline ("Your balance is now $" ^ 
+                          (string_of_int (balance (player)))) in
   let () = print_endline "You have gone bankrupt. You're out of the game!" in 
   let new_board = List.rev(delete_player_record sp (player) []) in
   iterate (remove_player player playerlist) new_board (fst acc, new_board)
