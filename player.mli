@@ -1,8 +1,17 @@
 
 (**Representation of a player in the Cornolpoly game *)
-
+open Space
 (**[player] is the type of a single player *)
-type player
+type player = {
+  id : int;
+  name : string;
+  current_location_id : int; 
+  balance : int;
+  property_list: property list;
+  in_jail: bool;
+  jail_card: bool;
+}
+
 (**[UnknownPlayer] is raised when an unknown player is encountered *)
 exception UnknownPlayer of string
 
