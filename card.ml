@@ -112,17 +112,43 @@ let card14 = {
   description = "You got caught stealing from Cornell Dairy! Go to Jail";
   act = [Move 10]
 }
+
 let card15 = {
   card_id = 15;
   description = "You were robbed 100 dollars during slope festival.";
   act = [Change (-100)]
 }
+
 let card16 = {
   card_id = 16;
   description = "You paid another student to get into CS3110! Pay 50 dollars";
   act = [Change (-50)]
 }
 
+let card17 = {
+  card_id = 17;
+  description = "You helped Matha Pollack across the street! She gave you a Get Out of Jail Free card!";
+  act = [Get_out true]
+}
+
+let card18 = {
+  card_id = 18;
+  description = "You missed doing the Daily Check! CUPD is after you! Pay $40 and go to Jail.";
+  act = [Change (-40); Move 10]
+}
+
+let card19 = {
+  card_id = 19;
+  description = "You got an internship for the summer! Collect $150 in stipend!";
+  act = [Change 150]
+}
+
+let card20 = {
+  card_id = 19;
+  description = "Your friends threw you a surprise birthday party! Collect $100!";
+  act = [Change 100]
+}
 
 let cardlist = [|card1; card2; card3; card4; card5; card6; card7; 
-                 card9; card10; card11; card12; card13; card14; card15; card16|]
+                 card9; card10; card11; card12; card13; card14; card15; card16;
+                 card17; card18; card19|]
