@@ -9,21 +9,26 @@ type property = {
   color : string
 }
 
-let property_name property = property.name
+let property_name property = 
+  property.name
 
-let property_id property = property.space_id
+let property_id property = 
+  property.space_id
 
-let rent_price property = property.rent_price
+let rent_price property =
+  property.rent_price
 
-let property_owner property = property.owner
+let property_owner property = 
+  property.owner
 
-let property_color property = property.color
+let property_color property = 
+  property.color
 
-let buy_price property = property.buy_price
+let buy_price property = 
+  property.buy_price
 
 let change_owner property new_owner = 
   {property with owner=new_owner}
-
 
 type penalty = {
   space_id: int;
@@ -32,11 +37,14 @@ type penalty = {
   penalty_price : int
 }
 
-let penalty_name penalty = penalty.name
+let penalty_name penalty = 
+  penalty.name
 
-let penalty_description penalty = penalty.description
+let penalty_description penalty = 
+  penalty.description
 
-let penalty_price penalty = penalty.penalty_price
+let penalty_price penalty = 
+  penalty.penalty_price
 
 type cardspace = {
   space_id: int;

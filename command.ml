@@ -29,7 +29,6 @@ let parse_jail str =
     end
   | [] -> raise Empty
 
-
 let parse_buy str =
   let to_lst = 
     str |> String.lowercase_ascii |> String.split_on_char ' '
@@ -41,7 +40,6 @@ let parse_buy str =
       else raise Malformed
     end
   | [] -> raise Empty
-
 
 let parse_board_choice str =
   let to_lst = 
