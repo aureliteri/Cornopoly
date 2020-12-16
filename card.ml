@@ -95,5 +95,34 @@ let card11 = {
   act = [Get_out true]
 }
 
+let card12 = {
+  card_id = 12;
+  description = "You need to get tested for Covid! Pay 10 Dollars";
+  act = [Change (-10)]
+}
+
+let card13 = {
+  card_id = 13;
+  description = "Pay for your class textbooks!";
+  act = [Change (-120)]
+}
+
+let card14 = {
+  card_id = 14;
+  description = "You got caught stealing from Cornell Dairy! Go to Jail";
+  act = [Move 10]
+}
+let card15 = {
+  card_id = 15;
+  description = "You were robbed 100 dollars during slope festival.";
+  act = [Change (-100)]
+}
+let card16 = {
+  card_id = 16;
+  description = "You paid another student to get into CS3110! Pay 50 dollars";
+  act = [Change (-50)]
+}
+
+
 let cardlist = [|card1; card2; card3; card4; card5; card6; card7; 
-                 card9; card10; card11|]
+                 card9; card10; card11; card12; card13; card14; card15; card16|]
