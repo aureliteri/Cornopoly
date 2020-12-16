@@ -2,6 +2,7 @@ open OUnit2
 open Board
 open Player
 open Space
+open Command
 
 (** [pp_string s] pretty-prints string [s]. *)
 let pp_string s = "\"" ^ s ^ "\""
@@ -174,6 +175,9 @@ let penalty_tests =
     penalty_getter_test "Price of Penalty" penalty_price ex2_pen 40; 
   ]
 
+(** <---------------------------TEST FOR BOARD ----------------> *)
+
+
 let board_tests = 
   [
     (* test roll dice *)
@@ -181,6 +185,26 @@ let board_tests =
     (* check_space_test "player lands on unowned property" space2 player1 space_list 
        ?? *)
 
+  ]
+
+(**<-----------------TEST FOR COMMAND---------------> *)
+
+let jail_command_test name str ex_out =
+  name >:: (fun ctxt -> 
+      assert_equal ex_out (parse_jail str))
+
+let buy_command_test name str ex_out =
+  name >:: (fun ctxt -> 
+      assert_equal ex_out (parse_buy str))
+
+let command_tests = 
+  [
+    jail_command_test "Jail pay" "PAY" Pay;
+    jail_command_test "Jail card" "CaRd" Card;
+    jail_command_test "Jail roll" "ROll" Roll;
+    (* jail_command_test "Jail command not" "Not" raise Malformed *)
+    buy_command_test "Buy yes" "Yes" Yes;
+    buy_command_test "Buy no" "NO" No;
   ]
 
 let suite =
