@@ -323,7 +323,7 @@ let card_tests = [
 
 let suite =
   "tests for CORNOPOLY" >::: List.flatten [
-    player_tests; 
+    player_tests;
     board_tests;
     space_tests;
     property_tests;

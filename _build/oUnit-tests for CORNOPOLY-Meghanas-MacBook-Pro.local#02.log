@@ -1,0 +1,81 @@
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:1:player1 name - Meghana.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:1:player1 name - Meghana is successful.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:1:player1 name - Meghana.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:4:sample player curr loc id.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:4:sample player curr loc id is successful.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:4:sample player curr loc id.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:6:sample player balance.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:6:sample player balance is successful.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:6:sample player balance.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:8:sample player moved 7 to 18.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:8:sample player moved 7 to 18 is successful.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:8:sample player moved 7 to 18.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:10:move function w/ mod wraparound.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:10:move function w/ mod wraparound is successful.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:10:move function w/ mod wraparound.
+2020-12-16T21:27:48+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:12:invalid roll dice on 20-sided dice roll number 100 times.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:12:invalid roll dice on 20-sided dice roll number 100 times is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:12:invalid roll dice on 20-sided dice roll number 100 times.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:14:card8 aciton lst move to duffield on sample player.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:14:card8 aciton lst move to duffield on sample player is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:14:card8 aciton lst move to duffield on sample player.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:15:card4 aciton lst go to go on sample player.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:15:card4 aciton lst go to go on sample player is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:15:card4 aciton lst go to go on sample player.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:16:Space name Low Rise 5.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:16:Space name Low Rise 5 is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:16:Space name Low Rise 5.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:19:Space name of Penalty.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:19:Space name of Penalty is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:19:Space name of Penalty.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:22:Jail id.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:22:Jail id is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:22:Jail id.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:25:Property rent price of Donlon.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:25:Property rent price of Donlon is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:25:Property rent price of Donlon.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:27:New property owner of Donlon.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:27:New property owner of Donlon is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:27:New property owner of Donlon.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:29:Buy price of Donlon.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:29:Buy price of Donlon is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:29:Buy price of Donlon.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:30:changeowner.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:30:changeowner is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:30:changeowner.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:33:Price of Penalty.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:33:Price of Penalty is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:33:Price of Penalty.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:35:Jail card.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:35:Jail card is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:35:Jail card.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:37:Jail empty.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:37:Jail empty is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:37:Jail empty.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:39:Buy yes.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:39:Buy yes is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:39:Buy yes.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:42:Buy EVERYTHING.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:42:Buy EVERYTHING is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:42:Buy EVERYTHING.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:44:Choose normal theme.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:44:Choose normal theme is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:44:Choose normal theme.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:46:Choose light theme.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:46:Choose light theme is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:46:Choose light theme.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:47:Empty card test.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:47:Empty card test is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:47:Empty card test.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:49:Empty card description.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:49:Empty card description is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:49:Empty card description.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:51:Empty card actions.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:51:Empty card actions is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:51:Empty card actions.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:52:Card 10 actions.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:52:Card 10 actions is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:52:Card 10 actions.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Start test tests for CORNOPOLY:54:Card_choose test 1.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: Test tests for CORNOPOLY:54:Card_choose test 1 is successful.
+2020-12-16T21:27:49+00:00 Meghanas-MacBook-Pro.local#02 I: End test tests for CORNOPOLY:54:Card_choose test 1.
