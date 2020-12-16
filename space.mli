@@ -204,10 +204,129 @@ val space39: space
 (**[property1] is the property associated with space 2 *)
 val property1 : property
 
-(** [spacelist] is the board composed of spaces *)
+(** [spacelist] is the board composed of spaces 1-39 *)
 val spacelist: space list
 
 (** [get_space id spacelst] is the unique space from the [spacelst] associated 
     with the integer identifier [id] *)
 val get_space : int -> space list ->space
 
+(** [space41] is the unique space in the dark board that is of type go *)
+val space41: space
+
+(** [space42] is the unique space in the dark board that is of type property *)
+val space42: space
+
+(** [space43] is the unique space in the dark board that is of type property *)
+val space43: space
+
+(** [space44] is the unique space in the dark board that is of type property *)
+val space44: space
+
+(** [space45] is the unique space in the dark board that is of type penalty *)
+val space45: space
+
+(** [space46] is the unique space in the dark board that is of type property *)
+val space46: space
+
+(** [space47] is the unique space in the dark board that is of type property *)
+val space47: space
+
+(** [space48] is the unique space in the dark board that is of type property *)
+val space48: space
+
+(** [space49] is the unique space in the dark board that is of type card *)
+val space49: space
+
+(** [space50] is the unique space in the dark board that is of type jail *)
+val space50: space
+
+(** [space51] is the unique space in the dark board that is of type property *)
+val space51: space
+
+(** [space52] is the unique space in the dark board that is of type property *)
+val space52: space
+
+(** [space53] is the unique space in the dark board that is of type property *)
+val space53: space
+
+(** [space54] is the unique space in the dark board that is of type property *)
+val space54: space
+
+(** [space55] is the unique space in the dark board that is of type card *)
+val space55: space
+
+(** [space56] is the unique space in the dark board that is of type property *)
+val space56: space
+
+(** [space57] is the unique space in the dark board that is of type property *)
+val space57: space
+
+(** [space58] is the unique space in the dark board that is of type penalty *)
+val space58: space
+
+(** [space59] is the unique space in the dark board that is of type property *)
+val space59: space
+
+(** [space60] is the unique space in the dark board that is of type justvisiting *)
+val space60: space
+
+(** [space61] is the unique space in the dark board that is of type property *)
+val space61: space
+
+(** [space62] is the unique space in the dark board that is of type property *)
+val space62: space
+
+(** [space63] is the unique space in the dark board that is of type property *)
+val space63: space
+
+(** [space64] is the unique space in the dark board that is of type property *)
+val space64: space
+
+(** [space65] is the unique space in the dark board that is of type property *)
+val space65: space
+
+(** [space66] is the unique space in the dark board that is of type card *)
+val space66: space
+
+(** [space67] is the unique space in the dark board that is of type property *)
+val space67: space
+
+(** [space68] is the unique space in the dark board that is of type property *)
+val space68: space
+
+(** [space69] is the unique space in the dark board that is of type property *)
+val space69: space
+
+(** [space70] is the unique space in the dark board that is of type property *)
+val space70: space
+
+(** [space71] is the unique space in the dark board that is of type property *)
+val space71: space
+
+(** [space72] is the unique space in the dark board that is of type property *)
+val space72: space
+
+(** [space73] is the unique space in the dark board that is of type card *)
+val space73: space
+
+(** [space74] is the unique space in the dark board that is of type property *)
+val space74: space
+
+(** [space75] is the unique space in the dark board that is of type property *)
+val space75: space
+
+(** [space76] is the unique space in the dark board that is of type penalty *)
+val space76: space
+
+(** [space77] is the unique space in the dark board that is of type property *)
+val space77: space
+
+(** [space78] is the unique space in the dark board that is of type property *)
+val space78: space
+
+(** [space79] is the unique space in the dark board that is of type property *)
+val space79: space
+
+(** [spacelist_dark] is the dark board composed of spaces 41-79 *)
+val spacelist_dark : space list 

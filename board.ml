@@ -22,8 +22,9 @@ let if_full_set (player : Player.player)
       then extract_color_property color_just_bought t (h :: acc)
       else extract_color_property color_just_bought t acc
     | [] -> acc
-  in if List.length (extract_color_property color (property_list player) [] ) 
-        = full_size 
+  in 
+  if List.length (extract_color_property color (property_list player) [] ) 
+     = full_size 
   then begin print_endline ("Winner is " ^ name player ^"! 
   They have a full set of " ^ color ^ "! \nCongratulations!");
     exit 0; end
@@ -72,7 +73,8 @@ let rec try_buy s =
 let rec card_action (act_lst : Card.action list) 
     (player : Player.player) : player = 
   match act_lst with
-  | h :: t -> begin
+  | h :: t -> 
+    begin
       match h with
       | Change x -> card_action t (update_balance player x)
       | Move x -> card_action t (move_to_space player x) 

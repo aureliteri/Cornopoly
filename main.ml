@@ -284,7 +284,8 @@ and double_rolled new_player new_t updated_sp new_acc current_player =
   (* if a double is rolled *)
   print_endline ("You rolled a double!");
   incr counter; (*add 1 to the count of doubles rolled *)
-  if !counter = 3 then (*if the # of doubles is 3, then send the player to jail. *)
+  if !counter = 3 
+  then (*if the # of doubles is 3, then send the player to jail. *)
     let () = print_endline ("You rolled 3 doubles in total! Go to Jail.") in
     let jail_player = (change_jail (set_location new_player 10) true )in (*set current location of player to jail. Then change the player's jail property to true  *)
     iterate new_t (updated_sp) (jail_player :: (fst new_acc), updated_sp) (*iterate to next player in line. Add jailed player to accumulator *)
@@ -345,7 +346,8 @@ and jail_pay_command player acc sp playerlist =
     card, then they are taken out of jail. Otherwise, the player must input
     a different jail command.  *)
 and jail_card_command player acc sp playerlist = 
-  if (jail_card player) then 
+  if (jail_card player) 
+  then 
     let used_card = change_jail_card player false in 
     let updated_player = change_jail used_card false in
     print_endline ("Congrats! You used your Get Out of Jail Card. You are out of jail.");
@@ -367,7 +369,8 @@ and jail_roll_command player acc sp playerlist =
         let () = print_endline ("Congrats! You have rolled a double - you are out of jail!")
         in iterate playerlist sp (not_in_jail :: fst acc , snd acc))
   else begin 
-    if !counter_jail = 3 then 
+    if !counter_jail = 3 
+    then 
       (counter_jail := 0;
        let not_in_jail = change_jail player false  in
        let () = print_endline ("You have stayed in jail for three turns. You are now out of jail") in
@@ -395,7 +398,8 @@ and player_not_bankrupt current_player new_player playerlist sp acc roll =
     begin
       print_endline ("You rolled a double!");
       incr counter; (*add 1 to the count of doubles rolled *)
-      if !counter = 3 then (*if the # of doubles is 3, then send the player to jail. *)
+      if !counter = 3 
+      then (*if the # of doubles is 3, then send the player to jail. *)
         let () = print_endline ("You rolled 3 doubles! Go to Jail.") in
         let jail_player = (change_jail (set_location new_player 10) true )in (*set current location of player to jail. Then change the player's jail property to true  *)
         iterate playerlist (sp) (jail_player :: (fst acc), sp) (*iterate to next player in line. Add jailed player to accumulator *)
@@ -416,7 +420,8 @@ let end_game lst : unit =
   | h :: t -> if List.length t = 0 then 
       (print_endline 
          (name h ^  " is the winner! Everyone else has gone bankrupt."); 
-       exit 0; ) else ()
+       exit 0; ) 
+    else ()
 
 (** [play s player_lst space_lst] runs the game recursively if [s] is not 
     "quit" and continuously updates the [player_lst] and [space_lst] until
@@ -433,6 +438,27 @@ let rec play s player_lst space_lst : unit =
       print_endline "Type 'quit' to quit. Type anything else to continue.";
       let s = read_line() in
       play s pl_lst (snd new_lst);)
+
+
+let choose_board () = 
+  print_endline ("You have a choice of which game board you would like to play.");
+  print_endline ("Would you like to play the normal Cornopoly game board?");
+  print_endline ("Normal features xyz");
+  print_endline ("Or would you rather play the Dark Cornopoly gameboard?");
+  print_endline ("Dark features xyz");
+  let rec try_board_command s = 
+    print_string (">");
+    try match parse_board_choice s with
+      | Dark ->  Space.spacelist_dark
+      | Normal ->  Space.spacelist
+    with 
+    | Malformed -> print_endline "Invalid command! Try Again"; 
+      print_string "> "; try_board_command (read_line())
+    | Empty -> print_endline "Please enter a command!"; 
+      print_string "> "; 
+      try_board_command (read_line())
+  in print_endline ("Enter DARK or NORMAL");
+  print_string (">"); try_board_command (read_line())
 
 (** [main] begins the game of Cornopoly with instructions and allows the players
     to insert their own names and then starts the game*)
@@ -451,9 +477,9 @@ let main () = Random.self_init ();
   let p4 = update_name (List.nth Player.playerlist 3) p4_name in
   print_endline("The players are: "^p1_name^", "^p2_name^", "^p3_name^", " ^
                 p4_name^".\nHere is the layout of the initial board: ");
-  print_initial_board Space.spacelist [p1;p2;p3;p4];
+  let chosen_b = choose_board () in print_initial_board chosen_b [p1;p2;p3;p4];
   print_endline "Type quit to quit. Type anything else to play.";
-  let s = read_line () in play s [p1;p2;p3;p4] Space.spacelist;
+  let s = read_line () in play s [p1;p2;p3;p4] chosen_b;
   match read_line () with | exception End_of_file -> ()
                           | file_name -> failwith "hi"
 

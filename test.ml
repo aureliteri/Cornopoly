@@ -32,14 +32,16 @@ let property_order list1 list2 =
   &&
   uniq1 = uniq2
 
-let rec property_name_printer (property_list : Space.property list) (acc : string list) = 
+let rec property_name_printer (property_list : Space.property list)
+    (acc : string list) = 
   match property_list with
   | [] -> acc
   | h :: t -> property_name_printer t (acc @ [(property_name h)])
 
 let current_location_test name player expected_output = 
   name >:: (fun ctxt -> 
-      assert_equal expected_output (current_location_id player)~printer: string_of_int )
+      assert_equal expected_output (current_location_id player)
+        ~printer: string_of_int )
 
 let player_name_test fun_name player expected_output = 
   fun_name >:: (fun ctxt -> 
@@ -81,8 +83,8 @@ let player_tests =
     current_location_test "sample player curr loc id" sample_player 11;
     player_name_test "sample player name - catpotato" sample_player "catpotato";
     player_balance_test "sample player balance" sample_player 400;
-    player_property_test "sample player property" sample_player ["Donlon"; 
-                                                                 "Goldwin Smith Hall"; "Collegetown Bagels"]; 
+    player_property_test "sample player property" sample_player 
+      ["Donlon";  "Goldwin Smith Hall"; "Collegetown Bagels"]; 
     current_location_test "sample player moved 7 to 18" move_player_18 18;
     current_location_test "move function w/ mod wraparound" 
       move_player_wraparound_1 1;
@@ -171,7 +173,8 @@ let ex2_pen = get_penalty space18
 let penalty_tests =
   [
     penalty_getter_test "Name of Penalty" penalty_name ex1_pen "Penalty";
-    penalty_getter_test "Description of Penalty" penalty_description ex1_pen "$60 Student activity fee..."; 
+    penalty_getter_test "Description of Penalty" penalty_description ex1_pen
+      "$60 Student activity fee..."; 
     penalty_getter_test "Price of Penalty" penalty_price ex2_pen 40; 
   ]
 
