@@ -501,7 +501,7 @@ let space41 : space = Go {
 
 let space42 : space = Property { 
     space_id = 2;
-    name = "Low Rise 5";
+    name = "SPOOKY";
     rent_price = 20;
     owner = "";
     buy_price = 15;
@@ -510,7 +510,7 @@ let space42 : space = Property {
 
 let space43 : space = Property { 
     space_id = 3;
-    name = "Donlon";
+    name = "BREH";
     rent_price = 24;
     owner = "";
     buy_price = 17;
@@ -519,7 +519,7 @@ let space43 : space = Property {
 
 let space44 : space = Property { 
     space_id = 4;
-    name = "CKB";
+    name = "YAS CKB";
     rent_price = 27;
     owner = "";
     buy_price = 20;
@@ -528,14 +528,14 @@ let space44 : space = Property {
 
 let space45 : space = Penalty { 
     space_id = 5;
-    name = "Penalty";
+    name = "THIS IS A PENALTY BOI";
     description = "Pay $30 for your Bursar Bill :(";
     penalty_price = 30
   }
 
 let space46 : space = Property { 
     space_id = 6;
-    name = "Klarman Hall";
+    name = "KLARMAN SUCKS";
     rent_price = 28;
     owner = "";
     buy_price = 24;
@@ -544,7 +544,7 @@ let space46 : space = Property {
 
 let space47 : space = Property { 
     space_id = 7;
-    name = "Goldwin Smith Hall";
+    name = "Goldwin Smith Hall SUCKS";
     rent_price = 28;
     owner = "";
     buy_price = 24;
@@ -553,7 +553,7 @@ let space47 : space = Property {
 
 let space48 : space = Property { 
     space_id = 8;
-    name = "Cafe Jennie";
+    name = "CAFE JENNIE KIM";
     rent_price = 29;
     owner = "";
     buy_price = 25;
@@ -562,17 +562,17 @@ let space48 : space = Property {
 
 let space49 : space = CardSpace { 
     space_id = 9;
-    name = "Chance";
+    name = "CHANCE BITCH";
   }
 
 let space50 : space = Jail {
     space_id = 10;
-    name = "Jail"
+    name = "GO TO JAIL BITCH"
   }
 
 let space51 : space = Property { 
     space_id = 11;
-    name = "Becker Hall";
+    name = "Becker Hall SUCKS";
     rent_price = 30;
     owner = "";
     buy_price = 25;
@@ -581,7 +581,7 @@ let space51 : space = Property {
 
 let space52 : space = Property { 
     space_id = 12;
-    name = "Bethe Hall";
+    name = "Bethe Hall I WISH I GOT THIS";
     rent_price = 30;
     owner = "";
     buy_price = 25;
@@ -590,7 +590,7 @@ let space52 : space = Property {
 
 let space53 : space = Property { 
     space_id = 13;
-    name = "Baker Flagpole";
+    name = "Baker Flagpole YO DANK";
     rent_price = 32;
     owner = "";
     buy_price = 28;
@@ -599,7 +599,7 @@ let space53 : space = Property {
 
 let space54 : space = Property { 
     space_id = 14;
-    name = "Physical Sciences Building";
+    name = "Physical Sciences Building BREH SUCKS";
     rent_price = 34;
     owner = ""; 
     buy_price = 30;
@@ -613,7 +613,7 @@ let space55 : space = CardSpace {
 
 let space56 : space = Property { 
     space_id = 16;
-    name = "Rockefeller Hall";
+    name = "Rockefeller Hall IS OLD AS FK";
     rent_price = 35;
     owner = "";
     buy_price = 30;
@@ -622,7 +622,7 @@ let space56 : space = Property {
 
 let space57 : space = Property { 
     space_id = 17;
-    name = "Baker Lab";
+    name = "Baker Lab IS HELL";
     rent_price = 35;
     owner = "";
     buy_price = 30;
@@ -631,14 +631,14 @@ let space57 : space = Property {
 
 let space58 : space = Penalty { 
     space_id = 18;
-    name = "Penalty";
+    name = "Penalty YO";
     description = "Flu season! Pay $40 for your flu shot";
     penalty_price = 40
   }
 
 let space59 : space = Property { 
     space_id = 19;
-    name = "Kennedy Hall";
+    name = "Kennedy Hall WHERE IS THIS";
     rent_price = 35;
     owner = "";
     buy_price = 30;
@@ -652,7 +652,7 @@ let space60 : space = JustVisiting {
 
 let space61 : space = Property { 
     space_id = 21;
-    name = "Malott Hall";
+    name = "Malott Hall  MATH SUCKS";
     rent_price = 37;
     owner = "";
     buy_price = 32;
@@ -661,7 +661,7 @@ let space61 : space = Property {
 
 let space62 : space = Property { 
     space_id = 22;
-    name = "Mann Library";
+    name = "Mann Library YO DNAK";
     rent_price = 38;
     owner = "";
     buy_price = 35;
@@ -671,7 +671,7 @@ let space62 : space = Property {
 
 let space63 : space = Property { 
     space_id = 23;
-    name = "Statler Hall";
+    name = "Statler Hall IS FANCY";
     rent_price = 38;
     owner = "";
     buy_price = 35;
@@ -680,7 +680,7 @@ let space63 : space = Property {
 
 let space64 : space = Property { 
     space_id = 24;
-    name = "Barton Hall";
+    name = "Barton Hall BREH NO ";
     rent_price = 38;
     owner = "";
     buy_price = 35;
@@ -689,7 +689,7 @@ let space64 : space = Property {
 
 let space65 : space = Property { 
     space_id = 25;
-    name = "Uris Hall";
+    name = "Uris Hall COOL";
     rent_price = 40;
     owner = "";
     buy_price = 35;
