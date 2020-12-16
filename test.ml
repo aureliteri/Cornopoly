@@ -33,7 +33,7 @@ let player_name_test fun_name player expected_output =
       assert_equal expected_output (name player)~printer: String.escaped)
 
 let player_balance_test 
-    (name )
+    name
     player 
     expected_output = 
   name >:: (fun ctxt -> 
@@ -49,8 +49,8 @@ let player_property_test
       assert_equal true 
         (property_order expected_output (string_property_list)))
 
-let sample_player = sample_player_test
-let move_player_18 = move sample_player 7 
+
+let move_player_18 = move sample_player 7
 let move_player_wraparound_1 = move move_player_18 22
 let move_player_wraparound_9 = move move_player_18 30
 
@@ -63,20 +63,23 @@ let player_tests =
     current_location_test "sample player curr loc id" sample_player 11;
     player_name_test "sample player name - catpotato" sample_player "catpotato";
     player_balance_test "sample player balance" sample_player 400;
-    player_property_test "sample player property" sample_player ["Donlon"; "Goldwin Smith Hall"; "Collegetown Bagels"];
+    player_property_test "sample player property" sample_player ["Donlon"; 
+                                                                 "Goldwin Smith Hall"; "Collegetown Bagels"];
     current_location_test "sample player moved 7 to 18" move_player_18 18;
-    current_location_test "move function w/ mod wraparound" move_player_wraparound_1 1;
-    current_location_test "move function w/ mod wraparound" move_player_wraparound_9 9;
+    current_location_test "move function w/ mod wraparound" 
+      move_player_wraparound_1 1;
+    current_location_test "move function w/ mod wraparound" 
+      move_player_wraparound_9 9;
   ]
 
 
-let check_space_test 
+(* let check_space_test 
     (name : string)
     (space: Space.space)
     (player: Player.player)
     (spacelist : Space.space list)
     (expected_output : Player.player * Space.space list) = 
-  name >:: (fun ctxt -> 
+   name >:: (fun ctxt -> 
       assert_equal expected_output (check_space space player spacelist))
 
     (* let buy_property command player board property=  *)
@@ -84,15 +87,59 @@ let check_space_test
     (player: Player.player)
     (spacelist : Space.space list)
     (expected_output : Player.player * Space.space list) = 
+   name >:: (fun ctxt -> 
+      assert_equal expected_output (check_space space player spacelist)) *)
+
+(** <----------------TEST FOR SPACE --------------------> *)
+
+let space_getter_test name funcname space expected_output =
   name >:: (fun ctxt -> 
-      assert_equal expected_output (check_space space player spacelist))
+      assert_equal expected_output (funcname space))
+
+let space_tests=
+  [
+    space_getter_test "Space name Low Rise 5" space_name space2 "Low Rise 5";
+    space_getter_test "Space name Jail" space_name space10 "Jail";
+    space_getter_test "Space name of Chance" space_name space9 "Chance";
+    space_getter_test "Space name of Penalty" space_name space36 "Penalty";
+    space_getter_test "Space name of Go" space_name space1 "Go";
+    space_getter_test "Space_id test: Cafe Jennie" space_id space8 8;
+  ]
+
+let property_getter_test name funcname prop ex_out =
+  name >:: (fun ctxt -> 
+      assert_equal ex_out (funcname prop))
+
+let ex_prop = get_property space3
+let new_ex_prop = change_owner ex_prop "ME"
+
+let property_tests=
+  [
+    property_getter_test "Property name of Donlon" property_name ex_prop "Donlon";
+    property_getter_test "Property id of Donlon" property_id ex_prop 3;
+    property_getter_test "Property rent price of Donlon" rent_price ex_prop 24;
+    property_getter_test "Original property owner of Donlon" property_owner ex_prop "";
+    property_getter_test "New property owner of Donlon" property_owner new_ex_prop "ME";
+    property_getter_test "Property color of Donlon" property_color ex_prop "greeen";
+    property_getter_test "Buy price of Donlon" buy_price ex_prop 17;
+  ]
+
+let ex1_pen = get_penalty space36
+let ex2_pen = get_penalty space18
+
+let penalty_tests =
+  [
+    assert_equal (penalty_name ex1_pen) "Penalty";
+    assert_equal (penalty_description ex1_pen) "Flu season! Pay $40 for your flu shot";
+    assert_equal (penalty_price ex2_pen) 60;
+  ]
 
 let board_tests = 
   [
     (* test roll dice *)
     (* test check_space *)
-    check_space_test "player lands on unowned property" space2 player1 space_list 
-      ??
+    (* check_space_test "player lands on unowned property" space2 player1 space_list 
+       ?? *)
 
   ]
 
@@ -100,6 +147,9 @@ let suite =
   "tests for CORNOPOLY" >::: List.flatten [
     player_tests;
     board_tests;
+    space_tests;
+    property_tests;
+    penalty_tests;
   ]
 
 let _ = run_test_tt_main suite
