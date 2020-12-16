@@ -123,6 +123,16 @@ let player4 : player = {
   jail_card = false;
 }
 
+let sample_player = {
+  id = 4;
+  name = "catpotato";
+  current_location_id = 11;
+  balance = 400;
+  property_list = [get_property space3;get_property space7;get_property space39];
+  in_jail = false;
+  jail_card = false;
+}
+
 let playerlist = [player1; player2; player3; player4;]
 
 let remove_player player plist=

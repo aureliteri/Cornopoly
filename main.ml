@@ -17,7 +17,7 @@
 
      4. Make JSON maps and players -> parse json and return specific type list
      5. Make rental prices and fees reasonable so that game is actually enjoyable.
-     6. Create a working make docs (HTML thing)
+     6. Create a working make docs (HTML thing) FINISHED
      7. Fix liines going over 80 characters
      ???. ??? Make bisect
 
@@ -331,8 +331,8 @@ and jail_rules command player acc sp playerlist =
     input a different jail command. *)
 and jail_pay_command player acc sp playerlist = 
   if (balance player < 100) then 
-    let () = print_endline "You do not have enough in your balance to pay! Type in another command." in 
-    jail_rules (parse_jail (read_line())) player acc sp playerlist
+    let () = print_endline "You do not have enough in your balance to pay! Type in another command." 
+    in jail_rules (parse_jail (read_line())) player acc sp playerlist
   else 
     let pay_jail_player = update_balance player (-100) in
     counter_jail := 0;
@@ -352,8 +352,8 @@ and jail_card_command player acc sp playerlist =
     counter_jail := 0;
     iterate playerlist sp (updated_player :: fst acc , snd acc)
   else
-    let () = print_endline ("You do not have a Get Out of Jail Card. Enter another command.") in
-    print_string (">");
+    let () = print_endline ("You do not have a Get Out of Jail Card. Enter another command.")
+    in print_string (">");
     jail_rules (parse_jail (read_line())) player acc sp playerlist
 
 (**[jail_roll_command] checks to see if they player rolls a double to exit jail.
@@ -364,8 +364,8 @@ and jail_roll_command player acc sp playerlist =
   if snd (roll_dice 6)
   then (counter_jail := 0;
         let not_in_jail = change_jail player false  in
-        let () = print_endline ("Congrats! You have rolled a double - you are out of jail!") in
-        iterate playerlist sp (not_in_jail :: fst acc , snd acc))
+        let () = print_endline ("Congrats! You have rolled a double - you are out of jail!")
+        in iterate playerlist sp (not_in_jail :: fst acc , snd acc))
   else begin 
     if !counter_jail = 3 then 
       (counter_jail := 0;

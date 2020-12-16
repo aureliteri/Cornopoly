@@ -1,8 +1,8 @@
+
 (**Representation of a player in the Cornolpoly game *)
 
 (**[player] is the type of a single player *)
 type player
-
 (**[UnknownPlayer] is raised when an unknown player is encountered *)
 exception UnknownPlayer of string
 
@@ -94,6 +94,9 @@ val player3 : player
 (**[player4] is a player in the game. *)
 val player4 : player
 
+(**[sample_player] is a sample player used for testing *)
+val sample_player : player
+
 (**[playerlist] is the list of player in the game. *)
 val playerlist: player list
 
@@ -103,6 +106,5 @@ val remove_player: player -> player list -> player list
 
 
 (* CAN BE DELETED LATER, USED FOR TESTING PURPOSES FOR NOW*)
-(* val sample_player_test : player
-
-   val player6 : player *)
+(* val sample_player_test : player *)
+(* val player6 : player *)

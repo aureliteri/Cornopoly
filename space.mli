@@ -201,6 +201,8 @@ val space38: space
 (** [space39] is the unique space in the board that is of type property *)
 val space39: space
 
+(**[property1] is the property associated with space 2 *)
+val property1 : property
 
 (** [spacelist] is the board composed of spaces *)
 val spacelist: space list

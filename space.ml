@@ -113,6 +113,7 @@ let space1 : space = Go {
     name = "Go";
   }
 
+
 let space2 : space = Property { 
     space_id = 2;
     name = "Low Rise 5";
@@ -431,6 +432,21 @@ let space39 : space = Property {
     buy_price = 60;
     color = "blue"
   }
+
+let property1 = {
+  space_id = 2;
+  name = "Low Rise 5";
+  rent_price = 20;
+  owner = "";
+  buy_price = 15;
+  color = "green"
+}
+
+
+let cardspace1 = {
+  space_id = 26;
+  name = "Chance";
+}
 
 let spacelist : space list = [
   space1; space2; space3; space4; 
