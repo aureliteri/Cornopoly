@@ -43,13 +43,6 @@ let rec try_command_level s =
     try_command_level (read_line()) 
 
 
-let rec print_locations1 playerlist board acc = 
-  match playerlist with
-  | [] -> acc
-  | h :: t -> 
-    let player_loc = space_name (get_space(current_location_id h) board)in
-    let complete_string = name h ^ " is currently at " ^ player_loc^".\n" in
-    print_locations1 t board (acc ^ complete_string)
 
 (** [yes_buy_property p plist board prop] returns a tuple of a Player.player list and a Space.space list
     that contains the updated information of the lsit of all players [plist] and the game board [board] after
@@ -60,7 +53,6 @@ let yes_buy_property player plst board prop =
   let buy_price_level = Array.get (buy_price prop) level in 
   let player = add_property player level prop in (** adds property to player's property list *) (**FIX *)
   let p' = update_balance player (-1 * buy_price_level) in  (** updates player's balance *)
-
   let updated_pL = replace_player plst p' in  
   if (balance p' <= 0) then 
     let () = print_endline "You do not have enough in your balance! Sorry!"
