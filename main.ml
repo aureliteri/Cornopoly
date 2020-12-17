@@ -26,6 +26,10 @@
    b. add more players (so we can have multiple player lists like playerlist 
    of playerlist? or choose random players at the beginning of the game.
    c. possibly another board? (last resort)
+
+
+
+   Different levels of propertries (house, apartment, hotel, landmark)
 *)
 open Board  
 open Player
@@ -35,13 +39,13 @@ open Command
 
 (** [print_locations playerlist acc] iterates through [playerlist] and accumulates 
     the location of each player in the game as a string *)
-let rec print_locations playerlist acc = 
+let rec print_locations playerlist board acc = 
   match playerlist with
   | [] -> acc
   | h :: t -> 
-    let player_loc = space_name (get_space(current_location_id h)spacelist)in
+    let player_loc = space_name (get_space(current_location_id h) board)in
     let complete_string = name h ^ " is currently at " ^ player_loc^".\n" in
-    print_locations t (acc ^ complete_string)
+    print_locations t board (acc ^ complete_string)
 
 (** [print_balances playerlist acc] iterates through [playerlist] and accumulates 
     the balance of each player in the game as a string *)
@@ -56,33 +60,35 @@ let rec print_balances playerlist acc =
 
 (** [print_properties properties] iterates through [properties] and prints 
     all property traits of all properties. *)
-let rec print_properties (properties : property list) : unit = 
+let rec print_properties properties : unit = 
   match properties with
   | [] -> print_endline ""
-  | h :: t -> 
-    print_endline ("Name: " ^ property_name h);
-    print_endline ("ID: " ^ string_of_int (property_id h));
-    print_endline ("Color: " ^ property_color h);
-    print_endline ("Rent Price: $" ^ string_of_int (rent_price h)^ "\n");
+  | (k,v) :: t -> 
+    print_endline ("Name: " ^ property_name v);
+    print_endline ("Ownership Level " ^ string_of_int k);
+    print_endline ("ID: " ^ string_of_int (property_id v));
+    print_endline ("Color: " ^ property_color v);
+    print_endline ("Rent Price: $" ^ string_of_int (rent_price v).(k) ^ "\n");
     print_properties t 
 
 (** [print_players players] prints the status of every player [players], 
     including the player's name, location, balance, and list of properties. *)
-let rec print_players players = 
+let rec print_players players board = 
   match players with
   | [] -> print_endline ""
   | h :: t -> let p_id = string_of_int (id h) in 
     let p_name = name h in 
-    let p_cur_loc = space_name (get_space(current_location_id h) spacelist) in 
+    let p_cur_loc = space_name (get_space (current_location_id h) board) in 
     let p_balance = string_of_int (balance h)in 
-    let p_properties = property_list h in print_endline 
+    let p_properties = property_list h in print_endline (**FIX PROPERTIES *)
       ("\n" ^ p_name ^ "'s ID is " ^ p_id ^ " and their current location is " 
        ^ p_cur_loc ^ ".\nTheir balance is $" ^ p_balance ^ 
        ". Their properties are:");
-    if List.length p_properties = 0 then 
+    if List.length p_properties = 0 
+    then 
       print_endline "None" else 
-      print_properties p_properties;
-    print_players t
+      print_properties p_properties; 
+    print_players t board
 
 (** [print_initial_board spaces player] prints all of the information about
     the game board. The informaiton includes each player's name, starting
@@ -105,15 +111,16 @@ let rec delete_player_record board player acc =
   | [] -> acc 
   | h :: t ->  
     match h with
-    | Property x -> if property_owner x = name player 
+    | Property x -> 
+      if property_owner x = name player 
       then delete_player_record t player (Property (change_owner x "") :: acc) 
       else delete_player_record t player (h :: acc)
     | _ ->  delete_player_record t player (h :: acc)
 
-(**[update_board playerlist] prints all the locations and balances of all 
+(**[update_board playerlist board] prints all the locations and balances of all 
    players*)
-let update_board playerlist =
-  print_endline ("\n" ^ print_locations playerlist "");
+let update_board playerlist board =
+  print_endline ("\n" ^ print_locations playerlist board "");
   print_endline (print_balances playerlist "")
 
 (**[check_space_chance player playerList board] is the tuple containing
@@ -174,47 +181,70 @@ let rec try_command_property s p pl board property =
     print_string "> "; 
     try_command_property (read_line()) p pl board property
 
+let get_level_price property = 
+  let level = property_level property in
+  let rent_arr = rent_price property in
+  rent_arr.(level)
+
 (**[land_someone_else_property player playerList baord property] updates 
    [player] [board] and [property] according to interaction between [player] and 
    [property]. [player] must first pay rent, then decide if [player] wants to 
    purchase the property from the previous owner. The updated 
    (Player.player list * Space.space list) is returned.*)
-let land_someone_else_property player playerList board property = 
+let land_someone_else_property player playerList board property =  (**FIX FOR NEW PROPERTY LIST *)
+  let cur_price = get_level_price property in
   print_endline ("You have landed on " ^(property_name property) ^ 
                  ". It is owned by " ^ property_owner property ^ 
                  ". \nYou must pay rent of $" ^ 
-                 (string_of_int  (rent_price property)  ^ "."));
-  let pl = update_balance player (-1 * rent_price property) in
+                 (string_of_int (cur_price) ^ "."));
+  let pl = update_balance player (-1 * cur_price) in
   let updated_owner = update_balance (find_player (property_owner property) 
-                                        playerList) (rent_price property) in
+                                        playerList) cur_price in
   let lst = replace_player playerList pl in
   let lst2 = replace_player lst updated_owner in
   print_endline ("The price of " ^ (property_name property) ^ " is $" ^
-                 (string_of_int (buy_price property)));
+                 (string_of_int ((buy_price property).(property_level property))));
   print_endline "Do you want to purchase it? (Type: Yes or No)"; 
   print_string "> ";
   try_command_property (read_line()) pl lst2 board property
 
+let print_buy_prices property = 
+  Array.iteri (fun i p -> print_endline 
+                  ("Property level: " ^ string_of_int i ^ ", Price: "^
+                   string_of_int p)) (buy_price property)
+
 (**[check_space_property space player playerList board property] updates checks
    if [space] i owned by [player] and returns an updated 
    (Player.player list * Space.space list) accordingly *)
-let check_space_property space player playerList board property = 
-  if (String.equal (property_owner property) "") then 
+let check_space_property space player playerList board property =  (**FIX FOR NEW PROPERTY LIST *)
+  if (String.equal (property_owner property) "") then  (**HERREE *)
     begin
-      print_endline ("The price of " ^ (property_name property) ^ " is $" ^ 
-                     (string_of_int (buy_price property)) ^ 
-                     "\nDo you want to purchase it? (Type: Yes or No)");
+      print_endline ("You landed on " ^ property_name property ^".");
+      (**print all of the buy prices and their levels // do you wanna buy? which level do you want to purchase*)
+      print_endline ("The property prices are");
+      print_buy_prices property;
+      print_endline 
+        "Do you want to purchase it? (Type: Yes or No)";      
       print_string "> ";
       try_command_property (read_line()) player playerList board property 
     end
   else begin 
     if String.equal (property_owner property) (name player)
     then begin
-      print_endline ("You own this property. You get to stay for free!");
+      print_endline ("You own this property. You get to stay for free!"); (**Implement level update *)
+      print_endline ("Do you want to level up this property?"); 
+
+
+      (* buy_price (read_line()) *)
+
+
+
+
+
       (playerList, board)
     end
     else
-      land_someone_else_property player playerList board property
+      land_someone_else_property player playerList board property (** Match last owner's level *)
   end  
 
 (**[check_space].... pass in 
@@ -242,9 +272,6 @@ let check_space (space: space) player (playerList: Player.player list)
   | JustVisiting jv ->
     check_space_justvisiting playerList board 
 
-
-
-
 (*TEST CASE if you roll 3 times WHILE IN JAIL then you get out  *)
 let counter = ref 0 
 let counter_jail = ref 0
@@ -260,9 +287,11 @@ let rec iterate playerlist (sp: space list) acc =
       let new_player = move h (fst roll) in 
       print_endline (name h ^ " has rolled a "^ string_of_int (fst roll) ^"!");
       let new_space = get_space (current_location_id new_player) sp in 
+      print_endline (string_of_int (current_location_id new_player));
       let upd_tup = check_space new_space new_player
           ((fst acc) @ playerlist) sp in
       let current_player = find_player (name h) (fst upd_tup) in 
+      print_endline (string_of_int (current_location_id current_player));
       let new_acc = (List.filter (fun x -> id x < id h) (fst upd_tup), sp) in 
       let new_t = List.filter (fun x -> id x > id h) (fst upd_tup) in 
       if (balance (current_player) <= 0) then 
@@ -282,13 +311,13 @@ let rec iterate playerlist (sp: space list) acc =
 *)
 and double_rolled new_player new_t updated_sp new_acc current_player = 
   (* if a double is rolled *)
-  print_endline ("You rolled a double!");
+  print_endline("You rolled a double!");
   incr counter; (*add 1 to the count of doubles rolled *)
   if !counter = 3 
   then (*if the # of doubles is 3, then send the player to jail. *)
     let () = print_endline ("You rolled 3 doubles in total! Go to Jail.") in
-    let jail_player = (change_jail (set_location new_player 10) true )in (*set current location of player to jail. Then change the player's jail property to true  *)
-    iterate new_t (updated_sp) (jail_player :: (fst new_acc), updated_sp) (*iterate to next player in line. Add jailed player to accumulator *)
+    let jail_player = (change_jail (set_location new_player 10) true ) in 
+    iterate new_t (updated_sp) (jail_player :: (fst new_acc), updated_sp) 
   else iterate (current_player :: new_t) (updated_sp) (fst new_acc, updated_sp)
 
 (** [player_in_jail h acc sp t] is when the player is in jail. 
@@ -298,7 +327,7 @@ and double_rolled new_player new_t updated_sp new_acc current_player =
 and player_in_jail h acc sp t = 
   incr counter_jail;
   if !counter_jail = 1 then 
-    print_endline (name h ^ " is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, \nor try to roll a double to leave jail early.");
+    print_endline (name h^" is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, \nor try to roll a double to leave jail early.");
   let rec try_command s =         
     print_string (">");
     try 
@@ -332,7 +361,8 @@ and jail_rules command player acc sp playerlist =
     input a different jail command. *)
 and jail_pay_command player acc sp playerlist = 
   if (balance player < 100) then 
-    let () = print_endline "You do not have enough in your balance to pay! Type in another command." 
+    let () = print_endline "You do not have enough in your balance to pay! 
+    Type in another command." 
     in jail_rules (parse_jail (read_line())) player acc sp playerlist
   else 
     let pay_jail_player = update_balance player (-100) in
@@ -350,11 +380,13 @@ and jail_card_command player acc sp playerlist =
   then 
     let used_card = change_jail_card player false in 
     let updated_player = change_jail used_card false in
-    print_endline ("Congrats! You used your Get Out of Jail Card. You are out of jail.");
+    print_endline ("Congrats! You used your Get Out of Jail Card. 
+    You are out of jail.");
     counter_jail := 0;
     iterate playerlist sp (updated_player :: fst acc , snd acc)
   else
-    let () = print_endline ("You do not have a Get Out of Jail Card. Enter another command.")
+    let () = print_endline ("You do not have a Get Out of Jail Card. 
+    Enter another command.")
     in print_string (">");
     jail_rules (parse_jail (read_line())) player acc sp playerlist
 
@@ -376,7 +408,8 @@ and jail_roll_command player acc sp playerlist =
        let () = print_endline ("You have stayed in jail for three turns. You are now out of jail") in
        iterate playerlist sp (not_in_jail :: fst acc , snd acc))
     else
-      let () =  print_endline ("You didn't roll a double. You are still in jail.") in 
+      let () =  print_endline 
+          ("You didn't roll a double. You are still in jail.") in 
       iterate playerlist sp (player :: fst acc , snd acc)
   end
 
@@ -416,7 +449,8 @@ and player_not_bankrupt current_player new_player playerlist sp acc roll =
     the winner. Otherwise, the game continues.*)
 let end_game lst : unit = 
   match lst with 
-  | [] -> print_endline ("No winner sorry."); exit 0;
+  | [] -> print_endline ("No winner sorry."); 
+    exit 0;
   | h :: t -> if List.length t = 0 then 
       (print_endline 
          (name h ^  " is the winner! Everyone else has gone bankrupt."); 
@@ -430,14 +464,15 @@ let rec play s player_lst space_lst : unit =
   match s with
   | "quit" -> exit 0;
   | _ -> ( 
-      print_players player_lst;
+      print_players player_lst space_lst;
       let new_lst = iterate player_lst space_lst ([], []) in
       let pl_lst = List.rev (fst new_lst) in
+      let sp_lst = snd new_lst in 
       end_game pl_lst;
-      update_board pl_lst; 
+      update_board pl_lst sp_lst; 
       print_endline "Type 'quit' to quit. Type anything else to continue.";
       let s = read_line() in
-      play s pl_lst (snd new_lst);)
+      play s pl_lst (sp_lst);)
 
 
 let choose_board () = 
@@ -475,13 +510,13 @@ let main () = Random.self_init ();
   print_endline("Player 4, please insert your name:");
   let p4_name = read_line () in 
   let p4 = update_name (List.nth Player.playerlist 3) p4_name in
+  let chosen_b = choose_board () in
   print_endline("The players are: "^p1_name^", "^p2_name^", "^p3_name^", " ^
                 p4_name^".\nHere is the layout of the initial board: ");
-  let chosen_b = choose_board () in print_initial_board chosen_b [p1;p2;p3;p4];
+  print_initial_board chosen_b [p1;p2;p3;p4];
   print_endline "Type quit to quit. Type anything else to play.";
   let s = read_line () in play s [p1;p2;p3;p4] chosen_b;
-  match read_line () with | exception End_of_file -> ()
-                          | file_name -> failwith "hi"
+  match read_line() with | exception End_of_file -> ()|file_name -> failwith ""
 
 (* Execute the game engine. *)
 let () = main ()

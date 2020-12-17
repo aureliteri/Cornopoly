@@ -53,3 +53,13 @@ let parse_board_choice str =
     end
   | [] -> raise Empty
 
+let parse_level_input str = 
+  let to_lst = 
+    str |> String.lowercase_ascii |> String.split_on_char ' '
+    |> List.filter (fun x -> x <> "") in
+  try
+    let num = int_of_string_opt (List.hd to_lst) in
+    match num with
+    | None -> raise Malformed
+    | Some x -> if x < 0 || x > 3 then raise Malformed else x
+  with _ -> raise Empty

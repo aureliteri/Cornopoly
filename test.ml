@@ -59,7 +59,7 @@ let player_property_test
     (player : Player.player)
     (expected_output : string list) = 
   let property_list = property_list player in 
-  let string_property_list = property_name_printer property_list [] in
+  let string_property_list = property_name_printer (snd(List.split property_list)) [] in
   name >:: (fun ctxt -> 
       (* assert_equal true 
          (property_order expected_output (string_property_list) ) *)
@@ -157,14 +157,14 @@ let property_tests=
     property_getter_test "Property name of Donlon" property_name ex_prop 
       "Donlon";
     property_getter_test "Property id of Donlon" property_id ex_prop 3;
-    property_getter_test "Property rent price of Donlon" rent_price ex_prop 24;
+    property_getter_test "Property rent price of Donlon" rent_price ex_prop [|20;10;10|];
     property_getter_test "Original property owner of Donlon" property_owner 
       ex_prop "";
     property_getter_test "New property owner of Donlon" property_owner 
       new_ex_prop "ME";
     property_getter_test "Property color of Donlon" property_color ex_prop 
       "green";
-    property_getter_test "Buy price of Donlon" buy_price ex_prop 17;
+    property_getter_test "Buy price of Donlon" buy_price ex_prop [|20;10;10|];
     (* property change owner test weird *)
     property_change_owner_test "changeowner" ex_prop "ME" new_ex_prop;
 

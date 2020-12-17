@@ -6,11 +6,14 @@ type property
 (** [property_name property] is the name [name] of [property]*)
 val property_name : property -> string
 
+(** [property_level property] is the level [l] of [property]*)
+val property_level : property -> int
+
 (** [property_id property] is the numberic identifier [space_id] of [property] *)
 val property_id : property -> int
 
 (** [rent_price property] is the amount of rent [rent_price] associated with [property] *)
-val rent_price : property -> int
+val rent_price : property -> int array
 
 (** [property_owner property] is the name of the owner [owner] of [property] *)
 val property_owner : property -> string
@@ -19,7 +22,11 @@ val property_owner : property -> string
 val property_color : property -> string
 
 (** [buy_price property] is the amount that a player can buy [property] for*)
-val buy_price : property -> int
+val buy_price : property -> int array
+
+(** [change_level property new_level] is a [property] with the new owner 
+    [new_level] associated with it*)
+val change_level: property -> int -> property
 
 (** [change_owner property new_owner] is a [property] with the new owner 
     name [new_owner] associated with it*)

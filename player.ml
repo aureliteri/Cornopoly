@@ -7,10 +7,11 @@ type player = {
   name : string;
   current_location_id : int; 
   balance : int;
-  property_list: property list;
+  property_list: (int * property) list;
   in_jail: bool;
   jail_card: bool;
 }
+
 
 let id player =
   player.id
@@ -46,8 +47,8 @@ let move player int' =
   if (player.current_location_id + int') > 39 then 
     begin
       print_endline "You have passed go! $50 has been added to your balance.";
-      {player with current_location_id = (player.current_location_id + int') mod 39;
-                   balance = player.balance + 50}
+      {player with current_location_id = (player.current_location_id + int') 
+                                         mod 39; balance = player.balance + 50}
     end
   else {player with current_location_id = (player.current_location_id + int')} 
 
@@ -61,20 +62,19 @@ let update_name player new_name =
 let update_balance player amount = 
   {player with balance = player.balance + amount}
 
-let add_property player property = 
-  {player with property_list =  property :: property_list player}
+let add_property player level property = 
+  {player with property_list = (level, property) :: property_list player}
 
 let update_name player new_name = 
   {player with name = new_name }
 
 let remove_property player property =
   let new_property_list = List.filter 
-      (fun x -> property_id property != property_id x)(property_list player)
+      (fun (level,prop) -> property_id property != property_id prop)(property_list player)
   in {player with property_list = new_property_list}
 
 let replace_player playerlist new_player =
   List.map(fun x -> if id x = id new_player then new_player else x) playerlist
-
 
 let rec find_player find playerlist =
   match playerlist with
@@ -130,9 +130,9 @@ let sample_player = {
   name = "catpotato";
   current_location_id = 11;
   balance = 400;
-  property_list = [get_property space3;
-                   get_property space7;
-                   get_property space39];
+  property_list = [(1,get_property space3);
+                   (1,get_property space7);
+                   (2,get_property space39)];
   in_jail = false;
   jail_card = false;
 }
