@@ -21,30 +21,9 @@ val property_color : property -> string
 (** [buy_price property] is the amount that a player can buy [property] for*)
 val buy_price : property -> int
 
-val penalty_price : penalty -> int
-
-(** [cardspace] is the unique type of the card space where the player can 
-    recieve a mystery card*)
-type cardspace
-
-(** [go] is unique type of the starting space on the game board and every time
-    a player passes this space they revieve a constant amount of money *)
-type go
-
-(** [justvisiting] is the unique type of the visiting space on the game board*)
-type justvisiting
-
-(** [jail] is the unique jail space on the game board*)
-type jail
-
-(** [space] is the type of an individual space on the game board*)
-type space = 
-  | Property of property 
-  | CardSpace of cardspace
-  | Jail of jail
-  | Penalty of penalty 
-  | Go of go
-  | JustVisiting of justvisiting
+              | Penalty of penalty 
+              | Go of go
+              | JustVisiting of justvisiting
 
 (** [space_name space] is the string name associated with [space]*)
 val space_name : space -> string
