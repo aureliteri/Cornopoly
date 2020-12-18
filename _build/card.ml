@@ -4,11 +4,12 @@ type action =
   | Move of int
   | Get_out of bool
 
-type card = {
-  card_id: int;
-  description: string;
-  act: action list;
-}
+type card =
+  {
+    card_id: int;
+    description: string;
+    act: action list;
+  }
 
 let empty = {
   card_id = 0;

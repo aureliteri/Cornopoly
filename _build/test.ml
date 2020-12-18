@@ -5,20 +5,6 @@ open Space
 open Command
 open Card
 
-(*----------------------------TEST PLAN--------------------------------------
-  1. OUnit Testing - Glassbox testing
-  -We constructed OUnit test suites for the functions that do not require user
-  inputs. Our 
-
-  2. Manual/Play Testing - Blackbox testing
-  -We play tested our game to mainly test the functions in the main and board
-  modules.
-
-*)
-
-
-
-
 (** [pp_string s] pretty-prints string [s]. *)
 let pp_string s = "\"" ^ s ^ "\""
 
@@ -162,8 +148,6 @@ let space_getcolor_test name property expected_output =
 let space_getlevel_test name property expected_output =
   name >:: (fun ctxt -> 
       assert_equal expected_output (property_level property))
-
-
 (* let property1 = {
    space_id = 2;
    name = "Low Rise 5";
@@ -198,10 +182,6 @@ let property_change_test name funcname prop new_owner ex_out =
   name >:: (fun ctxt -> 
       assert_equal ex_out (funcname prop new_owner)) 
 
-let property_change_level name prop level ex_out =
-  name >:: (fun ctxt -> 
-      assert_equal ex_out (change_level prop level))
-
 let ex_prop = get_property space3
 let new_ex_prop = change_owner ex_prop "ME"
 let new_level_prop =  property1
@@ -222,7 +202,7 @@ let property_tests=
     (* property change owner test weird *)
     property_change_test "changeowner of donlon to me" change_owner ex_prop "ME" new_ex_prop;
     property_getter_test "Property level of donlon" property_level ex_prop 0;
-    property_change_level "change level to 2" ex_prop 2 property1;
+
   ]
 
 let penalty_getter_test name funcname pen ex_out =
@@ -281,6 +261,7 @@ let board_tests =
        ?? *)
 
   ]
+
 (**<-----------------TEST FOR COMMAND---------------> *)
 
 let jail_command_test (name : string) (str : string) (ex_out) : test = 
@@ -314,7 +295,6 @@ let level_up_test (name : string) (str : string) (ex_out) : test =
 let level_up_exn_test (name : string) (str : string) (ex_out) : test = 
   name >:: (fun _ -> 
       assert_raises ex_out (fun () -> parse_level_input str))
-
 
 let command_tests = 
   [

@@ -21,7 +21,7 @@
      7. Fix liines going over 80 characters
      ???. ??? Make bisect
 
-   ADD LINES OF CODE-> we need around 900 more lines !!!!!!!! FINISHED
+   ADD LINES OF CODE-> we need around 900 more lines !!!!!!!!
    a. add more cards (around 40 more)
    b. add more players (so we can have multiple player lists like playerlist 
    of playerlist? or choose random players at the beginning of the game.
@@ -181,9 +181,6 @@ let rec try_command_property s p pl board property =
     print_string "> "; 
     try_command_property (read_line()) p pl board property
 
-(**[try_command_buy_off_p] arses user input [s] and
-    returns (Player.player list * Space.space list) according to user's input
-    about purchasing a property owned by another player. *)
 let rec try_command_buy_off_p s p pl board property level buy_price=      
   try 
     buy_off_someone (parse_buy s) p pl board property level buy_price
@@ -220,16 +217,11 @@ let land_someone_else_property player playerList board property =  (**FIX FOR NE
   try_command_buy_off_p (read_line()) pl lst2 board property 
     (property_level property) ((buy_price property).(property_level property))
 
-(**[print_buy_prices] prints the list of level 0, 1, and 2 buy prices for a
-   [property].*)
 let print_buy_prices property = 
   Array.iteri (fun i p -> print_endline 
                   ("Property level: " ^ string_of_int i ^ ", Price: "^
                    string_of_int p)) (buy_price property)
 
-(**[try_level_property] parses user input [s] and
-    returns (Player.player list * Space.space list) according to user's input
-    about leveling up on a property the player [p] already owns.*)
 let rec try_level_property s p pl board property =      
   try 
     level_up_prop (parse_buy s) p pl board property
@@ -343,16 +335,16 @@ and double_rolled new_player new_t updated_sp new_acc current_player =
     iterate new_t (updated_sp) (jail_player :: (fst new_acc), updated_sp) 
   else iterate (current_player :: new_t) (updated_sp) (fst new_acc, updated_sp)
 
-(** [player_in_jail h acc sp t] is the function called when the player 
-    is in jail. The player will be in jail for 3 turns or the player can 
-    try to get out of jail early by satisfyting [jail_rules] by 
-    either paying, having a card, or rolling. *)
+(** [player_in_jail h acc sp t] is when the player is in jail. 
+    The player will be in jail for 3 turns or the player can try to 
+    get out of jail early by satisfyting [jail_rules] by 
+    either paying, having a card, or rolling*)
 and player_in_jail h acc sp t = 
   incr counter_jail;
   if !counter_jail = 1 then 
     print_endline (name h^" is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, \nor try to roll a double to leave jail early.");
   let rec try_command s =         
-    print_string ("> ");
+    print_string (">");
     try 
       jail_rules (parse_jail s) h acc sp t
     with 
@@ -364,7 +356,7 @@ and player_in_jail h acc sp t =
       try_command (read_line())
   in 
   print_endline ("Enter PAY, CARD, or ROLL");
-  print_string ("> ");
+  print_string (">");
   try_command (read_line())
 
 (** [jail_rules command player acc sp playerlist] matches the [command] 
@@ -403,12 +395,14 @@ and jail_card_command player acc sp playerlist =
   then 
     let used_card = change_jail_card player false in 
     let updated_player = change_jail used_card false in
-    print_endline ("Congrats! You used your Get Out of Jail Card. \nYou are out of jail.");
+    print_endline ("Congrats! You used your Get Out of Jail Card. 
+    You are out of jail.");
     counter_jail := 0;
     iterate playerlist sp (updated_player :: fst acc , snd acc)
   else
-    let () = print_endline ("You do not have a Get Out of Jail Card. \nEnter another command.")
-    in print_string ("> ");
+    let () = print_endline ("You do not have a Get Out of Jail Card. 
+    Enter another command.")
+    in print_string (">");
     jail_rules (parse_jail (read_line())) player acc sp playerlist
 
 (**[jail_roll_command] checks to see if they player rolls a double to exit jail.
@@ -416,19 +410,19 @@ and jail_card_command player acc sp playerlist =
     a double, the player's turn is passed on. If player has remained in jail for
      three turns, they are taken out of jail automatically.  *)
 and jail_roll_command player acc sp playerlist = 
-  if !counter_jail = 3 
-  then 
-    (counter_jail := 0;
-     let not_in_jail = change_jail player false  in
-     let () = print_endline ("You have stayed in jail for three turns. You are now out of jail.") in
-     iterate playerlist sp (not_in_jail :: fst acc , snd acc))
-  else begin
-    if snd (roll_dice 6)
-    then (counter_jail := 0;
-          let not_in_jail = change_jail player false  in
-          let () = print_endline ("Congrats! You have rolled a double - you are out of jail!")
-          in iterate playerlist sp (not_in_jail :: fst acc , snd acc))
-    else 
+  if snd (roll_dice 6)
+  then (counter_jail := 0;
+        let not_in_jail = change_jail player false  in
+        let () = print_endline ("Congrats! You have rolled a double - you are out of jail!")
+        in iterate playerlist sp (not_in_jail :: fst acc , snd acc))
+  else begin 
+    if !counter_jail = 3 
+    then 
+      (counter_jail := 0;
+       let not_in_jail = change_jail player false  in
+       let () = print_endline ("You have stayed in jail for three turns. You are now out of jail") in
+       iterate playerlist sp (not_in_jail :: fst acc , snd acc))
+    else
       let () =  print_endline 
           ("You didn't roll a double. You are still in jail.") in 
       iterate playerlist sp (player :: fst acc , snd acc)
@@ -496,16 +490,14 @@ let rec play s player_lst space_lst : unit =
       play s pl_lst (sp_lst);)
 
 
-(**[choose_board] allows the user to select which board type they would like
-   to play Cornopoly with. The users can choose between a Dark or a Normal board. *)
 let choose_board () = 
   print_endline ("You have a choice of which game board you would like to play.");
-  print_endline ("Would you like to play the Normal Cornopoly game board?");
-  (* print_endline ("Normal features xyz"); *)
+  print_endline ("Would you like to play the normal Cornopoly game board?");
+  print_endline ("Normal features xyz");
   print_endline ("Or would you rather play the Dark Cornopoly gameboard?");
-  (* print_endline ("Dark features xyz"); *)
+  print_endline ("Dark features xyz");
   let rec try_board_command s = 
-    print_string ("> ");
+    print_string (">");
     try match parse_board_choice s with
       | Dark ->  Space.spacelist_dark
       | Normal ->  Space.spacelist
@@ -516,12 +508,12 @@ let choose_board () =
       print_string "> "; 
       try_board_command (read_line())
   in print_endline ("Enter DARK or NORMAL");
-  print_string ("> "); try_board_command (read_line())
+  print_string (">"); try_board_command (read_line())
 
 (** [main] begins the game of Cornopoly with instructions and allows the players
     to insert their own names and then starts the game*)
 let main () = Random.self_init ();
-  print_endline("Welcome to Cornopoly!! \nINSTRUCTIONS: The goal of this game is to win a full color set, or bankrupt the rest of your players. \nYou can do this by purchasing properties on the board, and staying out of jail. \nPlayer 1, please insert your name:");
+  print_endline("Welcome to Cornopoly!! \nThe goal of this game is to win a full color set, or bankrupt the rest of your players. \nYou can do this by purchasing properties on the board, and staying out of jail. \nPlayer 1, please insert your name:");
   let p1_name = read_line () in
   let p1 = update_name (List.nth Player.playerlist 0) p1_name in
   print_endline("Player 2, please insert your name:");
