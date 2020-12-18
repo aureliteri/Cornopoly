@@ -38,6 +38,10 @@ let change_owner property new_owner =
 let change_level property new_level = 
   {property with level = new_level}
 
+let get_level_price property = 
+  let level = property_level property in
+  let rent_arr = rent_price property in
+  rent_arr.(level)
 
 type penalty = {
   space_id: int;

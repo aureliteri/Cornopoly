@@ -64,11 +64,11 @@ let rec print_properties properties : unit =
   match properties with
   | [] -> print_endline ""
   | (k,v) :: t -> 
-    print_endline ("Name: " ^ property_name v);
-    print_endline ("Ownership Level " ^ string_of_int k);
-    print_endline ("ID: " ^ string_of_int (property_id v));
-    print_endline ("Color: " ^ property_color v);
-    print_endline ("Rent Price: $" ^ string_of_int (rent_price v).(k) ^ "\n");
+    print_endline ("Name: " ^ property_name k);
+    print_endline ("Ownership Level " ^ string_of_int v);
+    print_endline ("ID: " ^ string_of_int (property_id k));
+    print_endline ("Color: " ^ property_color k);
+    print_endline ("Rent Price: $" ^ string_of_int (rent_price k).(v) ^ "\n");
     print_properties t 
 
 (** [print_players players] prints the status of every player [players], 
@@ -181,11 +181,6 @@ let rec try_command_property s p pl board property =
     print_string "> "; 
     try_command_property (read_line()) p pl board property
 
-let get_level_price property = 
-  let level = property_level property in
-  let rent_arr = rent_price property in
-  rent_arr.(level)
-
 (**[land_someone_else_property player playerList baord property] updates 
    [player] [board] and [property] according to interaction between [player] and 
    [property]. [player] must first pay rent, then decide if [player] wants to 
@@ -213,6 +208,17 @@ let print_buy_prices property =
                   ("Property level: " ^ string_of_int i ^ ", Price: "^
                    string_of_int p)) (buy_price property)
 
+let rec try_level_property s p pl board property =      
+  try 
+    level_up_prop (parse_buy s) p pl board property
+  with 
+  | Malformed -> print_endline "Invalid command! Try Again"; 
+    print_string "> "; 
+    try_command_property (read_line()) p pl board property
+  | Empty -> print_endline "Please enter a command!"; 
+    print_string "> "; 
+    try_command_property (read_line()) p pl board property
+
 (**[check_space_property space player playerList board property] updates checks
    if [space] i owned by [player] and returns an updated 
    (Player.player list * Space.space list) accordingly *)
@@ -232,16 +238,10 @@ let check_space_property space player playerList board property =  (**FIX FOR NE
     if String.equal (property_owner property) (name player)
     then begin
       print_endline ("You own this property. You get to stay for free!"); (**Implement level update *)
+
       print_endline ("Do you want to level up this property?"); 
-
-
-      (* buy_price (read_line()) *)
-
-
-
-
-
-      (playerList, board)
+      print_string "> ";
+      try_level_property (read_line()) player playerList board property 
     end
     else
       land_someone_else_property player playerList board property (** Match last owner's level *)
@@ -287,11 +287,9 @@ let rec iterate playerlist (sp: space list) acc =
       let new_player = move h (fst roll) in 
       print_endline (name h ^ " has rolled a "^ string_of_int (fst roll) ^"!");
       let new_space = get_space (current_location_id new_player) sp in 
-      print_endline (string_of_int (current_location_id new_player));
       let upd_tup = check_space new_space new_player
           ((fst acc) @ playerlist) sp in
       let current_player = find_player (name h) (fst upd_tup) in 
-      print_endline (string_of_int (current_location_id current_player));
       let new_acc = (List.filter (fun x -> id x < id h) (fst upd_tup), sp) in 
       let new_t = List.filter (fun x -> id x > id h) (fst upd_tup) in 
       if (balance (current_player) <= 0) then 

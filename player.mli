@@ -7,7 +7,7 @@ type player = {
   name : string;
   current_location_id : int; 
   balance : int;
-  property_list: (int * property) list;
+  property_list: (property * int) list;
   in_jail: bool;
   jail_card: bool;
 }
@@ -29,7 +29,7 @@ val current_location_id: player -> int
 val balance: player -> int
 
 (**[property_list player] is the list of property the player currently owns.*)
-val property_list: player -> (int * Space.property) list
+val property_list: player -> (Space.property * int) list
 
 (**[jail_card player] is true if the player currenlty has a "get out jail for
    free" card. It is false if the player does not own that specific card. *)

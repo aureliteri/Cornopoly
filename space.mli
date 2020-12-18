@@ -28,6 +28,9 @@ val buy_price : property -> int array
     [new_level] associated with it*)
 val change_level: property -> int -> property
 
+(**[get_level_price] returns the level price from a property *)
+val get_level_price : property -> int
+
 (** [change_owner property new_owner] is a [property] with the new owner 
     name [new_owner] associated with it*)
 val change_owner: property -> string -> property
@@ -90,6 +93,7 @@ val get_penalty : space -> penalty
 
 (** [get_justvisting space] identifies the justvisiting type of [space]*)
 val get_justvisiting : space -> justvisiting
+
 
 (** [space1] is the unique space in the board that is of type go *)
 val space1: space

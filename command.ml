@@ -7,6 +7,7 @@ type buy_command =
   | Yes 
   | No 
 
+
 type board_choice = 
   | Dark
   | Normal
