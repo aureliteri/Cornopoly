@@ -138,9 +138,9 @@ let space1 : space = Go {
 let space2 : space = Property { 
     space_id = 2;
     name = "Low Rise 5";
-    rent_price = [|20;10;10|];
+    rent_price = [|2;15;30|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|60;110;160|];
     color = "green";
     level = 0;
   }
@@ -148,9 +148,9 @@ let space2 : space = Property {
 let space3 : space = Property { 
     space_id = 3;
     name = "Donlon";
-    rent_price = [|20;10;10|];
+    rent_price = [|3;16;32|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|70;120;170|];
     color = "green";
     level = 0;
   }
@@ -158,9 +158,9 @@ let space3 : space = Property {
 let space4 : space = Property { 
     space_id = 4;
     name = "CKB";
-    rent_price = [|20;10;10|];
+    rent_price = [|3;17;35|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|80;130;180|];
     color = "green";
     level = 0;
   }
@@ -175,9 +175,9 @@ let space5 : space = Penalty {
 let space6 : space = Property { 
     space_id = 6;
     name = "Klarman Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|4;20;40|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|100;150;200|];
     color = "yellow";
     level = 0;
   }
@@ -185,9 +185,9 @@ let space6 : space = Property {
 let space7 : space = Property { 
     space_id = 7;
     name = "Goldwin Smith Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|5;22;50|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|110;180;240|];
     color = "yellow";
     level = 0;
   }
@@ -195,9 +195,9 @@ let space7 : space = Property {
 let space8 : space = Property { 
     space_id = 8;
     name = "Cafe Jennie";
-    rent_price = [|20;10;10|];
+    rent_price = [|6;30;90|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|120;210;280|];
     color = "yellow";
     level = 0;
   }
@@ -215,9 +215,9 @@ let space10 : space = Jail {
 let space11 : space = Property { 
     space_id = 11;
     name = "Becker Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|6;30;90|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|140;240;340|];
     color = "orange";
     level = 0;
   }
@@ -225,9 +225,9 @@ let space11 : space = Property {
 let space12 : space = Property { 
     space_id = 12;
     name = "Bethe Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|7;32;92|];
     owner = "";
-    buy_price =[|20;10;10|];
+    buy_price =[|150;250;340|];
     color = "orange";
     level = 0;
   }
@@ -235,9 +235,9 @@ let space12 : space = Property {
 let space13 : space = Property { 
     space_id = 13;
     name = "Baker Flagpole";
-    rent_price = [|20;10;10|];
+    rent_price = [|7;34;94|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|160;270;340|];
     color = "orange";
     level = 0;
   }
@@ -245,9 +245,9 @@ let space13 : space = Property {
 let space14 : space = Property { 
     space_id = 14;
     name = "Physical Sciences Building";
-    rent_price = [|20;10;10|];
+    rent_price = [|8;40;100|];
     owner = ""; 
-    buy_price = [|20;10;10|];
+    buy_price = [|180;280;380|];
     color = "red";
     level = 0;
   }
@@ -260,9 +260,9 @@ let space15 : space = CardSpace {
 let space16 : space = Property { 
     space_id = 16;
     name = "Rockefeller Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|8;42;115|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|190;310;380|];
     color = "red";
     level = 0;
   }
@@ -270,9 +270,9 @@ let space16 : space = Property {
 let space17 : space = Property { 
     space_id = 17;
     name = "Baker Lab";
-    rent_price = [|20;10;10|];
+    rent_price = [|8;44;130|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|200;340;380|];
     color = "red";
     level = 0;
   }
@@ -287,9 +287,9 @@ let space18 : space = Penalty {
 let space19 : space = Property { 
     space_id = 19;
     name = "Kennedy Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|10;50;150|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|220;370;520|];
     color = "purple";
     level = 0;
   }
@@ -302,9 +302,9 @@ let space20 : space = JustVisiting {
 let space21 : space = Property { 
     space_id = 21;
     name = "Malott Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|11;52;160|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|230;400;520|];
     color = "purple";
     level = 0;
   }
@@ -312,9 +312,9 @@ let space21 : space = Property {
 let space22 : space = Property { 
     space_id = 22;
     name = "Mann Library";
-    rent_price = [|20;10;10|];
+    rent_price = [|12;60;180|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|240;420;520|];
     color = "purple";
     level = 0;
   }
@@ -323,9 +323,9 @@ let space22 : space = Property {
 let space23 : space = Property { 
     space_id = 23;
     name = "Statler Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|13;65;190|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|260;440;560|];
     color = "light blue";
     level = 0;
   }
@@ -333,9 +333,9 @@ let space23 : space = Property {
 let space24 : space = Property { 
     space_id = 24;
     name = "Barton Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|14;70;200|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|270;460;560|];
     color = "light blue";
     level = 0;
   }
@@ -343,9 +343,9 @@ let space24 : space = Property {
 let space25 : space = Property { 
     space_id = 25;
     name = "Uris Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|15;75;210|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|280;480;560|];
     color = "light blue";
     level = 0;
   }
@@ -355,13 +355,12 @@ let space26 : space = CardSpace {
     name = "Chance";
   }
 
-
 let space27 : space = Property { 
     space_id = 27;
     name = "Cornell Dairy";
-    rent_price = [|20;10;10|];
+    rent_price = [|16;80;220|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|300;500;700|];
     color = "pink";
     level = 0;
   }
@@ -369,9 +368,9 @@ let space27 : space = Property {
 let space28 : space = Property { 
     space_id = 28;
     name = "Botanical Gardens";
-    rent_price = [|20;10;10|];
+    rent_price = [|17;83;230|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|310;510;700|];
     color = "pink";
     level = 0;
   }
@@ -379,9 +378,9 @@ let space28 : space = Property {
 let space29 : space = Property { 
     space_id = 29;
     name = "Cow Land";
-    rent_price = [|20;10;10|];
+    rent_price = [|18;90;250|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|310;515;700|];
     color = "pink";
     level = 0;
   }
@@ -390,9 +389,9 @@ let space29 : space = Property {
 let space30 : space = Property { 
     space_id = 30;
     name = "Cornell Health";
-    rent_price = [|20;10;10|];
+    rent_price = [|19;95;270|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|320;520;720|];
     color = "cyan";
     level = 0;
   }
@@ -401,9 +400,9 @@ let space30 : space = Property {
 let space31 : space = Property { 
     space_id = 31;
     name = "McGraw Clock Tower";
-    rent_price = [|20;10;10|];
+    rent_price = [|20;97;280|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|320;530;720|];
     color = "cyan";
     level = 0;
   }
@@ -411,9 +410,9 @@ let space31 : space = Property {
 let space32 : space = Property { 
     space_id = 32;
     name = "Willard Straight Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|20;100;300|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|320;540;720|];
     color = "cyan";
     level = 0;
   }
@@ -426,9 +425,9 @@ let space33 : space = CardSpace {
 let space34 : space = Property { 
     space_id = 34;
     name = "Hollister Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|21;105;330|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|350;550;750|];
     color = "brown";
     level = 0;
   }
@@ -436,9 +435,9 @@ let space34 : space = Property {
 let space35 : space = Property { 
     space_id = 35;
     name = "Duffield Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|22;110;330|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|350;580;750|];
     color = "brown";
     level = 0;
   }
@@ -455,9 +454,9 @@ let space36 : space = Penalty {
 let space37 : space = Property { 
     space_id = 37;
     name = "Rhodes Hall";
-    rent_price = [|20;10;10|];
+    rent_price = [|24;115;340|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|350;590;750|];
     color = "brown";
     level = 0;
   }
@@ -465,9 +464,9 @@ let space37 : space = Property {
 let space38 : space = Property { 
     space_id = 38;
     name = "Schwartz Center for the Performing Arts";
-    rent_price = [|20;10;10|];
+    rent_price = [|26;130;390|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|400;600;800|];
     color = "blue";
     level = 0;
   }
@@ -475,9 +474,9 @@ let space38 : space = Property {
 let space39 : space = Property { 
     space_id = 39;
     name = "Collegetown Bagels";
-    rent_price = [|20;10;10|];
+    rent_price = [|28;150;450|];
     owner = "";
-    buy_price = [|20;10;10|];
+    buy_price = [|400;600;800|];
     color = "blue";
     level = 0;
   }
@@ -541,16 +540,16 @@ let blue : space list = [space38; space39]
 (* Dark Theme Space List *)
 let space41 : space = Go {
     space_id = 1; 
-    name = "Go";
+    name = "Go Dark!";
   }
 
 
 let space42 : space = Property { 
     space_id = 2;
     name = "SPOOKY";
-    rent_price = [|10;20;30|];
+    rent_price = [|2;15;30|];
     owner = "";
-    buy_price = [|10;20;30|];
+    buy_price = [|60;110;160|];
     color = "green";
     level = 0;
   }
@@ -558,9 +557,9 @@ let space42 : space = Property {
 let space43 : space = Property { 
     space_id = 3;
     name = "BREH";
-    rent_price = [|10;20;30|];
+    rent_price = [|3;16;32|];
     owner = "";
-    buy_price = [|10;20;30|];
+    buy_price = [|70;120;170|];
     color = "green";
     level = 0;
   }
@@ -568,9 +567,9 @@ let space43 : space = Property {
 let space44 : space = Property { 
     space_id = 4;
     name = "YAS CKB";
-    rent_price = [|10;20;30|];
+    rent_price = [|3;17;35|];
     owner = "";
-    buy_price = [|10;20;30|];
+    buy_price = [|80;130;180|];
     color = "green";
     level = 0;
   }
@@ -585,29 +584,29 @@ let space45 : space = Penalty {
 let space46 : space = Property { 
     space_id = 6;
     name = "KLARMAN SUCKS";
-    rent_price = [|10;20;30|];
+    rent_price = [|4;20;40|];
     owner = "";
-    buy_price = [|10;20;30|];
+    buy_price = [|100;150;200|];
     color = "yellow";
     level = 0;
   }
 
 let space47 : space = Property { 
     space_id = 7;
-    name = "Goldwin Smith Hall SUCKS";
-    rent_price = [|10;20;30|];
+    name = "Santa";
+    rent_price = [|5;22;50|];
     owner = "";
-    buy_price = [|10;20;30|];
+    buy_price = [|110;180;240|];
     color = "yellow";
     level = 0;
   }
 
 let space48 : space = Property { 
     space_id = 8;
-    name = "CAFE JENNIE KIM";
-    rent_price = [|10;20;30|];
+    name = "Cafe Jennie Kim ~";
+    rent_price = [|5;24;60|];
     owner = "";
-    buy_price = [|10;20;30|];
+    buy_price = [|120;210;280|];
     color = "yellow";
     level = 0;
   }
@@ -624,7 +623,7 @@ let space50 : space = Jail {
 
 let space51 : space = Property { 
     space_id = 11;
-    name = "Becker Hall SUCKS";
+    name = "Statler Hall Room 1103";
     rent_price = [|10;20;30|];
     owner = "";
     buy_price = [|10;20;30|];
@@ -634,7 +633,7 @@ let space51 : space = Property {
 
 let space52 : space = Property { 
     space_id = 12;
-    name = "Bethe Hall I WISH I GOT THIS";
+    name = "Cornell Ice Cream Factory";
     rent_price = [|10;20;30|];
     owner = "";
     buy_price = [|10;20;30|];
@@ -644,7 +643,7 @@ let space52 : space = Property {
 
 let space53 : space = Property { 
     space_id = 13;
-    name = "Baker Flagpole YO DANK";
+    name = "The Dungeons Under Gates Hall";
     rent_price = [|10;20;30|];
     owner = "";
     buy_price = [|10;20;30|];
@@ -788,7 +787,7 @@ let space68 : space = Property {
 
 let space69 : space = Property { 
     space_id = 29;
-    name = "Cow Land";
+    name = "Moo";
     rent_price = [|10;20;30|];
     owner = "";
     buy_price = [|10;20;30|];
@@ -845,7 +844,7 @@ let space74 : space = Property {
 
 let space75 : space = Property { 
     space_id = 35;
-    name = "Duffield Hall";
+    name = "Duffield Hall Nerds";
     rent_price = [|10;20;30|];
     owner = "";
     buy_price = [|10;20;30|];
@@ -884,7 +883,7 @@ let space78 : space = Property {
 
 let space79 : space = Property { 
     space_id = 39;
-    name = "FAT DIKCS";
+    name = "Large penis";
     rent_price = [|10;20;30|];
     owner = "";
     buy_price = [|10;20;30|];

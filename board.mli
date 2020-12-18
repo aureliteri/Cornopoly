@@ -15,6 +15,17 @@ val buy_property : Command.buy_command ->
   Player.player -> Player.player list -> Space.space list ->
   Space.property-> Player.player list * Space.space list
 
+val buy_off_someone : 
+
+  (* Command.buy_command ->
+     Player.player -> Player.player list -> Space.space list ->
+     Space.property-> int -> int -> Player.player list * Space.space list *)
+  Command.buy_command ->
+  Player.player ->
+  Player.player list ->
+  Space.space list ->
+  Space.property -> int -> int -> Player.player list * Space.space list
+
 (** [level_up_prop command player playerList board property] is the tuple of 
     the updated [playerList] and [board] given from the player
     command [command] which may change the player [player]'s [propery]*)
