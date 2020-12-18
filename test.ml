@@ -60,7 +60,7 @@ let player_property_test
     (player : Player.player)
     (expected_output : string list) = 
   let property_list = property_list player in 
-  let string_property_list = property_name_printer (snd(List.split property_list)) [] in
+  let string_property_list = property_name_printer (fst (List.split property_list)) [] in
   name >:: (fun ctxt -> 
       (* assert_equal true 
          (property_order expected_output (string_property_list) ) *)
@@ -129,6 +129,30 @@ let space_getcardspace_test name space expected_output =
   name >:: (fun ctxt -> 
       assert_equal expected_output (get_cardspace space))
 
+let space_getlevelprice_test name property expected_output =
+  name >:: (fun ctxt -> 
+      assert_equal expected_output (get_level_price property))
+
+let space_rentprice_test name property expected_output = 
+  name >:: (fun ctxt -> 
+      assert_equal expected_output (rent_price property))
+
+let space_buyprice_test name property expected_output = 
+  name >:: (fun ctxt -> 
+      assert_equal expected_output (buy_price property))
+
+let space_getcolor_test name property expected_output =
+  name >:: (fun ctxt -> 
+      assert_equal expected_output (property_color property))
+(* let property1 = {
+   space_id = 2;
+   name = "Low Rise 5";
+   rent_price = [|20;10;10|];
+   owner = "";
+   buy_price = [|20;10;10|];
+   color = "green";
+   level = 2;
+   } *)
 let space_tests=
   [
     space_getname_test "Space name Low Rise 5" space2 "Low Rise 5";
@@ -139,6 +163,9 @@ let space_tests=
     space_getid_test "Space_id test: Cafe Jennie" space8 8;
     space_getid_test "Jail id" space10 10;
     (* space_getproperty_test  "Check if space 5 is property" space5  (Property space2); *)
+    space_getlevelprice_test "property1 level is 2" property1 2;
+    space_rentprice_test "property1 rent_price list" property1 [|20;10;10|];
+    space_buyprice_test "property1 buy_price list" property1 [|20;10;10|];
 
   ]
 
@@ -146,12 +173,13 @@ let property_getter_test name funcname prop ex_out =
   name >:: (fun ctxt -> 
       assert_equal ex_out (funcname prop))
 
-let property_change_owner_test name prop new_owner ex_out =
+let property_change_test name funcname prop new_owner ex_out =
   name >:: (fun ctxt -> 
-      assert_equal ex_out (change_owner prop new_owner)) 
+      assert_equal ex_out (funcname prop new_owner)) 
 
 let ex_prop = get_property space3
 let new_ex_prop = change_owner ex_prop "ME"
+let new_level_prop =  property1
 
 let property_tests=
   [
@@ -167,7 +195,9 @@ let property_tests=
       "green";
     property_getter_test "Buy price of Donlon" buy_price ex_prop [|20;10;10|];
     (* property change owner test weird *)
-    property_change_owner_test "changeowner" ex_prop "ME" new_ex_prop;
+    property_change_test "changeowner of donlon to me" change_owner ex_prop "ME" new_ex_prop;
+    property_getter_test "Property level of donlon" property_level ex_prop 0;
+    property_change_test "changeowner" change_level ex_prop 2 new_level_prop;
 
   ]
 
@@ -217,9 +247,10 @@ let board_tests =
       100 20 false;
     card_action_test "card1 change balance due to bursar on sample player" 
       [Change (-200)] sample_player bursar_player;
-    card_action_test "card8 aciton lst move to duffield on sample player" [Move 35] sample_player duffield_player;
-    card_action_test "card4 aciton lst go to go on sample player" [Move 1; Change 50] sample_player go_player;
-
+    card_action_test "card8 aciton lst move to duffield on sample player" 
+      [Move 35] sample_player duffield_player;
+    card_action_test "card4 aciton lst go to go on sample player" 
+      [Move 1; Change 50] sample_player go_player;
     (* test roll dice *)
     (* test check_space *)
     (* check_space_test "player lands on unowned property" space2 player1 space_list 
@@ -229,47 +260,37 @@ let board_tests =
 
 (**<-----------------TEST FOR COMMAND---------------> *)
 
-let jail_command_test 
-    (name : string) 
-    (str : string) 
-    (ex_out) : test = 
+let jail_command_test (name : string) (str : string) (ex_out) : test = 
   name >:: (fun ctxt -> 
       assert_equal ex_out (parse_jail str))
 
-let jail_exn_test  
-    (name : string) 
-    (str : string) 
-    (ex_out) : test = 
+let jail_exn_test (name : string) (str : string) (ex_out) : test = 
   name >:: (fun _ -> 
       assert_raises ex_out (fun () -> parse_jail str))
 
-let buy_command_test 
-    (name : string) 
-    (str : string) 
-    (ex_out) : test = 
+let buy_command_test (name : string) (str : string) (ex_out) : test = 
   name >:: (fun ctxt -> 
       assert_equal ex_out (parse_buy str))
 
-let buy_exn_test  
-    (name : string) 
-    (str : string) 
-    (ex_out) : test = 
+let buy_exn_test   (name : string)  (str : string) (ex_out) : test = 
   name >:: (fun _ -> 
       assert_raises ex_out (fun () -> parse_buy str))
 
-let board_choice_test 
-    (name : string) 
-    (str : string) 
-    (ex_out) : test =
+let board_choice_test  (name : string)   (str : string)  (ex_out) : test =
   name >:: (fun ctxt -> 
       assert_equal ex_out (parse_board_choice str))
 
-let board_exn_test  
-    (name : string) 
-    (str : string) 
-    (ex_out) : test = 
+let board_exn_test (name : string) (str : string) (ex_out) : test = 
   name >:: (fun _ -> 
       assert_raises ex_out (fun () -> parse_board_choice str))
+
+let level_up_test (name : string) (str : string) (ex_out) : test = 
+  name >:: (fun _ -> 
+      assert_equal ex_out (parse_level_input str))
+
+let level_up_exn_test (name : string) (str : string) (ex_out) : test = 
+  name >:: (fun _ -> 
+      assert_raises ex_out (fun () -> parse_level_input str))
 
 let command_tests = 
   [
@@ -286,6 +307,9 @@ let command_tests =
     board_choice_test "Choose normal theme" "normal" Normal;
     board_exn_test "Choose _____ theme" "       " Empty;
     board_exn_test "Choose light theme" "light" Malformed;
+    level_up_test "Level up to 2" "2" 2;
+    level_up_exn_test "Level up to 3 malformed" "3" Malformed;
+    level_up_exn_test "Level up to empty level!!" "       " Empty;
   ]
 
 

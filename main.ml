@@ -181,6 +181,17 @@ let rec try_command_property s p pl board property =
     print_string "> "; 
     try_command_property (read_line()) p pl board property
 
+let rec try_command_buy_off_p s p pl board property level buy_price=      
+  try 
+    buy_off_someone (parse_buy s) p pl board property level buy_price
+  with 
+  | Malformed -> print_endline "Invalid command! Try Again"; 
+    print_string "> "; 
+    try_command_property (read_line()) p pl board property
+  | Empty -> print_endline "Please enter a command!"; 
+    print_string "> "; 
+    try_command_property (read_line()) p pl board property
+
 (**[land_someone_else_property player playerList baord property] updates 
    [player] [board] and [property] according to interaction between [player] and 
    [property]. [player] must first pay rent, then decide if [player] wants to 
@@ -198,10 +209,13 @@ let land_someone_else_property player playerList board property =  (**FIX FOR NE
   let lst = replace_player playerList pl in
   let lst2 = replace_player lst updated_owner in
   print_endline ("The price of " ^ (property_name property) ^ " is $" ^
-                 (string_of_int ((buy_price property).(property_level property))));
+                 (string_of_int ((buy_price property).(property_level property))
+                  ^ " at Level " ^ (string_of_int (property_level property))));
   print_endline "Do you want to purchase it? (Type: Yes or No)"; 
   print_string "> ";
-  try_command_property (read_line()) pl lst2 board property
+
+  try_command_buy_off_p (read_line()) pl lst2 board property 
+    (property_level property) ((buy_price property).(property_level property))
 
 let print_buy_prices property = 
   Array.iteri (fun i p -> print_endline 
@@ -237,11 +251,14 @@ let check_space_property space player playerList board property =  (**FIX FOR NE
   else begin 
     if String.equal (property_owner property) (name player)
     then begin
-      print_endline ("You own this property. You get to stay for free!"); (**Implement level update *)
-
-      print_endline ("Do you want to level up this property?"); 
-      print_string "> ";
-      try_level_property (read_line()) player playerList board property 
+      print_endline ("You landed on " ^ property_name property ^". You own this property. You get to stay for free!"); (**Implement level update *)
+      if (property_level property = 2) then 
+        let () = print_endline ("This propertry's level is MAX") in
+        (replace_player playerList player, board)
+      else
+        let () = print_endline ("Do you want to level up this property?") in
+        print_string "> ";
+        try_level_property (read_line()) player playerList board property 
     end
     else
       land_someone_else_property player playerList board property (** Match last owner's level *)

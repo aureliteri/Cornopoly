@@ -93,8 +93,15 @@ let buy_property command player playerList board property =
   | No -> let updated_pL = replace_player playerList player in  
     (updated_pL, board) 
 
+let buy_off_someone command player playerList board property level buy_price = 
+  match command with 
+  | Yes -> buy_property_helper player playerList board property level buy_price
+  | No -> let updated_pL = replace_player playerList player in  
+    (updated_pL, board) 
+
 let rec compare_lvl old_lvl new_lvl =
-  if new_lvl > old_lvl then new_lvl else 
+
+  if new_lvl > old_lvl && new_lvl <= 2 then new_lvl else 
     let () = print_endline ("Invalid level! \n Which level do you want to buy? (You can only buy a level greater than the current level you own. Must be greater than"
                             ^ string_of_int old_lvl); 
       print_string "> "; in
