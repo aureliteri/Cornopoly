@@ -36,7 +36,7 @@ let card1 = {
 
 let card2 = {
   card_id = 2;
-  description = "Bank pays you dividend of $50.";
+  description = "The bank has paid you a dividend of $50!!";
   act = [Change 50]
 }
 
@@ -72,20 +72,20 @@ let card7 = {
 
 let card8 = {
   card_id = 8;
-  description = "Take a walk on the Engineering Quad–Advance character 
+  description = "Take a walk on the Engineering Quad – You advance 
   to Duffield Hall – If you pass Go, collect $200.";
   act = [Move 35]
 }
 
 let card9 = {
   card_id = 9;
-  description = "You have won Big Red Hacks!—Collect $100.";
+  description = "You have won Big Red Hacks! — Collect $100.";
   act = [Change 100]
 }
 
 let card10 = {
   card_id = 10;
-  description = "Take a trip to Rhodes Hall–If you pass Go, collect $50.";
+  description = "Take a trip to Rhodes Hall – If you pass Go, collect $50.";
   act = [Move 37]
 }
 
@@ -103,7 +103,7 @@ let card12 = {
 
 let card13 = {
   card_id = 13;
-  description = "Pay for your class textbooks!";
+  description = "Pay $120 for your Vital Source textbooks!";
   act = [Change (-120)]
 }
 
@@ -115,7 +115,7 @@ let card14 = {
 
 let card15 = {
   card_id = 15;
-  description = "You were robbed 100 dollars during slope festival.";
+  description = "You were robbed 100 dollars during Slope Day.";
   act = [Change (-100)]
 }
 
@@ -150,7 +150,13 @@ let card20 = {
 }
 
 
+let card20 = {
+  card_id = 20;
+  description = "Your friend borrowed $60 from you and never returned it.";
+  act = [Change (-60)]
+}
+
 
 let cardlist = [|card1; card2; card3; card4; card5; card6; card7; 
                  card9; card10; card11; card12; card13; card14; card15; card16;
-                 card17; card18; card19|]
+                 card17; card18; card19; card20|]

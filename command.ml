@@ -57,10 +57,12 @@ let parse_board_choice str =
 let parse_level_input str = 
   let to_lst = 
     str |> String.lowercase_ascii |> String.split_on_char ' '
-    |> List.filter (fun x -> x <> "") in
-  try
-    let num = int_of_string_opt (List.hd to_lst) in
-    match num with
-    | None -> raise Malformed
-    | Some x -> if x < 0 || x > 3 then raise Malformed else x
-  with _ -> raise Empty
+    |> List.filter (fun x -> x <> "") in 
+  match to_lst with
+  | h :: t -> begin
+      if h = "0" && t == [] then 0
+      else if h = "1" && t == [] then 1
+      else if h = "2" && t == [] then 2
+      else raise Malformed
+    end
+  | [] -> raise Empty
