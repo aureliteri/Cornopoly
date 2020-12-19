@@ -117,9 +117,14 @@ val playerlist: player list
    with [player] removed.*)
 val remove_player: player -> player list -> player list
 
-
 (* CAN BE DELETED LATER, USED FOR TESTING PURPOSES FOR NOW*)
 (* val sample_player_test : player 
-val player6 : player *)
-val player_blue_test : player 
-val player_yellow_test : player 
+   val player6 : player *)
+val player_blue_full_test : player 
+val player_blood_full_test : player 
+
+val player_brown_full_test : player 
+val player_pink_full_test : player 
+val player_yellow_full_test : player 
+val player_not_full_test : player 
+

@@ -1,4 +1,3 @@
-open Card
 
 type property = {
   space_id: int;
@@ -539,22 +538,22 @@ let blue : space list = [space38; space39]
 
 (* Dark Theme Space List *)
 let space41 : space = Go {
-  space_id = 1; 
-  name = "Go Dark!";
-}  
+    space_id = 1; 
+    name = "Go Dark!";
+  }  
 
 (* let space41 = {space1 with name = "The Gates to CornellHELL (Go)"}
-let space42 = 
-{space2 with name = "The Dark Basement of Low Rise 5"; 
-rent_price =[|8;20;66|]; 
-buy_price = [|     |]; 
-color = "moss green"}
+   let space42 = 
+   {space2 with name = "The Dark Basement of Low Rise 5"; 
+   rent_price =[|8;20;66|]; 
+   buy_price = [|     |]; 
+   color = "moss green"}
 
-let space43 = {space3 with name = "The Gloomy Halls of Donlon"; 
-rent_price = [|     |]; buy_price = [|     |]; color = "moss green"} *)
+   let space43 = {space3 with name = "The Gloomy Halls of Donlon"; 
+   rent_price = [|     |]; buy_price = [|     |]; color = "moss green"} *)
 
 let space42 : space = Property { 
-  space_id = 2;
+    space_id = 2;
     name = "The Dark Basement of Low Rise 5";
     rent_price = [|8;20;66|];
     owner = "";

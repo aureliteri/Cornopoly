@@ -1,4 +1,4 @@
-
+open Space
 type action =
   | Change of int
   | Move of int
@@ -41,25 +41,29 @@ let card2 = {
 
 let card3 = {
   card_id = 3;
-  description = "Advance to Goldwin Smith Hall- If you pass Go, gain $200.";
+  description = "Advance to " ^ property_name (get_property space7) ^
+                " - If you pass Go, gain $200.";
   act = [Move 7]
 }
 
+
 let card4 = {
   card_id = 4;
-  description = "Advance to Go — Collect $200.";
-  act = [Move 1; Change 200]
+  description = "Go directly to Jail – Do not pass Go, do not collect $200.";
+  act = [Move 10]
 }
+
 
 let card5 = {
   card_id = 5;
-  description = "Advance to Botanical Gardens – If you pass Go, gain $200.";
+  description = "Advance to " ^ property_name (get_property space28) ^
+                " – If you pass Go, gain $200." ;
   act = [Move 28]
 }
 
 let card6 = {
   card_id = 6;
-  description = "Go directly to Jail – Do not pass Go, do not collect $50.";
+  description = "Go directly to Jail – Do not pass Go, do not collect $200.";
   act = [Move 10]
 }
 
@@ -71,8 +75,9 @@ let card7 = {
 
 let card8 = {
   card_id = 8;
-  description = "Take a walk on the Engineering Quad – You advance 
-  to Duffield Hall – If you pass Go, collect $200.";
+  description = "Take a walk on the Engineering Quad – You advance to " 
+                ^ property_name (get_property space37) 
+                ^ " – If you pass Go, collect $200.";
   act = [Move 35]
 }
 
@@ -84,7 +89,8 @@ let card9 = {
 
 let card10 = {
   card_id = 10;
-  description = "Take a trip to Rhodes Hall – If you pass Go, collect $200.";
+  description = "Take a trip to " ^ property_name (get_property space37) 
+                ^ " – If you pass Go, collect $200.";
   act = [Move 37]
 }
 
@@ -124,10 +130,11 @@ let card16 = {
   act = [Change (-50)]
 }
 
+
 let card17 = {
   card_id = 17;
-  description = "You helped Matha Pollack across the street! She gave you a Get Out of Jail Free card!";
-  act = [Get_out true]
+  description = "Go directly to Jail – Do not pass Go, do not collect $200.";
+  act = [Move 10]
 }
 
 let card18 = {
@@ -143,19 +150,85 @@ let card19 = {
 }
 
 let card20 = {
-  card_id = 19;
+  card_id = 20;
   description = "Your friends threw you a surprise birthday party! Collect $100!";
   act = [Change 100]
 }
 
 
-let card20 = {
-  card_id = 20;
+let card21 = {
+  card_id = 21;
   description = "Your friend borrowed $60 from you and never returned it.";
   act = [Change (-60)]
 }
 
 
-let cardlist = [|card1; card2; card3; card4; card5; card6; card7; 
-                 card9; card10; card11; card12; card13; card14; card15; card16;
-                 card17; card18; card19; card20|]
+let card22 = {
+  card_id = 22;
+  description = "Cafe Jennie's $15 cheesecake is just that good. You went for seconds.";
+  act = [Change (-15)]
+}
+
+let card23 = {
+  card_id = 23;
+  description = "$30 Wings Over Ithaca for the classic prelim stress eating.";
+  act = [Change (-30)]
+}
+
+let card23 = {
+  card_id = 23;
+  description = "You found $20 lying around in the snow. It's yours now.";
+  act = [Change (20)]
+}
+
+let card24 = {
+  card_id = 24;
+  description = "Go directly to Jail – Do not pass Go, do not collect $200.";
+  act = [Move 10]
+}
+
+
+let card25 = {
+  card_id = 25;
+  description = "You have to buy an iClicker for class... $100";
+  act = [Change (-100)]
+}
+
+let card26 = {
+  card_id = 26;
+  description = "You have a Get Out of Jail Free card!";
+  act = [Get_out true]
+}
+
+let card27 = {
+  card_id = 27;
+  description = "You advance to " ^ property_name (get_property space39) 
+                ^ " – If you pass Go, collect $200.";
+  act = [Move 39]
+}
+
+let card28 = {
+  card_id = 28;
+  description = "Go directly to Jail – Do not pass Go, do not collect $200.";
+  act = [Move 10]
+}
+
+let card29 = {
+  card_id = 29;
+  description = "Advance to Go — Collect $200.";
+  act = [Move 1; Change 200]
+}
+
+let card30 = {
+  card_id = 30;
+  description = "You helped Matha Pollack across the street! She gave you a Get Out of Jail Free card!";
+  act = [Get_out true]
+}
+
+
+
+let cardlist = [|
+  card1; card2; card3; card4; card5; card6; card7; 
+  card9; card10; card11; card12; card13; card14; card15; card16;
+  card17; card18; card19; card20; card21; card22; card23; card24;
+  card25; card26; card27; card28; card29; card30;|]

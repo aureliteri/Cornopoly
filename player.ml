@@ -36,7 +36,7 @@ let jail_card player =
 
 let jail_count player = 
   player.jail_count 
-  
+
 let change_jail player value =
   {player with in_jail = value}
 
@@ -51,14 +51,14 @@ let move player int' =
     begin
       print_endline "You have passed go! $200 has been added to your balance.";
       {player with current_location_id = 
-      (player.current_location_id + int') mod 39;
-       balance = player.balance + 200}
+                     (player.current_location_id + int') mod 39;
+                   balance = player.balance + 200}
     end
   else {player with current_location_id = (player.current_location_id + int')} 
 
 let move_to_space player int' =
   if (int' = 10) then 
-  {player with current_location_id = int'; in_jail = true}
+    {player with current_location_id = int'; in_jail = true}
   else {player with current_location_id = int'}
 
 let update_name player new_name = 
@@ -146,35 +146,95 @@ let sample_player = {
   name = "catpotato";
   current_location_id = 11;
   balance = 400;
-  property_list = [(get_property space3, 0);
-                   (get_property space7,1);
-                   (get_property space39, 2)];
+  property_list = [
+    (get_property space3, 0);
+    (get_property space7,1);
+    (get_property space39, 2)];
   in_jail = false;
   jail_card = false;
   jail_count = ref 0;
 }
 
-let player_yellow_test = {
+let player_brown_full_test = {
+  id = 7;
+  name = "catpotato";
+  current_location_id = 11;
+  balance = 400;
+  property_list = [
+    (get_property space34,0);
+    (get_property space35,0);
+    (get_property space37,0)];
+  in_jail = false;
+  jail_card = false;
+  jail_count = ref 0;
+}
+
+let player_pink_full_test = {
+  id = 7;
+  name = "catpotato";
+  current_location_id = 11;
+  balance = 400;
+  property_list = [
+    (get_property space27,0);
+    (get_property space28,0);
+    (get_property space29,0)];
+  in_jail = false;
+  jail_card = false;
+  jail_count = ref 0;
+}
+
+let player_yellow_full_test = {
   id = 5;
   name = "catpotato";
   current_location_id = 11;
   balance = 400;
-  property_list = [(get_property space6, 0);
-                   (get_property space7,1);
-                   (get_property space8,1)];
+  property_list = [
+    (get_property space6, 0);
+    (get_property space7,1);
+    (get_property space8,1)];
+  in_jail = false;
+  jail_card = false;
+  jail_count = ref 0;
+}
+
+let player_blue_full_test = {
+  id = 6;
+  name = "catpotato";
+  current_location_id = 11;
+  balance = 400;
+  property_list = [
+    (get_property space38,0);
+    (get_property space39,0)];
   in_jail = false;
   jail_card = false;
   jail_count = ref 0;
 }
 
 
-let player_blue_test = {
-  id = 6;
+let player_blood_full_test = {
+  id = 9;
   name = "catpotato";
   current_location_id = 11;
   balance = 400;
-  property_list = [(get_property space38,0);
-  (get_property space39,0)];
+  property_list = [
+    (get_property space54,0);
+    (get_property space56,0);
+    (get_property space57,0)];
+
+  in_jail = false;
+  jail_card = false;
+  jail_count = ref 0;
+}
+
+
+let player_not_full_test = {
+  id = 5;
+  name = "catpotato";
+  current_location_id = 11;
+  balance = 400;
+  property_list = [
+    (get_property space7,1);
+    (get_property space8,1)];
   in_jail = false;
   jail_card = false;
   jail_count = ref 0;

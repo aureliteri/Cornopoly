@@ -14,7 +14,7 @@ open Card
    accuracy and maintain their expected behaviors. It is important to note that
    all functions could not be tested via OUnit testing. The functions we could 
    not create OUnit tests were those that require user inputs and print strings.
-   
+
   Specifically, the following functions (in their respective modules) could not
   be tested with OUnit:
    -[delete_player_board] (?), [land_someone_else_property] (?)
@@ -28,12 +28,12 @@ open Card
       [player_in_jail], [jail_rules], [jail_pay_command], [jail_card_command],
       [jail_roll_command], [player_bankrupt], [player_not_bankrupt], [end_game],
       [play], [print_board_type_description],[choose_board], [main]
-      
+
     Board: 
-    - [try_command_level], [try_command_property], [buy_property_helper],
+  - [try_command_level], [try_command_property], [buy_property_helper],
      [yes_buy_property], [compare_lvl], [yes_level_up], [level_up_prop]
 
-    
+
 
   -We constructed OUnit test suites for the functions that do not require user
   inputs.
@@ -42,17 +42,17 @@ open Card
   -We play tested our game to mainly test the functions in the main and board
   modules.
   - For every command input to be parsed, we inputed valid inputs and checked 
-  if the outputs were correct and expected. We also tested invalid commands such
-  as empty strings, random strings, and other invalid inputs.
+    if the outputs were correct and expected. We also tested invalid commands such
+    as empty strings, random strings, and other invalid inputs.
   - For invalid command inputs, exception Malformed or exception Empty are 
-  caught and an apprpriate output print requests another command to be inputted
+    caught and an apprpriate output print requests another command to be inputted
   - Bankrupt Win Scenario Condition - one player remains and everyone else is bankrupt 
-  we tested this multiple times by setting everyone but one player's balance to be greater than 0 and by having all players bankrupt from paying rent, penalty spaces, and cards that decrease balance.
+    we tested this multiple times by setting everyone but one player's balance to be greater than 0 and by having all players bankrupt from paying rent, penalty spaces, and cards that decrease balance.
     only one player in the playerlist remains as players with a balance of less than 0 are removed from the list
   - Colorset Win Scenario Condtion - player has purchased all properties of the same colorset
-  we tested this by having one player buy all the properties of a color set and all the other players not buy any properties
+    we tested this by having one player buy all the properties of a color set and all the other players not buy any properties
 
-3. Why our testing 
+  3. Why our testing 
 *)
 
 (** [pp_string s] pretty-prints string [s]. *)
@@ -111,12 +111,12 @@ let player_property_test
     (expected_output : string list) = 
   let property_list = property_list player in 
   let string_property_list = property_name_printer 
-  (fst (List.split property_list)) [] in
+      (fst (List.split property_list)) [] in
   name >:: (fun ctxt -> 
       (* assert_equal true 
          (property_order expected_output (string_property_list) ) *)
       assert_equal ~printer:(pp_list pp_string)
-       expected_output string_property_list
+        expected_output string_property_list
     )
 
 
@@ -242,7 +242,7 @@ let property_tests=
       "Donlon";
     property_getter_test "Property id of Donlon" property_id ex_prop 3;
     property_getter_test "Property rent price of Donlon" 
-    rent_price ex_prop [|12;30;38|]; 
+      rent_price ex_prop [|12;30;38|]; 
     property_getter_test "Original property owner of Donlon" property_owner 
       ex_prop "";
     property_getter_test "New property owner of Donlon" property_owner 
@@ -250,10 +250,10 @@ let property_tests=
     property_getter_test "Property color of Donlon" property_color ex_prop 
       "green";
     property_getter_test "Buy price of Donlon" buy_price 
-    ex_prop [|70;120;170|]; 
+      ex_prop [|70;120;170|]; 
     property_change_test "changeowner of donlon to me" 
-    change_owner ex_prop "ME" 
-    new_ex_prop;
+      change_owner ex_prop "ME" 
+      new_ex_prop;
     property_getter_test "Property level of donlon" property_level ex_prop 0;
     property_change_level "change level to 2" (get_property space3) 2 2;
   ]
@@ -271,7 +271,7 @@ let penalty_tests =
     penalty_getter_test "Description of Penalty" penalty_description ex1_pen
       "Flu season! Pay $40 for your flu shot"; 
     penalty_getter_test "Price of Penalty" penalty_price ex1_pen 40; 
-     penalty_getter_test "Name of Penalty" penalty_name ex2_pen "Penalty";
+    penalty_getter_test "Name of Penalty" penalty_name ex2_pen "Penalty";
     penalty_getter_test "Description of Penalty" penalty_description ex2_pen
       "$60 Student activity fee..."; 
     penalty_getter_test "Price of Penalty" penalty_price ex2_pen 60; 
@@ -305,13 +305,13 @@ let duffield_player = {sample_player with current_location_id = 35}
 let go_player = {sample_player with current_location_id = 1; balance = 450;}
 
 let player_if_full_set
-(name : string)
-(player : Player.player)  
-(property : Space.property) 
-(output : bool) = 
-name >:: (fun ctxt -> 
+    (name : string)
+    (player : Player.player)  
+    (property : Space.property) 
+    (output : bool) = 
+  name >:: (fun ctxt -> 
       assert_equal output (if_full_set_test_helper player property))
-      
+
 
 let board_tests = 
   [
@@ -329,10 +329,21 @@ let board_tests =
     (* check_space_test "player lands on unowned property" space2 player1 space_list 
        ?? *)
     player_if_full_set "player buys the last yellow property to become a
-    full set" player_yellow_test (get_property space8) true;
+    full set" player_yellow_full_test (get_property space8) true;
     player_if_full_set "player buys the last blue property to become a
-    full set" player_blue_test (get_property space39) true;
-  
+    full set" player_blue_full_test (get_property space39) true;
+    player_if_full_set "player buys the last brown property to become a
+    full set" player_brown_full_test (get_property space37) true;
+    player_if_full_set "player buys the last pink property to become a
+    full set" player_pink_full_test (get_property space29) true;
+    player_if_full_set "player buys the last blood property to become a
+    full set" player_blood_full_test (get_property space57) true;
+
+
+    player_if_full_set "player not full" player_not_full_test 
+      (get_property space39) false;
+
+
   ]
 (**<-----------------TESTS FOR COMMAND-------------------------------------> *)
 
@@ -415,7 +426,10 @@ let card_tests = [
   card_id_test "Empty card test" empty 0;
   card_id_test "Card 3 test" card3 3;
   card_description_test "Empty card description" empty "";
-  card_description_test "Card 20 description" card20 "Your friend borrowed $60 from you and never returned it.";
+  card_description_test "card description with get property name function" 
+    card10 "Take a trip to Rhodes Hall – If you pass Go, collect $200.";
+  card_description_test "Card 20 description" card20 
+    "Your friends threw you a surprise birthday party! Collect $100!";
   card_act_test "Empty card actions" empty [];
   card_act_test "Card 10 actions" card10 [Move 37];
   card_choose_test "Card_choose empty" [] empty;
