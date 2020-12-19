@@ -41,19 +41,19 @@ let card2 = {
 
 let card3 = {
   card_id = 3;
-  description = "Advance to Goldwin Smith Hall- If you pass Go, gain $50.";
+  description = "Advance to Goldwin Smith Hall- If you pass Go, gain $200.";
   act = [Move 7]
 }
 
 let card4 = {
   card_id = 4;
-  description = "Advance to Go — Collect $50.";
-  act = [Move 1; Change 50]
+  description = "Advance to Go — Collect $200.";
+  act = [Move 1; Change 200]
 }
 
 let card5 = {
   card_id = 5;
-  description = "Advance to Botanical Gardens – If you pass Go, gain $50.";
+  description = "Advance to Botanical Gardens – If you pass Go, gain $200.";
   act = [Move 28]
 }
 
@@ -84,7 +84,7 @@ let card9 = {
 
 let card10 = {
   card_id = 10;
-  description = "Take a trip to Rhodes Hall – If you pass Go, collect $50.";
+  description = "Take a trip to Rhodes Hall – If you pass Go, collect $200.";
   act = [Move 37]
 }
 

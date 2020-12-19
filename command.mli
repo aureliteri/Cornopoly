@@ -14,10 +14,10 @@ type buy_command =
   | No 
 
 (**[board_choice] is the type of command for a player who is deciding whether or 
-   not to play the normal board or a dark board *)
+   not to play the classic board or a dark board *)
 type board_choice = 
   | Dark
-  | Normal
+  | Classic
 
 
 (** [Empty] is Raised when an empty command is parsed. *)

@@ -119,5 +119,7 @@ val remove_player: player -> player list -> player list
 
 
 (* CAN BE DELETED LATER, USED FOR TESTING PURPOSES FOR NOW*)
-(* val sample_player_test : player *)
-(* val player6 : player *)
+(* val sample_player_test : player 
+val player6 : player *)
+val player_blue_test : player 
+val player_yellow_test : player 

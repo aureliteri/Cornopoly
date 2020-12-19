@@ -10,7 +10,7 @@ type buy_command =
 
 type board_choice = 
   | Dark
-  | Normal
+  | Classic
 
 exception Empty
 
@@ -49,7 +49,7 @@ let parse_board_choice str =
   match to_lst with
   | h :: t -> begin
       if h = "dark" && t == [] then Dark
-      else if h = "normal" && t == [] then Normal
+      else if h = "classic" && t == [] then Classic
       else raise Malformed
     end
   | [] -> raise Empty

@@ -155,8 +155,8 @@ let check_space_penalty penalty player playerList (board : Space.space list) =
    the updated [playerlist] and [board]. [check_space_go] passes the player
     through the Go space. The updated [playerlist] contains the same [player] 
     that has passed go.*)
-let check_space_go(playerList : Player.player list)(board : Space.space list)=
-  print_endline "Pass Go! You have collected $50."; (playerList, board)
+let check_space_go (playerList : Player.player list)(board : Space.space list)=
+  print_endline "Pass Go! You have collected $200."; (playerList, board)
 
 (**[check_space_justvisiting playerList board] is the tuple containing
    the updated [playerlist] and [board]. [check_space_justvisiting] passes the
@@ -207,7 +207,7 @@ let land_someone_else_property player playerList board property =  (**FIX FOR NE
   let cur_price = get_level_price property in
   print_endline ("You have landed on " ^(property_name property) ^ 
                  ". It is owned by " ^ property_owner property ^ 
-                 ". \nYou must pay rent of $" ^ 
+                ". \nYou must pay rent of $" ^ 
                  (string_of_int (cur_price) ^ "."));
   let pl = update_balance player (-1 * cur_price) in
   let updated_owner = update_balance (find_player (property_owner property) 
@@ -219,7 +219,6 @@ let land_someone_else_property player playerList board property =  (**FIX FOR NE
                   ^ " at Level " ^ (string_of_int (property_level property))));
   print_endline "Do you want to purchase it? (Type: Yes or No)"; 
   print_string "> ";
-
   try_command_buy_off_p (read_line()) pl lst2 board property 
     (property_level property) ((buy_price property).(property_level property))
 
@@ -244,16 +243,33 @@ let rec try_level_property s p pl board property =
     print_string "> "; 
     try_level_property (read_line()) p pl board property
 
+(**[print_prop_prices player pList board property] displays the current 
+property landed on and the prices and prompts the player to input a command*)
+let print_prop_prices player pList board property : unit = 
+  print_endline ("You landed on " ^ property_name property ^".");
+  print_endline ("The property prices are");
+  print_buy_prices property;
+  print_endline "Do you want to purchase it? (Type: Yes or No)";     
+  print_string "> "
+
+(**[print_level_prices player pList board property] displays the current 
+level of the property landed on and the associated prices as well as
+ prompts the player to input a command*)
+let print_level_prices player pList board property : unit = 
+  print_endline ("\nThis property's level is currently " ^  
+     string_of_int (property_level property) 
+     ^". \nDo you want to level up this property?");
+  print_endline ("The property prices are: ");
+  print_buy_prices property;
+  print_string "> "
+
 (**[check_space_property space player playerList board property] updates checks
    if [space] i owned by [player] and returns an updated 
    (Player.player list * Space.space list) accordingly *)
 let check_space_property space player playerList board property =  (**FIX FOR NEW PROPERTY LIST *)
   if (String.equal (property_owner property) "") then  (**HERREE *)
     begin
-      print_endline ("You landed on " ^ property_name property ^".");
-      print_endline ("The property prices are"); print_buy_prices property;
-      print_endline "Do you want to purchase it? (Type: Yes or No)";      
-      print_string "> ";
+      let () = print_prop_prices player playerList board property in 
       try_command_property (read_line()) player playerList board property 
     end
   else begin 
@@ -264,9 +280,7 @@ let check_space_property space player playerList board property =  (**FIX FOR NE
         let () = print_endline ("This propertry's level is MAX") in
         (replace_player playerList player, board)
       else
-        let () = print_endline ("\nThis property's level is currently " ^  string_of_int (property_level property) ^". \nDo you want to level up this property?") in
-        print_endline ("The property prices are: "); print_buy_prices property; 
-        print_string "> ";
+        let () = print_level_prices player playerList board property in
         try_level_property (read_line()) player playerList board property 
     end
     else
@@ -385,8 +399,7 @@ and jail_rules command player acc sp playerlist =
     input a different jail command. *)
 and jail_pay_command player acc sp playerlist = 
   if (balance player < 100) then 
-    let () = print_endline "You do not have enough in your balance to pay! 
-    Type in another command." 
+    let () = print_endline "You do not have enough in your balance to pay! Type in another command." 
     in jail_rules (parse_jail (read_line())) player acc sp playerlist
   else 
     let pay_jail_player = update_balance player (-100) in
@@ -475,7 +488,9 @@ let end_game lst : unit =
     exit 0;
   | h :: t -> if List.length t = 0 then 
       (print_endline 
-         (name h ^  " is the winner! Everyone else has gone bankrupt."); 
+         (name h ^  " is the winner! Everyone else has gone bankrupt.
+         Thank you for playing Cornopoly!
+         Created by Amy Ouyang, Aaron Kang, Michelle Keoy, Meghana Avvaru."); 
        exit 0; ) 
     else ()
 
@@ -496,27 +511,33 @@ let rec play s player_lst space_lst : unit =
       let s = read_line() in
       play s pl_lst (sp_lst);)
 
+(**[print_board_types] prints the dark vs. classic game board descriptions. *)
+let print_board_type_description () = 
+  print_endline ("\nYou have a choice of which game board you would like to play.");
+  print_endline ("Would you like to play the Classic Cornopoly game board?");
+  print_endline ("Classic features: A typical game of Cornolopoly with our favorite Cornell campus locations as main properties." );
+  print_endline ("The properties include CKB, Duffield Hall, Mann Library, and more!");
+  print_endline(" ");
+  print_endline ("Or would you rather play the Dark Cornopoly gameboard?");
+  print_endline ("Dark features: A darker game of Cornopoly with the nightmarish version of Cornell campus locations as the main properties.");
+  print_endline ("The properties include Klarman Ghouls, The Deserted Goldwin Smith Hall, Becker Remains, and more!");
+  print_endline(" ")
 
 (**[choose_board] allows the user to select which board type they would like
-   to play Cornopoly with. The users can choose between a Dark or a Normal board. *)
+   to play Cornopoly with. The users can choose between a Dark or a Classic board. *)
 let choose_board () = 
-  print_endline ("\nYou have a choice of which game board you would like to play.");
-  print_endline ("Would you like to play the Normal Cornopoly game board?");
-  (* print_endline ("Normal features xyz"); *)
-  print_endline ("Or would you rather play the Dark Cornopoly gameboard?");
-  (* print_endline ("Dark features xyz"); *)
+  print_board_type_description ();
   let rec try_board_command s = 
-    (* print_string ("> "); *)
     try match parse_board_choice s with
       | Dark ->  Space.spacelist_dark
-      | Normal ->  Space.spacelist
+      | Classic ->  Space.spacelist
     with 
     | Malformed -> print_endline "Invalid command! Try Again"; 
       print_string "> "; try_board_command (read_line())
     | Empty -> print_endline "Please enter a command!"; 
       print_string "> "; 
       try_board_command (read_line())
-  in print_endline ("Enter DARK or NORMAL");
+  in print_endline ("Enter DARK or CLASSIC");
   print_string ("> "); try_board_command (read_line())
 
 (** [main] begins the game of Cornopoly with instructions and allows the players

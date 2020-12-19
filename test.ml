@@ -5,15 +5,54 @@ open Space
 open Command
 open Card
 
-(*----------------------------TEST PLAN--------------------------------------
+(*----------------------------TEST PLAN--------------------------------------)
+  Our testing plan consists of two parts: OUnit testing and Play Testing.
+
   1. OUnit Testing - Glassbox testing
+  Our goal with the OUnit testing is to demonstrate that specific, testable
+   functions in our Board, Player, Space, Command, and Card modules demonstrate
+   accuracy and maintain their expected behaviors. It is important to note that
+   all functions could not be tested via OUnit testing. The functions we could 
+   not create OUnit tests were those that require user inputs and print strings.
+   
+  Specifically, the following functions (in their respective modules) could not
+  be tested with OUnit:
+   -[delete_player_board] (?), [land_someone_else_property] (?)
+    Main:
+      -[print_locations], [print_balances], [print_properties], [print_players],
+      [print_initial_board], [update_board], [check_space_chance], 
+      [check_space_jail], [check_space_penalty], [check_space_go], 
+      [check_space_justvisiting], [check_space_property],[check_space],
+      [try_command_buy_off_p], [print_buy_prices], [try_level_property],
+      [print_prop_prices], [print_level_prices], [iterate], [double_rolled], 
+      [player_in_jail], [jail_rules], [jail_pay_command], [jail_card_command],
+      [jail_roll_command], [player_bankrupt], [player_not_bankrupt], [end_game],
+      [play], [print_board_type_description],[choose_board], [main]
+      
+    Board: 
+    - [try_command_level], [try_command_property], [buy_property_helper],
+     [yes_buy_property], [compare_lvl], [yes_level_up], [level_up_prop]
+
+    
+
   -We constructed OUnit test suites for the functions that do not require user
-  inputs. Our 
+  inputs.
 
   2. Manual/Play Testing - Blackbox testing
   -We play tested our game to mainly test the functions in the main and board
   modules.
+  - For every command input to be parsed, we inputed valid inputs and checked 
+  if the outputs were correct and expected. We also tested invalid commands such
+  as empty strings, random strings, and other invalid inputs.
+  - For invalid command inputs, exception Malformed or exception Empty are 
+  caught and an apprpriate output print requests another command to be inputted
+  - Bankrupt Win Scenario Condition - one player remains and everyone else is bankrupt 
+  we tested this multiple times by setting everyone but one player's balance to be greater than 0 and by having all players bankrupt from paying rent, penalty spaces, and cards that decrease balance.
+    only one player in the playerlist remains as players with a balance of less than 0 are removed from the list
+  - Colorset Win Scenario Condtion - player has purchased all properties of the same colorset
+  we tested this by having one player buy all the properties of a color set and all the other players not buy any properties
 
+3. Why our testing 
 *)
 
 (** [pp_string s] pretty-prints string [s]. *)
@@ -71,12 +110,15 @@ let player_property_test
     (player : Player.player)
     (expected_output : string list) = 
   let property_list = property_list player in 
-  let string_property_list = property_name_printer (fst (List.split property_list)) [] in
+  let string_property_list = property_name_printer 
+  (fst (List.split property_list)) [] in
   name >:: (fun ctxt -> 
       (* assert_equal true 
          (property_order expected_output (string_property_list) ) *)
-      assert_equal ~printer:(pp_list pp_string) expected_output string_property_list
+      assert_equal ~printer:(pp_list pp_string)
+       expected_output string_property_list
     )
+
 
 let space_list = spacelist
 let player_list = playerlist
@@ -87,13 +129,14 @@ let move_player_wraparound_1 = move move_player_18 22
 let move_player_wraparound_9 = move move_player_18 30
 
 
+
 let player_tests =
   [ current_location_test "player1 curr loc id" player1 1;
     player_name_test "player1 name - Meghana" player1 "Meghana";
-    player_balance_test "player1 initial balance" player1 1500; 
+    player_balance_test "player1 initial balance" player1 3000; 
     player_property_test "player1 intiial [] property" player1 [];
     current_location_test "sample player curr loc id" sample_player 11;
-    player_name_test "sample player name - catpotato" sample_player "catpotato";
+    player_name_test "sample player name catpotato" sample_player "catpotato";
     player_balance_test "sample player balance" sample_player 400;
     player_property_test "sample player property" sample_player 
       ["Donlon";  "Goldwin Smith Hall"; "Collegetown Bagels"]; 
@@ -160,16 +203,6 @@ let space_getlevel_test name property expected_output =
   name >:: (fun ctxt -> 
       assert_equal expected_output (property_level property))
 
-
-(* let property1 = {
-   space_id = 2;
-   name = "Low Rise 5";
-   rent_price = [|20;10;10|];
-   owner = "";
-   buy_price = [|20;10;10|];
-   color = "green";
-   level = 2;
-   } *)
 let space_tests=
   [
     space_getname_test "Space name Low Rise 5" space2 "Low Rise 5";
@@ -197,7 +230,7 @@ let property_change_test name funcname prop new_owner ex_out =
 
 let property_change_level name prop level ex_out =
   name >:: (fun ctxt -> 
-      assert_equal ex_out (change_level prop level))
+      assert_equal ex_out (property_level (change_level prop level)))
 
 let ex_prop = get_property space3
 let new_ex_prop = change_owner ex_prop "ME"
@@ -208,36 +241,46 @@ let property_tests=
     property_getter_test "Property name of Donlon" property_name ex_prop 
       "Donlon";
     property_getter_test "Property id of Donlon" property_id ex_prop 3;
-    property_getter_test "Property rent price of Donlon" rent_price ex_prop [|3;16;32|]; 
+    property_getter_test "Property rent price of Donlon" 
+    rent_price ex_prop [|12;30;38|]; 
     property_getter_test "Original property owner of Donlon" property_owner 
       ex_prop "";
     property_getter_test "New property owner of Donlon" property_owner 
       new_ex_prop "ME";
     property_getter_test "Property color of Donlon" property_color ex_prop 
       "green";
-    property_getter_test "Buy price of Donlon" buy_price ex_prop [|70;120;170|]; 
-    (* property change owner test weird *)
-    property_change_test "changeowner of donlon to me" change_owner ex_prop "ME" new_ex_prop;
+    property_getter_test "Buy price of Donlon" buy_price 
+    ex_prop [|70;120;170|]; 
+    property_change_test "changeowner of donlon to me" 
+    change_owner ex_prop "ME" 
+    new_ex_prop;
     property_getter_test "Property level of donlon" property_level ex_prop 0;
-    property_change_level "change level to 2" ex_prop 2 new_level_prop;
+    property_change_level "change level to 2" (get_property space3) 2 2;
   ]
 
 let penalty_getter_test name funcname pen ex_out =
   name >:: (fun ctxt -> 
       assert_equal ex_out (funcname pen))
 
-let ex1_pen = get_penalty space36
-let ex2_pen = get_penalty space18
+let ex1_pen = get_penalty space18
+let ex2_pen = get_penalty space36
 
 let penalty_tests =
   [
     penalty_getter_test "Name of Penalty" penalty_name ex1_pen "Penalty";
     penalty_getter_test "Description of Penalty" penalty_description ex1_pen
+      "Flu season! Pay $40 for your flu shot"; 
+    penalty_getter_test "Price of Penalty" penalty_price ex1_pen 40; 
+     penalty_getter_test "Name of Penalty" penalty_name ex2_pen "Penalty";
+    penalty_getter_test "Description of Penalty" penalty_description ex2_pen
       "$60 Student activity fee..."; 
-    penalty_getter_test "Price of Penalty" penalty_price ex2_pen 40; 
+    penalty_getter_test "Price of Penalty" penalty_price ex2_pen 60; 
   ]
 
 (** <---------------------------TEST FOR BOARD ----------------> *)
+
+(** ADD PICK CARD TEST *)
+
 let rec lots_rolls input num bool=  
   let dice_num = fst (roll_dice input)  in
   (* print_endline (string_of_int  dice_num); *)
@@ -259,7 +302,16 @@ let card_action_test name act_lst player output =
    let duffield_player = move_to_space sample_player 35 *)
 let bursar_player = {sample_player with balance = 200}
 let duffield_player = {sample_player with current_location_id = 35}
-let go_player = {sample_player with current_location_id = 1; balance = 450; }
+let go_player = {sample_player with current_location_id = 1; balance = 450;}
+
+let player_if_full_set
+(name : string)
+(player : Player.player)  
+(property : Space.property) 
+(output : bool) = 
+name >:: (fun ctxt -> 
+      assert_equal output (if_full_set_test_helper player property))
+      
 
 let board_tests = 
   [
@@ -276,9 +328,13 @@ let board_tests =
     (* test check_space *)
     (* check_space_test "player lands on unowned property" space2 player1 space_list 
        ?? *)
-
+    player_if_full_set "player buys the last yellow property to become a
+    full set" player_yellow_test (get_property space8) true;
+    player_if_full_set "player buys the last blue property to become a
+    full set" player_blue_test (get_property space39) true;
+  
   ]
-(**<-----------------TEST FOR COMMAND---------------> *)
+(**<-----------------TESTS FOR COMMAND-------------------------------------> *)
 
 let jail_command_test (name : string) (str : string) (ex_out) : test = 
   name >:: (fun ctxt -> 
@@ -292,11 +348,11 @@ let buy_command_test (name : string) (str : string) (ex_out) : test =
   name >:: (fun ctxt -> 
       assert_equal ex_out (parse_buy str))
 
-let buy_exn_test   (name : string)  (str : string) (ex_out) : test = 
+let buy_exn_test (name : string)  (str : string) (ex_out) : test = 
   name >:: (fun _ -> 
       assert_raises ex_out (fun () -> parse_buy str))
 
-let board_choice_test  (name : string)   (str : string)  (ex_out) : test =
+let board_choice_test  (name : string) (str : string)  (ex_out) : test =
   name >:: (fun ctxt -> 
       assert_equal ex_out (parse_board_choice str))
 
@@ -312,10 +368,10 @@ let level_up_exn_test (name : string) (str : string) (ex_out) : test =
   name >:: (fun _ -> 
       assert_raises ex_out (fun () -> parse_level_input str))
 
-
 let command_tests = 
   [
     jail_command_test "Jail pay" "PAY" Pay;
+    jail_command_test "Jail pay case not sensitive" "pay" Pay;
     jail_command_test "Jail card" "CaRd" Card;
     jail_command_test "Jail roll" "ROll" Roll;
     jail_exn_test "Jail empty" "      " Empty;
@@ -325,10 +381,12 @@ let command_tests =
     buy_exn_test "Buy empty" "         " Empty;
     buy_exn_test "Buy EVERYTHING" "everything" Malformed;
     board_choice_test "Choose dark theme" "dARK" Dark;
-    board_choice_test "Choose normal theme" "normal" Normal;
+    board_choice_test "Choose dark theme case not sensitive" "dark" Dark;
+    board_choice_test "Choose classic theme" "classic" Classic;
     board_exn_test "Choose _____ theme" "       " Empty;
     board_exn_test "Choose light theme" "light" Malformed;
     level_up_test "Level up to 2" "2" 2;
+    level_up_exn_test "Level up to 100 malformed" "100" Malformed;
     level_up_exn_test "Level up to 3 malformed" "3" Malformed;
     level_up_exn_test "Level up to empty level!!" "       " Empty;
   ]
@@ -364,8 +422,6 @@ let card_tests = [
   card_choose_test "Card_choose test 1" [card11; card15; card6] card11;
 ]
 
-
-
 let suite =
   "tests for CORNOPOLY" >::: List.flatten [
     player_tests; 
@@ -377,4 +433,4 @@ let suite =
     card_tests;
   ]
 
-let _ = run_test_tt_main suite
+let _ = run_test_tt_main suite 

@@ -44,19 +44,21 @@ let change_jail_card player bool=
   {player with jail_card = bool}
 
 let set_location player location_id =
-  {player with current_location_id=location_id} 
+  {player with current_location_id = location_id} 
 
 let move player int' = 
   if (player.current_location_id + int') > 39 then 
     begin
-      print_endline "You have passed go! $50 has been added to your balance.";
-      {player with current_location_id = (player.current_location_id + int') 
-                                         mod 39; balance = player.balance + 50}
+      print_endline "You have passed go! $200 has been added to your balance.";
+      {player with current_location_id = 
+      (player.current_location_id + int') mod 39;
+       balance = player.balance + 200}
     end
   else {player with current_location_id = (player.current_location_id + int')} 
 
 let move_to_space player int' =
-  if (int' = 10) then {player with current_location_id = int'; in_jail = true}
+  if (int' = 10) then 
+  {player with current_location_id = int'; in_jail = true}
   else {player with current_location_id = int'}
 
 let update_name player new_name = 
@@ -72,14 +74,15 @@ let add_property player level property =
         then (property, level) else (prop, lev)) (property_list player) in
     {player with property_list = new_lst}
   else
-    {player with property_list = (property, level) ::  (property_list player)}
+    {player with property_list = (property, level) :: (property_list player)}
 
 let update_name player new_name = 
   {player with name = new_name }
 
 let remove_property player property =
   let new_property_list = List.filter 
-      (fun (prop,lev) -> property_id property != property_id prop) (property_list player)
+      (fun (prop,lev) -> property_id property != property_id prop) 
+      (property_list player)
   in {player with property_list = new_property_list}
 
 let replace_player playerlist new_player =
@@ -98,7 +101,7 @@ let player1 : player = {
   id = 1;
   name = "Meghana";
   current_location_id = 1;
-  balance = 1500;
+  balance = 3000;
   property_list = [];
   in_jail = false;
   jail_card = false;
@@ -109,7 +112,7 @@ let player2 : player = {
   id = 2;
   name = "Michelle";
   current_location_id = 1;
-  balance = 1500;
+  balance = 3000;
   property_list = [];
   in_jail = false;
   jail_card = false;
@@ -120,7 +123,7 @@ let player3 : player = {
   id = 3;
   name = "Aaron";
   current_location_id = 1;
-  balance = 1500;
+  balance = 3000;
   property_list = [];
   in_jail = false;
   jail_card = false;
@@ -131,7 +134,7 @@ let player4 : player = {
   id = 4;
   name = "Amy";
   current_location_id = 1;
-  balance = 1500;
+  balance = 3000;
   property_list = [];
   in_jail = false;
   jail_card = false;
@@ -146,6 +149,32 @@ let sample_player = {
   property_list = [(get_property space3, 0);
                    (get_property space7,1);
                    (get_property space39, 2)];
+  in_jail = false;
+  jail_card = false;
+  jail_count = ref 0;
+}
+
+let player_yellow_test = {
+  id = 5;
+  name = "catpotato";
+  current_location_id = 11;
+  balance = 400;
+  property_list = [(get_property space6, 0);
+                   (get_property space7,1);
+                   (get_property space8,1)];
+  in_jail = false;
+  jail_card = false;
+  jail_count = ref 0;
+}
+
+
+let player_blue_test = {
+  id = 6;
+  name = "catpotato";
+  current_location_id = 11;
+  balance = 400;
+  property_list = [(get_property space38,0);
+  (get_property space39,0)];
   in_jail = false;
   jail_card = false;
   jail_count = ref 0;

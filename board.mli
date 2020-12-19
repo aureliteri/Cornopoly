@@ -37,9 +37,10 @@ val level_up_prop : Command.buy_command ->
   Player.player -> Player.player list -> Space.space list ->
   Space.property-> Player.player list * Space.space list
 
-(** [if_full_set player] checks if [player] possesses a full color set of 
-    properties and terminates the game if they do with the end game string. If 
-    [player] does not have a full color set, [if_full_set player] prints "" *)
+(** [if_full_set player property_just_bought] checks if [player] possesses 
+a full color set of properties and terminates the game if they do with 
+the end game string. If [player] does not have a full color set, 
+[if_full_set player] prints "" *)
 val if_full_set : Player.player -> Space.property -> unit
 
 (**[pick_card] is a random card selected from Card.cardlist. It takes in [x], 
@@ -49,3 +50,9 @@ val pick_card : int -> Card.card
 (** [card_action act_lst player] takes in a list of commands in [act_lst] 
     and applies them to [player] then returns the updated player *)
 val card_action : Card.action list -> Player.player -> Player.player
+
+
+
+(** [if_full_set_test_helper player property_just_bought] checks if [player] possesses a full color set of 
+    properties and returns true or false *)
+val if_full_set_test_helper: Player.player -> Space.property -> bool
