@@ -224,7 +224,7 @@ let land_someone_else_property player playerList board property =  (**FIX FOR NE
    [property].*)
 let print_buy_prices property = 
   Array.iteri (fun i p -> print_endline 
-                  ("Property level: " ^ string_of_int i ^ ", Price: "^
+                  ("Property level: " ^ string_of_int i ^ ", Price: $"^
                    string_of_int p)) (buy_price property)
 
 (**[try_level_property] parses user input [s] and
@@ -499,13 +499,13 @@ let rec play s player_lst space_lst : unit =
 (**[choose_board] allows the user to select which board type they would like
    to play Cornopoly with. The users can choose between a Dark or a Normal board. *)
 let choose_board () = 
-  print_endline ("You have a choice of which game board you would like to play.");
+  print_endline ("\nYou have a choice of which game board you would like to play.");
   print_endline ("Would you like to play the Normal Cornopoly game board?");
   (* print_endline ("Normal features xyz"); *)
   print_endline ("Or would you rather play the Dark Cornopoly gameboard?");
   (* print_endline ("Dark features xyz"); *)
   let rec try_board_command s = 
-    print_string ("> ");
+    (* print_string ("> "); *)
     try match parse_board_choice s with
       | Dark ->  Space.spacelist_dark
       | Normal ->  Space.spacelist
@@ -521,7 +521,7 @@ let choose_board () =
 (** [main] begins the game of Cornopoly with instructions and allows the players
     to insert their own names and then starts the game*)
 let main () = Random.self_init ();
-  print_endline("Welcome to Cornopoly!! \nINSTRUCTIONS: The goal of this game is to win a full color set, or bankrupt the rest of your players. \nYou can do this by purchasing properties on the board, and staying out of jail. \nPlayer 1, please insert your name:");
+  print_endline("Welcome to Cornopoly!! \nINSTRUCTIONS: The goal of this game is to win a full color set, or bankrupt the rest of your players. \nYou can do this by purchasing properties on the board, and staying out of jail. \n \n Player 1, please insert your name:");
   let p1_name = read_line () in
   let p1 = update_name (List.nth Player.playerlist 0) p1_name in
   print_endline("Player 2, please insert your name:");
@@ -534,7 +534,7 @@ let main () = Random.self_init ();
   let p4_name = read_line () in 
   let p4 = update_name (List.nth Player.playerlist 3) p4_name in
   let chosen_b = choose_board () in
-  print_endline("The players are: "^p1_name^", "^p2_name^", "^p3_name^", " ^
+  print_endline("\nThe players are: "^p1_name^", "^p2_name^", "^p3_name^", " ^
                 p4_name^".\nHere is the layout of the initial board: ");
   print_initial_board chosen_b [p1;p2;p3;p4];
   print_endline "Type quit to quit. Type anything else to play.";
