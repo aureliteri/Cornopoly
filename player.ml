@@ -10,6 +10,7 @@ type player = {
   property_list: (property * int) list;
   in_jail: bool;
   jail_card: bool;
+  jail_count: int ref;
 }
 
 let id player =
@@ -30,11 +31,14 @@ let property_list player =
 let in_jail player =
   player.in_jail
 
-let change_jail player value =
-  {player with in_jail = value}
-
 let jail_card player =
   player.jail_card
+
+let jail_count player = 
+  player.jail_count 
+  
+let change_jail player value =
+  {player with in_jail = value}
 
 let change_jail_card player bool=
   {player with jail_card = bool}
@@ -98,6 +102,7 @@ let player1 : player = {
   property_list = [];
   in_jail = false;
   jail_card = false;
+  jail_count = ref 0;
 }
 
 let player2 : player = {
@@ -108,6 +113,7 @@ let player2 : player = {
   property_list = [];
   in_jail = false;
   jail_card = false;
+  jail_count = ref 0;
 }
 
 let player3 : player = {
@@ -118,6 +124,7 @@ let player3 : player = {
   property_list = [];
   in_jail = false;
   jail_card = false;
+  jail_count = ref 0;
 }
 
 let player4 : player = {
@@ -128,6 +135,7 @@ let player4 : player = {
   property_list = [];
   in_jail = false;
   jail_card = false;
+  jail_count = ref 0;
 }
 
 let sample_player = {
@@ -140,6 +148,7 @@ let sample_player = {
                    (get_property space39, 2)];
   in_jail = false;
   jail_card = false;
+  jail_count = ref 0;
 }
 
 let playerlist = [player1; player2; player3; player4;]

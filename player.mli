@@ -10,6 +10,7 @@ type player = {
   property_list: (property * int) list;
   in_jail: bool;
   jail_card: bool;
+  jail_count : int ref
 }
 
 (**[UnknownPlayer] is raised when an unknown player is encountered *)
@@ -34,6 +35,9 @@ val property_list: player -> (Space.property * int) list
 (**[jail_card player] is true if the player currenlty has a "get out jail for
    free" card. It is false if the player does not own that specific card. *)
 val jail_card : player-> bool
+
+(**[jail_count player] is the number of turns [player] has been in jail for *)
+val jail_count : player -> int ref 
 
 (**[change_jail_card player value] is a new player with the jail_card 
    attribute set to value  *)

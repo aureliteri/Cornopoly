@@ -299,8 +299,7 @@ let check_space (space: space) player (playerList: Player.player list)
     check_space_justvisiting playerList board 
 
 (*TEST CASE if you roll 3 times WHILE IN JAIL then you get out  *)
-let counter = ref 0 
-let counter_jail = ref 0
+let counter = ref 0
 
 (** [iterate playerlist sp acc] is one turn in the game of Cornopoly in which 
     every player in [playerlist] moves to a space and updates the player 
@@ -325,7 +324,8 @@ let rec iterate playerlist (sp: space list) acc =
           double_rolled new_player new_t upd_sp new_acc current_player
         else begin counter := 0;
           iterate new_t (upd_sp) (current_player :: fst new_acc, upd_sp) 
-        end end else player_in_jail h acc sp t
+        end 
+      end else player_in_jail h acc sp t
 
 (** [double_rolled new_player new_t updated_sp new_acc current_player]
     is when a double is rolled and keeps track of the number of doubles.
@@ -344,13 +344,13 @@ and double_rolled new_player new_t updated_sp new_acc current_player =
     iterate new_t (updated_sp) (jail_player :: (fst new_acc), updated_sp) 
   else iterate (current_player :: new_t) (updated_sp) (fst new_acc, updated_sp)
 
-(** [player_in_jail h acc sp t] is the function called when the player 
+(** [player_in_jail h acc sp t] is the function called when the player [h]
     is in jail. The player will be in jail for 3 turns or the player can 
     try to get out of jail early by satisfyting [jail_rules] by 
     either paying, having a card, or rolling. *)
 and player_in_jail h acc sp t = 
-  incr counter_jail;
-  if !counter_jail = 1 then 
+  incr (jail_count h);
+  if !(jail_count h) = 1 then 
     print_endline (name h^" is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, \nor try to roll a double to leave jail early.");
   let rec try_command s =         
     print_string ("> ");
@@ -390,7 +390,7 @@ and jail_pay_command player acc sp playerlist =
     in jail_rules (parse_jail (read_line())) player acc sp playerlist
   else 
     let pay_jail_player = update_balance player (-100) in
-    counter_jail := 0;
+   (jail_count player) := 0;
     let not_in_jail = change_jail pay_jail_player false in 
     print_endline ("Congrats! You have paid $100 to get out of jail.");
     iterate playerlist sp (not_in_jail :: fst acc , snd acc)
@@ -405,7 +405,7 @@ and jail_card_command player acc sp playerlist =
     let used_card = change_jail_card player false in 
     let updated_player = change_jail used_card false in
     print_endline ("Congrats! You used your Get Out of Jail Card. \nYou are out of jail.");
-    counter_jail := 0;
+    (jail_count player) := 0;
     iterate playerlist sp (updated_player :: fst acc , snd acc)
   else
     let () = print_endline ("You do not have a Get Out of Jail Card. \nEnter another command.")
@@ -417,15 +417,15 @@ and jail_card_command player acc sp playerlist =
     a double, the player's turn is passed on. If player has remained in jail for
      three turns, they are taken out of jail automatically.  *)
 and jail_roll_command player acc sp playerlist = 
-  if !counter_jail = 3 
+  if !(jail_count player) = 3 
   then 
-    (counter_jail := 0;
+    ((jail_count player) := 0;
      let not_in_jail = change_jail player false  in
      let () = print_endline ("You have stayed in jail for three turns. You are now out of jail.") in
      iterate playerlist sp (not_in_jail :: fst acc , snd acc))
   else begin
     if snd (roll_dice 6)
-    then (counter_jail := 0;
+    then ((jail_count player) := 0;
           let not_in_jail = change_jail player false  in
           let () = print_endline ("Congrats! You have rolled a double - you are out of jail!")
           in iterate playerlist sp (not_in_jail :: fst acc , snd acc))
