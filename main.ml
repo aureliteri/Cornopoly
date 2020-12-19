@@ -514,13 +514,13 @@ let rec play s player_lst space_lst : unit =
 (**[print_board_types] prints the dark vs. classic game board descriptions. *)
 let print_board_type_description () = 
   print_endline ("\nYou have a choice of which game board you would like to play.");
-  print_endline ("Would you like to play the Classic Cornopoly game board?");
+  print_endline ("Would you like to play the Classic Cornopoly game board? (Normal)");
   print_endline ("Classic features: A typical game of Cornolopoly with our favorite Cornell campus locations as main properties." );
   print_endline ("The properties include CKB, Duffield Hall, Mann Library, and more!");
   print_endline(" ");
-  print_endline ("Or would you rather play the Dark Cornopoly gameboard?");
+  print_endline ("Or would you rather play the Dark Cornopoly gameboard? (Difficult)");
   print_endline ("Dark features: A darker game of Cornopoly with the nightmarish version of Cornell campus locations as the main properties.");
-  print_endline ("The properties include Klarman Ghouls, The Deserted Goldwin Smith Hall, Becker Remains, and more!");
+  print_endline ("The properties include Klarman Ghouls, The Deserted Goldwin Smith Hall, Becker Remains, and more! The rent prices and buy prices are higher in Dark mode.");
   print_endline(" ")
 
 (**[choose_board] allows the user to select which board type they would like
