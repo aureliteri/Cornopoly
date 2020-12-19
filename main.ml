@@ -28,7 +28,6 @@
    c. possibly another board? (last resort)
 
 
-
    Different levels of propertries (house, apartment, hotel, landmark)
 *)
 open Board  
@@ -170,16 +169,20 @@ let check_space_justvisiting  playerList board  =
 (** [try_command_property s p pl board property] parses user input [s] and
     returns (Player.player list * Space.space list) according to user's input
     about purchasing a property *)
-let rec try_command_property s p pl board property =      
+(* let rec try_command_property s p pl board property =      
   try 
-    buy_property (parse_buy s) p pl board property
+    (* buy_property (parse_buy s) p pl board property *)
+  match parse_buy s with 
+  | Yes -> yes_buy_property p pl board property 
+  | No -> let updated_pL = replace_player pl p in  
+    (updated_pL, board) 
   with 
   | Malformed -> print_endline "Invalid command! Try Again"; 
     print_string "> "; 
     try_command_property (read_line()) p pl board property
   | Empty -> print_endline "Please enter a command!"; 
     print_string "> "; 
-    try_command_property (read_line()) p pl board property
+    try_command_property (read_line()) p pl board property *)
 
 (**[try_command_buy_off_p] arses user input [s] and
     returns (Player.player list * Space.space list) according to user's input
@@ -188,10 +191,10 @@ let rec try_command_buy_off_p s p pl board property level buy_price=
   try 
     buy_off_someone (parse_buy s) p pl board property level buy_price
   with 
-  | Malformed -> print_endline "Invalid command! Try Again"; 
+  | Malformed -> print_endline "Invalid command! Input yes or no"; 
     print_string "> "; 
     try_command_property (read_line()) p pl board property
-  | Empty -> print_endline "Please enter a command!"; 
+  | Empty -> print_endline "Please enter a command! Input yes or no"; 
     print_string "> "; 
     try_command_property (read_line()) p pl board property
 
@@ -234,12 +237,12 @@ let rec try_level_property s p pl board property =
   try 
     level_up_prop (parse_buy s) p pl board property
   with 
-  | Malformed -> print_endline "Invalid command! Try Again"; 
+  | Malformed -> print_endline "Invalid command! Input yes or no."; 
     print_string "> "; 
-    try_command_property (read_line()) p pl board property
-  | Empty -> print_endline "Please enter a command!"; 
+    try_level_property (read_line()) p pl board property
+  | Empty -> print_endline "Please enter a command! yes or no"; 
     print_string "> "; 
-    try_command_property (read_line()) p pl board property
+    try_level_property (read_line()) p pl board property
 
 (**[check_space_property space player playerList board property] updates checks
    if [space] i owned by [player] and returns an updated 
@@ -248,11 +251,8 @@ let check_space_property space player playerList board property =  (**FIX FOR NE
   if (String.equal (property_owner property) "") then  (**HERREE *)
     begin
       print_endline ("You landed on " ^ property_name property ^".");
-      (**print all of the buy prices and their levels // do you wanna buy? which level do you want to purchase*)
-      print_endline ("The property prices are");
-      print_buy_prices property;
-      print_endline 
-        "Do you want to purchase it? (Type: Yes or No)";      
+      print_endline ("The property prices are"); print_buy_prices property;
+      print_endline "Do you want to purchase it? (Type: Yes or No)";      
       print_string "> ";
       try_command_property (read_line()) player playerList board property 
     end
@@ -264,7 +264,8 @@ let check_space_property space player playerList board property =  (**FIX FOR NE
         let () = print_endline ("This propertry's level is MAX") in
         (replace_player playerList player, board)
       else
-        let () = print_endline ("Do you want to level up this property?") in
+        let () = print_endline ("\nThis property's level is currently " ^  string_of_int (property_level property) ^". \nDo you want to level up this property?") in
+        print_endline ("The property prices are: "); print_buy_prices property; 
         print_string "> ";
         try_level_property (read_line()) player playerList board property 
     end
@@ -521,7 +522,7 @@ let choose_board () =
 (** [main] begins the game of Cornopoly with instructions and allows the players
     to insert their own names and then starts the game*)
 let main () = Random.self_init ();
-  print_endline("Welcome to Cornopoly!! \nINSTRUCTIONS: The goal of this game is to win a full color set, or bankrupt the rest of your players. \nYou can do this by purchasing properties on the board, and staying out of jail. \n \n Player 1, please insert your name:");
+  print_endline("Welcome to Cornopoly!! \nINSTRUCTIONS: The goal of this game is to win a full color set, or bankrupt the rest of your players. \nYou can do this by purchasing properties on the board, and staying out of jail. \n\nPlayer 1, please insert your name:");
   let p1_name = read_line () in
   let p1 = update_name (List.nth Player.playerlist 0) p1_name in
   print_endline("Player 2, please insert your name:");
@@ -531,7 +532,7 @@ let main () = Random.self_init ();
   let p3_name = read_line () in
   let p3 = update_name (List.nth Player.playerlist 2) p3_name in
   print_endline("Player 4, please insert your name:");
-  let p4_name = read_line () in 
+  let p4_name = read_line () in  
   let p4 = update_name (List.nth Player.playerlist 3) p4_name in
   let chosen_b = choose_board () in
   print_endline("\nThe players are: "^p1_name^", "^p2_name^", "^p3_name^", " ^

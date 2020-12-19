@@ -11,7 +11,11 @@ val roll_dice: int -> (int * bool)
 (** [buy_property command player playerList board property] is the tuple of 
     the updated [playerList] and [board] given from the player
     command [command] which may change the player [player]'s [proper] *)
-val buy_property : Command.buy_command ->
+(* val buy_property : Command.buy_command ->
+  Player.player -> Player.player list -> Space.space list ->
+  Space.property-> Player.player list * Space.space list *)
+
+val try_command_property : string ->
   Player.player -> Player.player list -> Space.space list ->
   Space.property-> Player.player list * Space.space list
 
