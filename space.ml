@@ -547,15 +547,15 @@ let space41 : space = Go {
 let space42 = 
 {space2 with name = "The Dark Basement of Low Rise 5"; 
 rent_price =[|8;20;66|]; 
-buy_price = [|     |];
+buy_price = [|     |]; 
 color = "moss green"}
 
-let space43 = {space3 with name = "The Gloomy Halls of Donlon"; rent_price =
-[|     |]; buy_price = [|     |]; color = "moss green"} *)
+let space43 = {space3 with name = "The Gloomy Halls of Donlon"; 
+rent_price = [|     |]; buy_price = [|     |]; color = "moss green"} *)
 
 let space42 : space = Property { 
   space_id = 2;
-    name = "Spooky Rise 5";
+    name = "The Dark Basement of Low Rise 5";
     rent_price = [|8;20;66|];
     owner = "";
     buy_price = [|60;110;160|];
@@ -575,7 +575,7 @@ let space43 : space = Property {
 
 let space44 : space = Property { 
     space_id = 4;
-    name = "CKB Dungeons";
+    name = "The Haunted CKB Dungeons";
     rent_price = [|12;30;70|];
     owner = "";
     buy_price = [|80;130;180|];
@@ -622,12 +622,12 @@ let space48 : space = Property {
 
 let space49 : space = CardSpace { 
     space_id = 9;
-    name = "Chance";
+    name = "Chance? or not ;)";
   }
 
 let space50 : space = Jail {
     space_id = 10;
-    name = "The Spooky Prison"
+    name = "The Desolated Prison"
   }
 
 let space51 : space = Property { 
@@ -672,7 +672,7 @@ let space54 : space = Property {
 
 let space55 : space = CardSpace { 
     space_id = 15;
-    name = "Chance";
+    name = "Chance? or not ;)";
   }
 
 let space56 : space = Property { 
@@ -770,7 +770,7 @@ let space65 : space = Property {
 
 let space66 : space = CardSpace { 
     space_id = 26;
-    name = "Chance";
+    name = "Chance? or not ;)";
   }
 
 let space67 : space = Property { 
@@ -837,7 +837,7 @@ let space72 : space = Property {
 
 let space73 : space = CardSpace { 
     space_id = 33;
-    name = "Chance";
+    name = "Chance? or not ;)";
   }
 
 let space74 : space = Property { 
@@ -860,12 +860,11 @@ let space75 : space = Property {
     level = 0;
   }
 
-
 let space76 : space = Penalty { 
     space_id = 36;
     name = "Penalty";
-    description = "$60 Student activity fee...";
-    penalty_price = 60
+    description = "$40 The Killer Cult Admissions Fee";
+    penalty_price = 40
   }
 
 
