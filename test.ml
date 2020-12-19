@@ -204,7 +204,7 @@ let property_change_level name prop level ex_out =
 
 let ex_prop = get_property space3
 let new_ex_prop = change_owner ex_prop "ME"
-let new_level_prop =  property1
+let new_level_prop =  change_level property1 2
 
 let property_tests=
   [
@@ -222,7 +222,7 @@ let property_tests=
     (* property change owner test weird *)
     property_change_test "changeowner of donlon to me" change_owner ex_prop "ME" new_ex_prop;
     property_getter_test "Property level of donlon" property_level ex_prop 0;
-    property_change_level "change level to 2" ex_prop 2 property1;
+    property_change_level "change level to 2" ex_prop 2 new_level_prop;
   ]
 
 let penalty_getter_test name funcname pen ex_out =
