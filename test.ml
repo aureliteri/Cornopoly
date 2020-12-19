@@ -113,8 +113,6 @@ let player_property_test
   let string_property_list = property_name_printer 
       (fst (List.split property_list)) [] in
   name >:: (fun ctxt -> 
-      (* assert_equal true 
-         (property_order expected_output (string_property_list) ) *)
       assert_equal ~printer:(pp_list pp_string)
         expected_output string_property_list
     )
@@ -279,7 +277,7 @@ let penalty_tests =
 
 (** <---------------------------TEST FOR BOARD ----------------> *)
 
-(** ADD PICK CARD TEST *)
+(** ADD PICK CARD TEST -> Can't do pick card test because it is random. We cannot expect anything *)
 
 let rec lots_rolls input num bool=  
   let dice_num = fst (roll_dice input)  in
@@ -297,6 +295,7 @@ let roll_dice_test name num input output =
 let card_action_test name act_lst player output = 
   name >:: (fun ctxt -> 
       assert_equal output (card_action act_lst player))
+
 
 (* let bursar_player = update_balance sample_player (-200)
    let duffield_player = move_to_space sample_player 35 *)
@@ -435,6 +434,11 @@ let card_tests = [
   card_choose_test "Card_choose empty" [] empty;
   card_choose_test "Card_choose test 1" [card11; card15; card6] card11;
 ]
+
+
+(*----------------------------------- Main Tests ---------------------------- *)
+
+(**check if we can test [delete_player_board] (?), [land_someone_else_property] (?) *)
 
 let suite =
   "tests for CORNOPOLY" >::: List.flatten [
