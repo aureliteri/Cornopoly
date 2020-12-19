@@ -46,6 +46,7 @@ let buy_property_helper player plst board prop level buy_price =
   let p' = update_balance (add_property player level prop) (-1 * buy_price) in
   let updated_pL = replace_player plst p' in  
   if balance p' <= 0 then let () = print_endline "You do not have enough in your balance! Sorry!"
+  (* should we add it so they can reselect level and then leave *)
     in (plst, board)
   else begin
     let updated_p = (change_owner prop (name p')) in
@@ -107,7 +108,7 @@ let rec compare_lvl old_lvl new_lvl =
 
 let yes_level_up pl pl_lst board property = 
   let old_level = property_level property in
-  print_endline ("Which level do you want to buy? (You can only buy a level greater than the current level you own. Must be greater than "
+  print_endline ("Which level do you want to buy? (You can only buy a level greater than the current level of "
                  ^ string_of_int old_level);
   print_string "> ";
   let new_lvl = try_command_level (read_line()) in
