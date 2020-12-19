@@ -219,7 +219,8 @@ val property1 : property
 val spacelist: space list
 
 (** [get_space id spacelst] is the unique space from the [spacelst] associated 
-    with the integer identifier [id] *)
+    with the integer identifier [id] 
+    Requires: [id] belongs to a space already in [spacelst]. *)
 val get_space : int -> space list ->space
 
 (** [space41] is the unique space in the dark board that is of type go *)

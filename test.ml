@@ -201,6 +201,10 @@ let space_getlevel_test name property expected_output =
   name >:: (fun ctxt -> 
       assert_equal expected_output (property_level property))
 
+let space_getspace_test name id space_lst expected_output =
+  name >:: (fun ctxt -> 
+      assert_equal expected_output (get_space id space_lst))
+
 let space_tests=
   [
     space_getname_test "Space name Low Rise 5" space2 "Low Rise 5";
@@ -216,6 +220,7 @@ let space_tests=
     space_buyprice_test "property1 buy_price list" property1 [|20;10;10|];
     space_getcolor_test "property1 color test" property1 "green";
     space_getlevel_test "property1 level = 2" property1 2;
+    space_getspace_test "get space3" 3 [space12; space14; space15; space29; space3] space3;
   ]
 
 let property_getter_test name funcname prop ex_out =
