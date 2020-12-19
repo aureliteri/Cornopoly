@@ -144,7 +144,7 @@ let rec compare_lvl old_lvl new_lvl =
 let yes_level_up pl pl_lst board property = 
   let old_level = property_level property in
   print_endline ("Which level do you want to buy? (You can only buy a level greater than the current level of "
-                 ^ string_of_int old_level)^")";
+                 ^ string_of_int old_level^ ")");
   print_string "> ";
   let new_lvl = try_command_level (read_line()) in
   let verified_lvl = compare_lvl old_level new_lvl in 
@@ -169,4 +169,3 @@ let rec card_action (act_lst : Card.action list)
       | Get_out x -> change_jail_card player x
     end
   | [] -> player
-
