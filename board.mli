@@ -8,18 +8,20 @@
     the player is sent to jail and their turn ends. *)
 val roll_dice: int -> (int * bool)
 
-(**[pick_card] is a random card selected from Card.cardlist. It takes in [x], 
-   which is the length of cardlist *)
-val pick_card : int -> Card.card 
+(**[pick_card x name ] is a random card selected from either Card.cardlist
+   or Card.cardlist_dark. It takes in [x], which is the length of cardlist, 
+   and takes in the name of the chance space to determine if 
+   the card is from the dark card list or from the classic card list. *)
+val pick_card : int -> String.t -> Card.card
 
 (** [if_full_set player property_just_bought] checks if [player] possesses 
-a full color set of properties and terminates the game if they do with 
-the end game string. If [player] does not have a full color set, 
-[if_full_set player] prints "" *)
+    a full color set of properties and terminates the game if they do with 
+    the end game string. If [player] does not have a full color set, 
+    [if_full_set player] prints "" *)
 val if_full_set : Player.player -> Space.property -> unit
 
 (* [try_command_level s] parses the string [s] using the [parse_level_input s] 
-function and returns an integer representing the level *)
+   function and returns an integer representing the level *)
 val try_command_level : string -> int
 
 (** [try_command_property s p pl board property] parses user input [s] and
@@ -30,8 +32,8 @@ val try_command_property : string ->
   Space.property-> Player.player list * Space.space list
 
 (* [buy_off_someone command player playerlist board property level buy_price] 
-returns an updated (Player.player list * Space.space list) according to the
-user input on whether they want to purchase another player's property. *)
+   returns an updated (Player.player list * Space.space list) according to the
+   user input on whether they want to purchase another player's property. *)
 val buy_off_someone : 
   Command.buy_command ->
   Player.player ->

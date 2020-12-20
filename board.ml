@@ -8,9 +8,11 @@ let roll_dice x =
   let d2 = Random.int x + 1 in 
   (d1 + d2, d1 = d2)
 
-let pick_card x =
+let pick_card x name =
   let ind = Random.int x in
-  cardlist.(ind)
+  if String.equal name "Chance" 
+  then cardlist.(ind) 
+  else cardlist_dark.(ind)
 
 (* [if_full_set player property_just_bought] is called every single time 
    a property is bought. It will check whether the property that has been

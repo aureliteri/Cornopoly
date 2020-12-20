@@ -51,6 +51,10 @@ val penalty_price : penalty -> int
     recieve a mystery card*)
 type cardspace
 
+(** [card_name chance] is the name [name] of [chance]*)
+val card_name : cardspace -> string
+
+
 (** [go] is unique type of the starting space on the game board and every time
     a player passes this space they revieve a constant amount of money *)
 type go
@@ -79,21 +83,8 @@ val space_id : space -> int
 (** [get_property space] identifies the property type of [space] *)
 val get_property : space -> property 
 
-(** [get_cardspace space] identifies the card type of [space]*)
-val get_cardspace  : space -> cardspace
-
-(** [get_jail space] identifies the jail type of [space]*)
-val get_jail : space -> jail
-
-(** [get_go space] identifies the go type of [space]*)
-val get_go : space -> go
-
 (** [get_penalty space] identifies the penalty type of [space]*)
 val get_penalty : space -> penalty
-
-(** [get_justvisting space] identifies the justvisiting type of [space]*)
-val get_justvisiting : space -> justvisiting
-
 
 (** [space1] is the unique space in the board that is of type go *)
 val space1: space

@@ -1,0 +1,163 @@
+ Our testing plan consists of two parts: OUnit testing and Play Testing.
+
+ 1. OUnit Testing - Blackbox testing
+Our goal with the OUnit testing is to demonstrate that specific, testable
+functions in our Board, Player, Space, Command, and Card modules demonstrate
+accuracy and maintain their expected behaviors. In our OUnit testing methodology
+we utilize blackbox testing. Our OUnit blackbox test cases were created by
+examining the function specifications. It is also important to note that all
+functions could not be tested via OUnit testing. The functions we could not
+create OUnit tests for were those that require user inputs and print strings. 
+Therefore, we constructed OUnit test suites for all other functions in our 
+modules that do not require user inputs. Specifically, for the Player module, 
+OUnit tests were constructed for the player getter functions [id], [name], 
+[current_location_id], [balance], [property_list], [in_jail], [jail_card], 
+[is_bankrupt], [jail_count] to check that the functions returned the correct 
+values from a given player record, after making changes to players. 
+
+The functions [change_jail_card], [change_jail], [move], [move_to_space], 
+[update_name], [update_balance], [add_property], [remove_property], 
+[replace_player], [find_player] were tested to see that they returned values 
+that were correctly updated and changed. For example, [move] was tested to see 
+if it returned a player that moved a certain number of spaces on the game board.
+More specifically, we tested this move process: moving the said player to 
+another space, passing go and checking that $200 has been added to their 
+balance, giving them a Get out of Jail free card, landing on a penalty space and
+checking that their balance has been deducted.
+
+For the Space module, OUnit tests were created for the getter functions 
+[property_name], [property_id], [rent_price], [property_owner], 
+[property_color], [buy_price], [property_level],[space_name], [space_id], 
+[get_property],  [get_penalty], [get_space], and [get_level_price] to determine 
+that the functions were returning the correct values. The functions 
+[change_level] and [change_owner] were tested to see if they correctly changed 
+the owner and level properties of given properties, as this function is pivotal 
+in the game for when a player purchases a new property. 
+
+For the Card module, the OUnit tests were created for the getter functions 
+[card_id], [card_decription], [card_act], and [choose] to determine that they 
+are correctly returning properties of a given card. 
+
+For the Board module, OUnit tests were created for [roll_dice], [if_full_set], 
+and [card_action]. We tested to see if  [roll_dice] can create 100 valid dice 
+rolls (for a 6-sided die), if [if_full_set] can correctly determine that a 
+player wins the game by purchasing the last property in a color set, and if [
+  card_action] will execute the correct action for a given mystery card. 
+
+For the Command module, OUnit tests were created for [parse_jail], [parse_buy], 
+[parse_board_choice], and [parse_level_input]. We tested every command input to 
+be parsed, where we entered valid inputs and checked if the outputs were correct
+and expected. We also tested invalid commands such as empty strings, random 
+strings, and other invalid inputs to test for the exceptions Empty and 
+ alformed.
+
+ 2. Manual/Play Testing - 
+
+This testing utilizes the glassbox testing methodology through play testing 
+because we are examining the all possible execution paths of our code by trying 
+to play several different game scenarios.
+
+The following functions (in their respective modules) could not
+ be tested with OUnit and were only tested with play testing:
+   Main:
+     For the following print functions, [print_buy_prices], [print_prop_prices],
+      [print_level_prices, [print_locations], [print_balances], 
+      [print_properties], [print_players], [print_board_type_description], 
+      [print_initial_board], [update_board], we observed whether the output 
+      displayed the correct information such as the correct player locations 
+      and balances after each game round.
+
+For [delete_player_board] we tested to see if a player is removed from the 
+game after they are bankrupted. We also tested to see that the bankrupt player’s
+ previously owned properties no longer have that player listed as the owner and 
+ if the remaining players can continue playing the game after the player has 
+ been removed.
+
+For [land_somone_else_property] we tested to see that when a player lands on a 
+property that is already owned by another player, the player has the ability to 
+buy the property off of the previous owner. We made sure that the property is 
+removed from the previous owner’s property list and is added to the new player’s
+ property list. 
+
+For the the functions [check_space_chance], [check_space_jail], 
+[check_space_penalty], [check_space_go], [check_space_justvisiting], 
+[check_space_property], and [check_space], we play tested them by seeing
+ what occurs when a player lands on different space types including properties,
+  penalties, jail, justvisiting, go, and the cardspaces. We made sure 
+  the correct prompts and information were being printed for each space type, 
+  and we also checked to see if the player can take the correct actions after 
+  landing on a certain space type. For example, if the player were to land 
+  in jail, we would be testing [check_space_jail] by seeing that the player
+   goes to jail and follows all of the jail rules.
+
+For the functions [try_command_buy_off_p], [try_level_property], and 
+[choose_board] for every command input to be parsed, we imputed valid 
+inputs and checked if the outputs were correct and expected. For invalid 
+command inputs, exception Malformed or exception Empty are caught and an 
+appropriate output print requests another command to be inputted.
+
+The function [iterate] is a core function that calls many other functions
+ such as [double_rolled], [player_in_jail], [jail_rules], [player_bankrupt].
+The functionality that is carried out depends on the player’s path choice,
+for example if a player chooses to purchase a property but they do not 
+have enough in their balance, based on this command, within [iterate], 
+[player_bankrupt] will be called and the player will be removed from the
+game. 
+
+
+The functions [end_game], [play], and [main] are our main game functions. 
+These functions were tested by running through all of the game scenarios
+ highlighted in this document and making sure that the game runs smoothly 
+ and ends according to the proper winning scenarios.
+
+Board:
+For the functions [try_command_level], [try_command_property], and 
+[level_up_prop], we utilized [parse_level_input] and [parse_buy] which 
+we created OUnit tests for. In addition, we ensured that the outputs for 
+valid inputs were properly displayed and invalid inputs were properly caught 
+with exception Malformed and exception Empty. 
+
+For functions [buy_property_helper], [yes_buy_property], [compare_lvl], 
+[yes_level_up], we ensured that the correct Player.player list and
+ Space.space list was returned by verifying that the player’s location 
+ and balance were updated as well as the property’s new owner and level 
+ are correctly updated.
+
+Card: 
+For [pick_card], we verified that a random card from the cardlist was always 
+chosen.
+
+Winning Scenarios:
+Bankrupt Win Scenario Condition - one player remains and everyone else is 
+bankrupt. This condition is met when only one player in the playerlist 
+remains as players with a balance of less than 0 are removed from the list.
+We tested this with multiple scenarios by having all players bankrupt from
+ paying rent, penalty spaces, and cards that decrease balance as well as by 
+ setting everyone but one player's balance to be greater than 0
+Color Set Win Scenario Condition - player has purchased all properties of 
+the same colorset. We tested this by having one player buy all the 
+properties of a color set and all the other players not buy any properties.
+
+ 3. Why Our Testing
+Our testing is split up into two sections: black box testing and play testing.
+ The reason we did it this way is because the nature of the monopoly game is 
+ dynamic; since the list of properties of players are added as the game 
+ progresses. Therefore, play testing allows us to test different commands
+  and different execution paths of the game (eg. inputting Yes or No to
+   buying a property, inputting Pay or Card or Roll to get out of jail.)
+   requires us to create new player records for every single type of scenario. 
+   Play testing also allowed us to more robustly determine the correctness of 
+   the game, ensure that every winning scenario could be carried out, and 
+   make sure that players who went bankrupt were indeed eliminated from the 
+   playerlist.  
+
+The Blackbox testing that we did with our OUnit tests were also important in 
+ensuring the correctness of our program because they allowed for us to make 
+sure that the function specifications were correct and that individual
+ functions output correct and expected results. With proper blackbox testing, 
+ it made it much easier to debug our program, especially for debugging the
+  functions that were tested with play testing, since we were aware of which 
+  functions worked and which didn’t. 
+
+
+

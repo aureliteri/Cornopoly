@@ -6,56 +6,7 @@ open Command
 open Card
 
 (*----------------------------TEST PLAN--------------------------------------)
-  Our testing plan consists of two parts: OUnit testing and Play Testing.
-
-  1. OUnit Testing - Blackbox testing
-  Our goal with the OUnit testing is to demonstrate that specific, testable
-   functions in our Board, Player, Space, Command, and Card modules demonstrate
-   accuracy and maintain their expected behaviors. It is important to note that
-   all functions could not be tested via OUnit testing. The functions we could 
-   not create OUnit tests were those that require user inputs and print strings.
-
-  Specifically, the following functions (in their respective modules) could not
-  be tested with OUnit:
-   -[delete_player_board] (?), [land_someone_else_property] (?)
-    Main:
-      -[print_locations], [print_balances], [print_properties], [print_players],
-      [print_initial_board], [update_board], [check_space_chance], 
-      [check_space_jail], [check_space_penalty], [check_space_go], 
-      [check_space_justvisiting], [check_space_property],[check_space],
-      [try_command_buy_off_p], [print_buy_prices], [try_level_property],
-      [print_prop_prices], [print_level_prices], [iterate], [double_rolled], 
-      [player_in_jail], [jail_rules], [jail_pay_command], [jail_card_command],
-      [jail_roll_command], [player_bankrupt], [player_not_bankrupt], [end_game],
-      [play], [print_board_type_description],[choose_board], [main]
-
-    Board: 
-  - [try_command_level], [try_command_property], [buy_property_helper],
-     [yes_buy_property], [compare_lvl], [yes_level_up], [level_up_prop]
-
-
-
-  -We constructed OUnit test suites for the functions that do not require user
-  inputs.
-
-  2. Manual/Play Testing - Glassbox testing
-  -We play tested our game to mainly test the functions in the main and board
-  modules.
-  - For every command input to be parsed, we inputed valid inputs and checked 
-    if the outputs were correct and expected. We also tested invalid commands such
-    as empty strings, random strings, and other invalid inputs.
-  - For invalid command inputs, exception Malformed or exception Empty are 
-    caught and an apprpriate output print requests another command to be inputted
-  - Bankrupt Win Scenario Condition - one player remains and everyone else is bankrupt 
-    we tested this multiple times by setting everyone but one player's balance to be greater than 0 and by having all players bankrupt from paying rent, penalty spaces, and cards that decrease balance.
-    only one player in the playerlist remains as players with a balance of less than 0 are removed from the list
-  - Color Set Win Scenario Condtion - player has purchased all properties of the same colorset
-    we tested this by having one player buy all the properties of a color set and all the other players not buy any properties
-
-  3. Why our testing 
-
-
-
+  TEST PLAN is in "test_plan.txt" file.
 *)
 
 (** [property_order list1 list2] compares two lists to see whether

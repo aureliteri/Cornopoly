@@ -91,14 +91,17 @@ let update_board playerlist board =
   print_endline ("\n" ^ print_locations playerlist board "");
   print_endline (print_balances playerlist "")
 
+
 (**[check_space_chance player playerList board] is the tuple containing
    the updated [playerlist] and [board]. [check_space_chance] is specifically  
    called when the [player] lands on a card space. This function picks a 
    random card from the card and the [player] is taken through the 
    specific card's actions. The updated [playerlist] contains 
    the same [player] that has undergone the card action. *)
-let check_space_chance player playerList (board: Space.space list) = 
-  let chosen_card = pick_card (Array.length cardlist) in
+let check_space_chance player playerList (board: Space.space list) 
+    (chance : Space.cardspace) = 
+  let name = card_name chance in
+  let chosen_card = pick_card (Array.length cardlist) name in
   print_endline ("The card you have chosen is: \n"
                  ^ (card_description chosen_card));
   let card_action_player = card_action (card_act chosen_card) player in 
@@ -252,7 +255,7 @@ let check_space (space: space) player (playerList: Player.player list)
   | Property property ->  
     check_space_property space player playerList board property
   | CardSpace chance ->
-    check_space_chance player playerList board 
+    check_space_chance player playerList board chance 
   | Jail jail ->
     check_space_jail player playerList board 
   | Penalty penalty ->

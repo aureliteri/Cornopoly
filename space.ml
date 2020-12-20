@@ -63,6 +63,9 @@ type cardspace = {
   name: string;
 }
 
+let card_name (chance : cardspace) = 
+  chance.name
+
 type go = {
   space_id: int;
   name: string;
@@ -108,25 +111,9 @@ let get_property = function
   | Property property -> property 
   | _ -> failwith "Not a Property"
 
-let get_cardspace  = function 
-  | CardSpace cardspace -> cardspace
-  | _ -> failwith "Not a Cardspace"
-
-let get_jail = function
-  | Jail jail -> jail 
-  | _ -> failwith "Not a Jail space"
-
-let get_go = function
-  | Go go -> go
-  | _ -> failwith "Not a Go space"
-
 let get_penalty = function
   | Penalty penalty -> penalty
   | _ -> failwith "Not a penalty"
-
-let get_justvisiting = function
-  | JustVisiting justvisiting -> justvisiting
-  | _ -> failwith "Not a JustVisiting space"
 
 let space1 : space= Go {
     space_id = 1; 
@@ -575,7 +562,7 @@ let space44 : space = Property {
 let space45 : space = Penalty { 
     space_id = 5;
     name = "Penalty";
-    description = "Pay $30 for your Spooky Costume";
+    description = "Pay $30 for your Spooky Costume.";
     penalty_price = 30
   }
 
@@ -616,7 +603,7 @@ let space49 : space = CardSpace {
 
 let space50 : space = Jail {
     space_id = 10;
-    name = "The Desolated Prison"
+    name = "The Desolate Prison"
   }
 
 let space51 : space = Property { 
@@ -852,7 +839,7 @@ let space75 : space = Property {
 let space76 : space = Penalty { 
     space_id = 36;
     name = "Penalty";
-    description = "$40 The Killer Cult Admissions Fee";
+    description = "Pay $40 for the Killer Cult Admissions Fee.";
     penalty_price = 40
   }
 
