@@ -42,16 +42,12 @@ let rec try_command_level s =
     print_string "> "; 
     try_command_level (read_line()) 
   
-      (** [try_command_property s p pl board property] parses user input [s] and
-    returns (Player.player list * Space.space list) according to user's input
-    about purchasing a property *)
 let rec try_command_property s p pl board property =      
   try 
-    (* buy_property (parse_buy s) p pl board property *)
-  match parse_buy s with 
-  | Yes -> yes_buy_property p pl board property 
-  | No -> let updated_pL = replace_player pl p in  
-    (updated_pL, board) 
+    match parse_buy s with 
+    | Yes -> yes_buy_property p pl board property 
+    | No -> let updated_pL = replace_player pl p in  
+      (updated_pL, board) 
   with 
   | Malformed -> print_endline "Invalid command! Input yes or no"; 
     print_string "> "; 
@@ -60,6 +56,9 @@ let rec try_command_property s p pl board property =
     print_string "> "; 
     try_command_property (read_line()) p pl board property
 
+(** [buy_property_helper player plst board prop level buy_price] is a 
+helper function for when a player tries to buy a property. It returns an 
+updated (Player.player list * Space.space list)*)
 and buy_property_helper player plst board prop level buy_price = 
   let p' = update_balance (add_property player level prop) (-1 * buy_price) in
   let updated_pL = replace_player plst p' in  
@@ -94,40 +93,6 @@ and yes_buy_property player plst board prop =
   let buy_price_level = bp_arr.(level) in 
   buy_property_helper player plst board prop level buy_price_level
 
-(* let upgrade_property command player playerList board property  = 
-   match command with 
-   | Yes -> yes_buy_property player playerList board property
-   | No -> (playerList, board)
-
-   let rec try_update s = 
-   print_endline "Do you want to update your property? (Type: Yes or No)"; 
-   print_string "> "; 
-   upgrade_property (parse_buy s) *)
-
-(* let buy_property command player playerList board property = 
-  match command with 
-  | Yes -> yes_buy_property player playerList board property 
-  | No -> let updated_pL = replace_player playerList player in  
-    (updated_pL, board)  *)
-
-    (* (** [try_command_property s p pl board property] parses user input [s] and
-    returns (Player.player list * Space.space list) according to user's input
-    about purchasing a property *)
-let rec try_command_property s p pl board property =      
-  try 
-    (* buy_property (parse_buy s) p pl board property *)
-  match parse_buy s with 
-  | Yes -> yes_buy_property p pl board property 
-  | No -> let updated_pL = replace_player pl p in  
-    (updated_pL, board) 
-  with 
-  | Malformed -> print_endline "Invalid command! Input yes or no"; 
-    print_string "> "; 
-    try_command_property (read_line()) p pl board property
-  | Empty -> print_endline "Please enter a command! Input yes or no"; 
-    print_string "> "; 
-    try_command_property (read_line()) p pl board property *)
-
 let buy_off_someone command player playerList board property level buy_price = 
   match command with 
   | Yes -> buy_property_helper player playerList board property level buy_price
@@ -146,6 +111,9 @@ let rec compare_lvl old_lvl new_lvl =
       print_string "> "; in
     compare_lvl old_lvl (try_command_level (read_line()) ) 
 
+(** [yes_level_up pl pl_lst board property] returns an updated (Player.player list
+* Space.space list) in a scenerio when a player chooses to level up their
+property. *)
 let yes_level_up pl pl_lst board property = 
   let old_level = property_level property in
   print_endline ("Which level do you want to buy? (You can only buy a level greater than the current level of "
@@ -174,7 +142,6 @@ let rec card_action (act_lst : Card.action list)
       | Get_out x -> change_jail_card player x
     end
   | [] -> player
-
 
   let if_full_set_test_helper (player : Player.player)  
     (property_just_bought : Space.property) : bool =

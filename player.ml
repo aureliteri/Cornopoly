@@ -146,9 +146,7 @@ let sample_player = {
   name = "catpotato";
   current_location_id = 11;
   balance = 400;
-  property_list = [
-    (get_property space3, 0);
-    (get_property space7,1);
+  property_list = [(get_property space3, 0);(get_property space7,1);
     (get_property space39, 2)];
   in_jail = false;
   jail_card = false;
@@ -160,9 +158,7 @@ let player_brown_full_test = {
   name = "catpotato";
   current_location_id = 11;
   balance = 400;
-  property_list = [
-    (get_property space34,0);
-    (get_property space35,0);
+  property_list = [(get_property space34,0);(get_property space35,0);
     (get_property space37,0)];
   in_jail = false;
   jail_card = false;
@@ -174,9 +170,7 @@ let player_pink_full_test = {
   name = "catpotato";
   current_location_id = 11;
   balance = 400;
-  property_list = [
-    (get_property space27,0);
-    (get_property space28,0);
+  property_list = [(get_property space27,0);(get_property space28,0);
     (get_property space29,0)];
   in_jail = false;
   jail_card = false;
@@ -188,9 +182,7 @@ let player_yellow_full_test = {
   name = "catpotato";
   current_location_id = 11;
   balance = 400;
-  property_list = [
-    (get_property space6, 0);
-    (get_property space7,1);
+  property_list = [(get_property space6, 0);(get_property space7,1);
     (get_property space8,1)];
   in_jail = false;
   jail_card = false;
@@ -202,9 +194,7 @@ let player_blue_full_test = {
   name = "catpotato";
   current_location_id = 11;
   balance = 400;
-  property_list = [
-    (get_property space38,0);
-    (get_property space39,0)];
+  property_list = [(get_property space38,0); (get_property space39,0)];
   in_jail = false;
   jail_card = false;
   jail_count = ref 0;
@@ -216,11 +206,8 @@ let player_blood_full_test = {
   name = "catpotato";
   current_location_id = 11;
   balance = 400;
-  property_list = [
-    (get_property space54,0);
-    (get_property space56,0);
-    (get_property space57,0)];
-
+  property_list = [(get_property space54,0);(get_property space56,0);
+  (get_property space57,0)];
   in_jail = false;
   jail_card = false;
   jail_count = ref 0;
@@ -232,9 +219,7 @@ let player_not_full_test = {
   name = "catpotato";
   current_location_id = 11;
   balance = 400;
-  property_list = [
-    (get_property space7,1);
-    (get_property space8,1)];
+  property_list = [(get_property space7,1);(get_property space8,1)];
   in_jail = false;
   jail_card = false;
   jail_count = ref 0;

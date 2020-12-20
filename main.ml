@@ -1,35 +1,3 @@
-(** [main ()] prompts for the game to play, then starts it. *)
-(* TODO:
-   1. Divide functions into smaller helper functions. FINISHED
-   Must be shorter than 20 lines.
-   - iterate this shit is 200 lines (main.ml)
-
-   2. Write all spcifications for helper functions. FINISHED
-   Complete mli functions specifications. 
-   Clean up unnecessary notes/comments.
-
-   3. OUnit tests
-   - test the commands: jail and buying properties
-   - test exceptions ???
-   -  checking if property list empty if player is bankrupt
-   - test winning scenarios in ounit (like if color list win and stuffs)
-   - test all of the module function, we should have more than 50 ounit tests 
-
-     4. Make JSON maps and players -> parse json and return specific type list
-     5. Make rental prices and fees reasonable so that game is actually enjoyable.
-     6. Create a working make docs (HTML thing) FINISHED
-     7. Fix liines going over 80 characters
-     ???. ??? Make bisect
-
-   ADD LINES OF CODE-> we need around 900 more lines !!!!!!!! FINISHED
-   a. add more cards (around 40 more)
-   b. add more players (so we can have multiple player lists like playerlist 
-   of playerlist? or choose random players at the beginning of the game.
-   c. possibly another board? (last resort)
-
-
-   Different levels of propertries (house, apartment, hotel, landmark)
-*)
 open Board  
 open Player
 open Space
@@ -563,5 +531,5 @@ let main () = Random.self_init ();
   let s = read_line () in play s [p1;p2;p3;p4] chosen_b;
   match read_line() with | exception End_of_file -> ()|file_name -> failwith ""
 
-(* Execute the game engine. *)
+(** [main ()] prompts for the game to play, then starts it. *)
 let () = main ()

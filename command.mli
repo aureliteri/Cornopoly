@@ -42,4 +42,7 @@ val parse_buy : string -> buy_command
    Raises: [Malformed] if an incorrect or a malformed command is parsed *)
 val parse_board_choice: string -> board_choice
 
+(**[parse_board_choice str] parses the player's input into an integer.
+   Raises: [Empty] if an empty command is encountered
+   Raises: [Malformed] if an incorrect or a malformed command is parsed *)
 val parse_level_input : string -> int
