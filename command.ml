@@ -18,10 +18,10 @@ exception Malformed
 
 
 let parse_jail str =
-  let to_lst = 
+  let convert_lst = 
     str |> String.lowercase_ascii |> String.split_on_char ' '
     |> List.filter (fun x -> x <> "") in 
-  match to_lst with
+  match convert_lst with
   | h :: t -> begin
       if h = "pay" && t == [] then Pay
       else if h = "card" && t == [] then Card
@@ -31,10 +31,10 @@ let parse_jail str =
   | [] -> raise Empty
 
 let parse_buy str =
-  let to_lst = 
+  let convert_lst = 
     str |> String.lowercase_ascii |> String.split_on_char ' '
     |> List.filter (fun x -> x <> "") in 
-  match to_lst with
+  match convert_lst with
   | h :: t -> begin
       if h = "yes" && t == [] then Yes
       else if h = "no" && t == [] then No
@@ -43,10 +43,10 @@ let parse_buy str =
   | [] -> raise Empty
 
 let parse_board_choice str =
-  let to_lst = 
+  let convert_lst = 
     str |> String.lowercase_ascii |> String.split_on_char ' '
     |> List.filter (fun x -> x <> "") in 
-  match to_lst with
+  match convert_lst with
   | h :: t -> begin
       if h = "dark" && t == [] then Dark
       else if h = "classic" && t == [] then Classic
@@ -55,10 +55,10 @@ let parse_board_choice str =
   | [] -> raise Empty
 
 let parse_level_input str = 
-  let to_lst = 
+  let convert_lst = 
     str |> String.lowercase_ascii |> String.split_on_char ' '
     |> List.filter (fun x -> x <> "") in 
-  match to_lst with
+  match convert_lst with
   | h :: t -> begin
       if h = "0" && t == [] then 0
       else if h = "1" && t == [] then 1

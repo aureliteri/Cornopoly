@@ -20,8 +20,8 @@ val pick_card : int -> String.t -> Card.card
     [if_full_set player] prints "" *)
 val if_full_set : Player.player -> Space.property -> unit
 
-(* [try_command_level s] parses the string [s] using the [parse_level_input s] 
-   function and returns an integer representing the level *)
+(** [try_command_level s] parses the string [s] using the [parse_level_input s] 
+    function and returns an integer representing the level *)
 val try_command_level : string -> int
 
 (** [try_command_property s p pl board property] parses user input [s] and
@@ -31,9 +31,9 @@ val try_command_property : string ->
   Player.player -> Player.player list -> Space.space list ->
   Space.property-> Player.player list * Space.space list
 
-(* [buy_off_someone command player playerlist board property level buy_price] 
-   returns an updated (Player.player list * Space.space list) according to the
-   user input on whether they want to purchase another player's property. *)
+(** [buy_off_someone command player playerlist board property level buy_price] 
+    returns an updated (Player.player list * Space.space list) according to the
+    user input on whether they want to purchase another player's property. *)
 val buy_off_someone : 
   Command.buy_command ->
   Player.player ->
@@ -52,6 +52,7 @@ val level_up_prop : Command.buy_command ->
     and applies them to [player] then returns the updated player *)
 val card_action : Card.action list -> Player.player -> Player.player
 
-(** [if_full_set_test_helper player property_just_bought] checks if [player] possesses a full color set of 
+(** [if_full_set_test_helper player property_just_bought] checks if
+    [player] possesses a full color set of 
     properties and returns true or false *)
 val if_full_set_test_helper: Player.player -> Space.property -> bool

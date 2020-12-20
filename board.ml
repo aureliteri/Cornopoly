@@ -14,13 +14,13 @@ let pick_card x name =
   then cardlist.(ind) 
   else cardlist_dark.(ind)
 
-(* [if_full_set player property_just_bought] is called every single time 
-   a property is bought. It will check whether the property that has been
-   bought will allow the player to reach a full set of a color. A full set is 
-   a set of 3 properties of the same color except a set of 2 for color "black"
-   or "blue". If [property_just_bought] is the last property needed to
-   reach a completed set, the function will print out the winner, else
-   the game continues as per normal. *)
+(** [if_full_set player property_just_bought] is called every single time 
+    a property is bought. It will check whether the property that has been
+    bought will allow the player to reach a full set of a color. A full set is 
+    a set of 3 properties of the same color except a set of 2 for color "black"
+    or "blue". If [property_just_bought] is the last property needed to
+    reach a completed set, the function will print out the winner, else
+    the game continues as per normal. *)
 let if_full_set (player : Player.player)  
     (property_just_bought : Space.property) : unit =
   let color = property_color property_just_bought in
@@ -35,18 +35,16 @@ let if_full_set (player : Player.player)
   in let no_of_color_owned = List.length 
          (extract_color_property color 
             (fst(List.split(property_list player))) []) in 
-  if no_of_color_owned = full_size 
-  then begin print_endline 
-      ("Winner is " ^ name player ^"! They have a full set of "
-       ^ color ^ "! \nCongratulations! Thank you for playing Cornopoly!" ^ 
-       "Created by Amy Ouyang, Aaron Kang, Michelle Keoy, Meghana Avvaru.");
+  if no_of_color_owned = full_size then begin
+    print_endline ("Winner is " ^ name player ^"! They have a full set of "
+                   ^ color ^ "! \nCongratulations! Thank you for playing Cornopoly!\nCreated by Amy Ouyang, Aaron Kang, Michelle Keoy, Meghana Avvaru. <3");
     exit 0; end
   else print_string ""
 
-(* [try_command_level s] is what the player  will
-   interact with to input either which level of the property they
-   wish to buy. If the input is not 0, 1, or 2, it will raise mailformed
-   and ask the player to input a valid command. *)
+(** [try_command_level s] is what the player  will
+    interact with to input either which level of the property they
+    wish to buy. If the input is not 0, 1, or 2, it will raise mailformed
+    and ask the player to input a valid command. *)
 let rec try_command_level s =      
   try 
     parse_level_input s 
@@ -58,10 +56,10 @@ let rec try_command_level s =
     print_string "> "; 
     try_command_level (read_line()) 
 
-(* [try_command_property s p pl board property] is what the player [p] will
-   interact with to input either yes or no for whether they wish to buy
-   the property or not. If the input is not yes or no, it will raise mailformed
-   and ask the player to input a valid command. *)
+(**  [try_command_property s p pl board property] is what the player [p] will
+     interact with to input either yes or no for whether they wish to buy
+     the property or not. If the input is not yes or no, it will raise mailformed
+     and ask the player to input a valid command. *)
 let rec try_command_property s p pl board property =      
   try 
     match parse_buy s with 
@@ -122,7 +120,7 @@ let buy_off_someone command player playerList board property level buy_price =
 
 (** [compare_lvl old_lvl new_lvl] is [new_lvl] if [new_lvl] is a valid level 
     that is greater than [old_lvl] and less than or equal to 2. Otherwise, 
-    the funciton iss continuously called until a valid [new_lvl]] is inputted.
+    the funciton is continuously called until a valid [new_lvl] is inputted.
 *)
 let rec compare_lvl old_lvl new_lvl =
   if new_lvl > old_lvl && new_lvl <= 2 then new_lvl else 
@@ -169,10 +167,10 @@ let rec card_action (act_lst : Card.action list)
   | [] -> player
 
 
-(* [if_full_set_test_helper player property_just_bought] is
-   a function that is similar to if_full_set but returns a bool instead. This
-   function is used for testing to confirm that if_full_set works by 
-   returning a boolean. *)
+(** [if_full_set_test_helper player property_just_bought] is
+    a function that is similar to if_full_set but returns a bool instead. This
+    function is used for testing to confirm that if_full_set works by 
+    returning a boolean. *)
 let if_full_set_test_helper (player : Player.player)  
     (property_just_bought : Space.property) : bool =
   let color = property_color property_just_bought in
