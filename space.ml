@@ -128,12 +128,12 @@ let get_justvisiting = function
   | JustVisiting justvisiting -> justvisiting
   | _ -> failwith "Not a JustVisiting space"
 
-let space1 : space = Go {
+let space1 = Go {
     space_id = 1; 
     name = "Go";
   }
 
-let space2 : space = Property { 
+let space2 = Property { 
     space_id = 2;
     name = "Low Rise 5";
     rent_price = [|8;20;36|];
@@ -541,16 +541,6 @@ let space41 : space = Go {
     space_id = 1; 
     name = "Go Dark!";
   }  
-
-(* let space41 = {space1 with name = "The Gates to CornellHELL (Go)"}
-   let space42 = 
-   {space2 with name = "The Dark Basement of Low Rise 5"; 
-   rent_price =[|8;20;66|]; 
-   buy_price = [|     |]; 
-   color = "moss green"}
-
-   let space43 = {space3 with name = "The Gloomy Halls of Donlon"; 
-   rent_price = [|     |]; buy_price = [|     |]; color = "moss green"} *)
 
 let space42 : space = Property { 
     space_id = 2;
