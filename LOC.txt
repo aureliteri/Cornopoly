@@ -1,3 +1,4 @@
+
 We used cloc to measure the size (Lines of code) of our project. This is the
 report that was made when [cloc .] was run on our project:
 

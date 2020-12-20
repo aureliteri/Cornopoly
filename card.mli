@@ -23,9 +23,6 @@ val card_description : card -> string
 (** [card_act card] is a list of actions that the chance card can enact*)
 val card_act : card -> action list
 
-(** [choose cardList] is the first card in the deck of cards*)
-val choose : card list -> card
-
 (**[card1] is a unique chance card in the mystery card deck *)
 val card1 : card
 
@@ -86,5 +83,6 @@ val card19 : card
 (**[card20] is a unique chance card in the mystery card deck *)
 val card20 : card
 
-(** [cardlist] is the mystery card deck made of chance cards*)
+(** [cardlist] is the mystery card deck made of chance cards for the 
+    Classic board.*)
 val cardlist: card array

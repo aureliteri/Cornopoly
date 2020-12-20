@@ -49,10 +49,13 @@ open Card
   - Bankrupt Win Scenario Condition - one player remains and everyone else is bankrupt 
     we tested this multiple times by setting everyone but one player's balance to be greater than 0 and by having all players bankrupt from paying rent, penalty spaces, and cards that decrease balance.
     only one player in the playerlist remains as players with a balance of less than 0 are removed from the list
-  - Colorset Win Scenario Condtion - player has purchased all properties of the same colorset
+  - Color Set Win Scenario Condtion - player has purchased all properties of the same colorset
     we tested this by having one player buy all the properties of a color set and all the other players not buy any properties
 
   3. Why our testing 
+
+
+
 *)
 
 (** [property_order list1 list2] compares two lists to see whether
@@ -161,25 +164,34 @@ let player_blood_full_test = {
 let player_not_full_test = {
   sample_player with
   id = 5;
-  property_list = [(get_property space7,1);(get_property space8,1)];
+  property_list = [
+    (get_property space7,1);
+    (get_property space8,1)];
 }
 let move_player_18 = move sample_player 7
 let move_player_wraparound_1 = move move_player_18 22
 let move_player_wraparound_9 = move move_player_18 30
 
-let player_in_jail_true = {sample_player with in_jail = true; jail_card = true}
+let player_in_jail_true = {
+  sample_player with in_jail = true; 
+                     jail_card = true}
 let sample_player_bankrupt = {sample_player with balance = (-100)}
 let player_at_20 = {sample_player with current_location_id = 20}
 let player_catlover = {sample_player with name = "CATLUVER"}
 let sample_player_100 = {sample_player with balance = 500}
-let sample_player_with_prop1 = {sample_player with property_list = 
-                                                     [(property1, 1);
-                                                      (get_property space3, 0);
-                                                      (get_property space7,1);
-                                                      (get_property space39,2);]
-                               }
+let sample_player_with_prop1 = 
+  {sample_player with property_list = [
+       (property1, 1);
+       (get_property space3, 0);
+       (get_property space7,1);
+       (get_property space39,2);]
+  }
 let player_amy = {player3 with name = "Amy"}
-let fake_playerlist = [player1;player2; player3; sample_player]
+let fake_playerlist = [
+  player1;
+  player2; 
+  player3; 
+  sample_player]
 
 let player_tests = [ 
   player_test_getters "player1 curr loc id" id player1 1;
@@ -199,7 +211,7 @@ let player_tests = [
     move_player_wraparound_1 1;
   player_test_getters "move function w/ mod wraparound" current_location_id
     move_player_wraparound_9 9;
-  bool_jail_test "in_jail for sample_player false" in_jail sample_players false;
+  bool_jail_test "in_jail for sample_player false" in_jail sample_player false;
   bool_jail_test "in_jail for sample_player true" in_jail player_in_jail_true 
     true;
   bool_jail_test "jail_card for sample_player true" jail_card sample_player 
@@ -218,8 +230,8 @@ let player_tests = [
     sample_player "CATLUVER" player_catlover;
   update_player_test "update balance of sample_player with $100 more dollars" 
     update_balance sample_player 100 sample_player_100;
-  add_property_test "add property 1 to sample_player" sample_player 1 property1
-    sample_player_with_prop1;
+  add_property_test "add property 1 to sample_player" sample_player 1 
+    property1 sample_player_with_prop1;
   remove_property_test "remove property1 from sample player's property list"
     sample_player_with_prop1 property1 sample_player;
   replace_player_test "replace sample_player w/ player 4" fake_playerlist 
@@ -229,9 +241,10 @@ let player_tests = [
      {player4 with name = "Michelle"}] player_amy;
   {|find_player raise UnknownPlayer|}
   >:: (fun _ -> assert_raises (UnknownPlayer "aerg")
-          (fun () -> find_player "aerg" [player1; {player2 with name = "Aaron"};
-                                         player_amy; 
-                                         {player4 with name = "Michelle"}]));
+          (fun () -> find_player "aerg" [
+               player1; {player2 with name = "Aaron"};
+               player_amy; 
+               {player4 with name = "Michelle"}]));
 ]
 
 
@@ -251,7 +264,8 @@ let space_getproperty_test name space expected_output =
 
 let space_getlevelprice_test name property expected_output =
   name >:: (fun ctxt -> 
-      assert_equal expected_output (get_level_price property) ~printer:string_of_int)
+      assert_equal expected_output (get_level_price property)
+        ~printer:string_of_int)
 
 let space_rentprice_test name property expected_output = 
   name >:: (fun ctxt -> 
@@ -289,8 +303,9 @@ let space_tests=
     space_buyprice_test "property1 buy_price list" property1 [|60;110;160|];
     space_getcolor_test "property1 color test" property1 "green";
     space_getlevel_test "property1 level = 0" property1 0;
-    space_getspace_test "get space3" 3 [space12; space14; space15; space29;
-                                        space3] space3;
+    space_getspace_test "get space3" 3 
+      [space12; space14; space15; space29;
+       space3] space3;
   ]
 
 let property_getter_test name funcname prop ex_out =
@@ -476,10 +491,6 @@ let card_act_test (name : string) (card : Card.card) (ex_out : action list) =
   name >:: (fun ctxt -> 
       assert_equal ex_out (card_act card))
 
-let card_choose_test (name : string) (cardlst : card list) (ex_out : card) = 
-  name >:: (fun ctxt -> 
-      assert_equal ex_out (choose cardlst))
-
 let card_tests = [
   card_id_test "Empty card test" empty 0;
   card_id_test "Card 3 test" card3 3;
@@ -490,14 +501,10 @@ let card_tests = [
     "Your friends threw you a surprise birthday party! Collect $100!";
   card_act_test "Empty card actions" empty [];
   card_act_test "Card 10 actions" card10 [Move 37];
-  card_choose_test "Card_choose empty" [] empty;
-  card_choose_test "Card_choose test 1" [card11; card15; card6] card11;
 ]
 
 
 (*----------------------------------- Main Tests ---------------------------- *)
-
-(**check if we can test [delete_player_board] (?), [land_someone_else_property] (?) *)
 
 let suite =
   "tests for CORNOPOLY" >::: List.flatten [

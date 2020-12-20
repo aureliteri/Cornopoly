@@ -22,11 +22,6 @@ let card_description card = card.description
 
 let card_act card = card.act
 
-let choose cardlist = 
-  match cardlist with
-  | [] -> empty
-  | h :: t -> h
-
 let card1 = {
   card_id = 1;
   description = "Pay your Bursar Bill! You owe Cornell $200.";
@@ -139,7 +134,7 @@ let card17 = {
 
 let card18 = {
   card_id = 18;
-  description = "You missed doing the Daily Check! CUPD is after you! Pay $40 and go to Jail.";
+  description = "You missed your Daily Check! CUPD is after you! Pay $40 and go to Jail.";
   act = [Change (-40); Move 10]
 }
 
@@ -225,8 +220,27 @@ let card30 = {
   act = [Get_out true]
 }
 
+let card31 = {
+  card_id = 31;
+  description = "You loved 3110 so much you bought a 3110 T-shirt for $15!";
+  act = [Change (-15)]
+}
+
+let card32 = {
+  card_id = 32;
+  description = "Advance to Go — Collect $200.";
+  act = [Move 1; Change 200]
+}
+
+let card33 = {
+  card_id = 33;
+  description = "You have a Get Out of Jail Free card!";
+  act = [Get_out true]
+}
+
 let cardlist = [|
   card1; card2; card3; card4; card5; card6; card7; 
   card9; card10; card11; card12; card13; card14; card15; card16;
   card17; card18; card19; card20; card21; card22; card23; card24;
-  card25; card26; card27; card28; card29; card30;|]
+  card25; card26; card27; card28; card29; card30; card31; card32; 
+  card33|]

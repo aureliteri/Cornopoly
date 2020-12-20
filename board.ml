@@ -36,8 +36,8 @@ let if_full_set (player : Player.player)
   if no_of_color_owned = full_size 
   then begin print_endline 
       ("Winner is " ^ name player ^"! They have a full set of "
-       ^ color ^ "! \nCongratulations! Thank you for playing Cornopoly! 
-       Created by Amy Ouyang, Aaron Kang, Michelle Keoy, Meghana Avvaru.");
+       ^ color ^ "! \nCongratulations! Thank you for playing Cornopoly!" ^ 
+       "Created by Amy Ouyang, Aaron Kang, Michelle Keoy, Meghana Avvaru.");
     exit 0; end
   else print_string ""
 
@@ -113,7 +113,8 @@ and yes_buy_property player plst board prop =
 
 let buy_off_someone command player playerList board property level buy_price = 
   match command with 
-  | Yes -> buy_property_helper player playerList board property level buy_price
+  | Yes -> buy_property_helper player playerList board property 
+             level buy_price
   | No -> let updated_pL = replace_player playerList player in  
     (updated_pL, board) 
 
@@ -126,7 +127,8 @@ let rec compare_lvl old_lvl new_lvl =
     let () = print_endline 
         ("Invalid level! Enter a level greater than " 
          ^string_of_int old_lvl^" and less than or equal to 2. 
-          Which level do you want to buy? (You can only buy a level greater than the current level of " 
+          Which level do you want to buy? " ^
+         "\n(You can only buy a level greater than the current level of " 
          ^ string_of_int old_lvl ^")"); 
       print_string "> "; in
     compare_lvl old_lvl (try_command_level (read_line())) 
@@ -136,8 +138,9 @@ let rec compare_lvl old_lvl new_lvl =
     chooses to level up their property. *)
 let yes_level_up pl pl_lst board property = 
   let old_level = property_level property in
-  print_endline ("Which level do you want to buy? (You can only buy a level greater than the current level of "
-                 ^ string_of_int old_level^ ")");
+  print_endline ("Which level do you want to buy?" ^ 
+                 "\n(You can only buy a level greater than the current level"
+                 ^ " of " ^ string_of_int old_level^ ")");
   print_string "> ";
   let new_lvl = try_command_level (read_line()) in
   let verified_lvl = compare_lvl old_level new_lvl in 
