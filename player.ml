@@ -37,11 +37,11 @@ let jail_card player =
 let jail_count player = 
   player.jail_count 
 
-let change_jail player value =
-  {player with in_jail = value}
-
 let change_jail_card player bool=
   {player with jail_card = bool}
+
+let change_jail player value =
+  {player with in_jail = value}
 
 let set_location player location_id =
   {player with current_location_id = location_id} 
@@ -61,6 +61,9 @@ let move_to_space player int' =
     {player with current_location_id = int'; in_jail = true}
   else {player with current_location_id = int'}
 
+let is_bankrupt player =
+  player.balance <= 0
+
 let update_name player new_name = 
   {player with name = new_name }
 
@@ -75,9 +78,6 @@ let add_property player level property =
     {player with property_list = new_lst}
   else
     {player with property_list = (property, level) :: (property_list player)}
-
-let update_name player new_name = 
-  {player with name = new_name }
 
 let remove_property player property =
   let new_property_list = List.filter 
@@ -94,8 +94,6 @@ let rec find_player find playerlist =
   | h :: t -> if String.equal h.name find 
     then h else find_player find t
 
-let is_bankrupt player =
-  player.balance <= 0
 
 let player1 : player = {
   id = 1;

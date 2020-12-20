@@ -11,7 +11,7 @@ type action =
 (**[card] is the type of indivdual card in the card deck*)
 type card 
 
-(**[empty] is the empty card *)
+(**[empty] is the empty card (for testing) *)
 val empty : card
 
 (**[card_id card] is the id number for a specific card *)

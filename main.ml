@@ -134,25 +134,7 @@ let check_space_justvisiting  playerList board  =
   print_endline "Oop. Close call to Jail, luckily you are just visiting.";
   (playerList, board)
 
-(** [try_command_property s p pl board property] parses user input [s] and
-    returns (Player.player list * Space.space list) according to user's input
-    about purchasing a property *)
-(* let rec try_command_property s p pl board property =      
-  try 
-    (* buy_property (parse_buy s) p pl board property *)
-  match parse_buy s with 
-  | Yes -> yes_buy_property p pl board property 
-  | No -> let updated_pL = replace_player pl p in  
-    (updated_pL, board) 
-  with 
-  | Malformed -> print_endline "Invalid command! Try Again"; 
-    print_string "> "; 
-    try_command_property (read_line()) p pl board property
-  | Empty -> print_endline "Please enter a command!"; 
-    print_string "> "; 
-    try_command_property (read_line()) p pl board property *)
-
-(**[try_command_buy_off_p] arses user input [s] and
+(**[try_command_buy_off_p] parses user input [s] and
     returns (Player.player list * Space.space list) according to user's input
     about purchasing a property owned by another player. *)
 let rec try_command_buy_off_p s p pl board property level buy_price=      
@@ -280,7 +262,8 @@ let check_space (space: space) player (playerList: Player.player list)
   | JustVisiting jv ->
     check_space_justvisiting playerList board 
 
-(*TEST CASE if you roll 3 times WHILE IN JAIL then you get out  *)
+(** [counter] is a counter for the number of doubles a player rolls in a row.
+This can we shared amoungst all players because player turns are discrete. *)
 let counter = ref 0
 
 (** [iterate playerlist sp acc] is one turn in the game of Cornopoly in which 
@@ -357,7 +340,6 @@ and player_in_jail h acc sp t =
 and jail_rules command player acc sp playerlist = 
   match command with
   | Pay -> jail_pay_command player acc sp playerlist
-  (*parse s into PAY commnd. Pass the command into a function that moves the player out of jail *)
   | Card -> jail_card_command player acc sp playerlist
   | Roll -> jail_roll_command player acc sp playerlist
 
@@ -430,17 +412,17 @@ and player_bankrupt player playerlist sp acc =
     returns the tuple of the updated [playerlist] and updated [sp] when [player]
     is not bankrupt (not yet eliminated)*)
 and player_not_bankrupt current_player new_player playerlist sp acc roll = 
-  if (snd roll) then (* if a double is rolled *)
+  if (snd roll) then 
     begin
       print_endline ("You rolled a double!");
-      incr counter; (*add 1 to the count of doubles rolled *)
+      incr counter; 
       if !counter = 3 
-      then (*if the # of doubles is 3, then send the player to jail. *)
+      then 
         let () = print_endline ("You rolled 3 doubles! Go to Jail.") in
-        let jail_player = (change_jail (set_location new_player 10) true )in (*set current location of player to jail. Then change the player's jail property to true  *)
-        iterate playerlist (sp) (jail_player :: (fst acc), sp) (*iterate to next player in line. Add jailed player to accumulator *)
+        let jail_player = (change_jail (set_location new_player 10) true )in 
+        iterate playerlist (sp) (jail_player :: (fst acc), sp)
       else iterate (current_player :: playerlist) (sp) (fst acc, sp) 
-      (*if # of doubles rolled per person has not reached three, replace head player with jailed player make  *)
+      
     end 
   else begin
     counter := 0;
@@ -456,9 +438,7 @@ let end_game lst : unit =
     exit 0;
   | h :: t -> if List.length t = 0 then 
       (print_endline 
-         (name h ^  " is the winner! Everyone else has gone bankrupt.
-         Thank you for playing Cornopoly!
-         Created by Amy Ouyang, Aaron Kang, Michelle Keoy, Meghana Avvaru."); 
+         (name h ^  " is the winner! Everyone else has gone bankrupt.Thank you for playing Cornopoly! Created by Amy Ouyang, Aaron Kang, Michelle Keoy, Meghana Avvaru."); 
        exit 0; ) 
     else ()
 
@@ -492,7 +472,8 @@ let print_board_type_description () =
   print_endline(" ")
 
 (**[choose_board] allows the user to select which board type they would like
-   to play Cornopoly with. The users can choose between a Dark or a Classic board. *)
+   to play Cornopoly with. The users can choose between a Dark or a 
+   Classic board. *)
 let choose_board () = 
   print_board_type_description ();
   let rec try_board_command s = 

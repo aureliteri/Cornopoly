@@ -1,6 +1,7 @@
 
 (**Representation of a player in the Cornolpoly game *)
 open Space
+
 (**[player] is the type of a single player *)
 type player = {
   id : int;
@@ -32,6 +33,10 @@ val balance: player -> int
 (**[property_list player] is the list of property the player currently owns.*)
 val property_list: player -> (Space.property * int) list
 
+(**[in_jail player] is true if the player is currently in jail and false
+   the player is not currently in jail. *)
+val in_jail: player -> bool
+
 (**[jail_card player] is true if the player currenlty has a "get out jail for
    free" card. It is false if the player does not own that specific card. *)
 val jail_card : player-> bool
@@ -42,10 +47,6 @@ val jail_count : player -> int ref
 (**[change_jail_card player value] is a new player with the jail_card 
    attribute set to value  *)
 val change_jail_card: player -> bool -> player
-
-(**[in_jail player] is true if the player is currently in jail and false
-   the player is not currently in jail. *)
-val in_jail: player -> bool
 
 (**[change_jail player value] is a new player with the in_jail 
    attribute set to value *)
@@ -117,12 +118,9 @@ val playerlist: player list
    with [player] removed.*)
 val remove_player: player -> player list -> player list
 
-(* CAN BE DELETED LATER, USED FOR TESTING PURPOSES FOR NOW*)
-(* val sample_player_test : player 
-   val player6 : player *)
+(** These players are for testing purposes only. *)
 val player_blue_full_test : player 
 val player_blood_full_test : player 
-
 val player_brown_full_test : player 
 val player_pink_full_test : player 
 val player_yellow_full_test : player 
