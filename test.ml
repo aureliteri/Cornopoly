@@ -194,8 +194,7 @@ let player_tests = [
     move_player_wraparound_1 1;
   player_test_getters "move function w/ mod wraparound" current_location_id
     move_player_wraparound_9 9;
-  bool_jail_test "in_jail for sample_player false" in_jail sample_player 
-    false;
+  bool_jail_test "in_jail for sample_player false" in_jail sample_players false;
   bool_jail_test "in_jail for sample_player true" in_jail player_in_jail_true 
     true;
   bool_jail_test "jail_card for sample_player true" jail_card sample_player 
