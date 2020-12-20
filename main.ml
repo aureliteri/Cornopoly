@@ -197,6 +197,8 @@ let rec try_level_property s p pl board property =
    property landed on and the prices and prompts the player to input a command*)
 let print_prop_prices player pList board property : unit = 
   print_endline ("You landed on " ^ property_name property ^".");
+  print_endline ("The color of this property is " ^
+                 property_color property ^ ".");
   print_endline ("The property prices are");
   print_buy_prices property;
   print_endline "Do you want to purchase it? (Type: Yes or No)";     
@@ -213,11 +215,11 @@ let print_level_prices player pList board property : unit =
   print_buy_prices property;
   print_string "> "
 
-(**[check_space_property space player playerList board property] updates checks
-   if [space] i owned by [player] and returns an updated 
+(**[check_space_property space player playerList board property] 
+   updates checks if [space] i owned by [player] and returns an updated 
    (Player.player list * Space.space list) accordingly *)
-let check_space_property space player playerList board property =  (**FIX FOR NEW PROPERTY LIST *)
-  if (String.equal (property_owner property) "") then  (**HERREE *)
+let check_space_property space player playerList board property =  
+  if (String.equal (property_owner property) "") then  
     begin
       let () = print_prop_prices player playerList board property in 
       try_command_property (read_line()) player playerList board property 
@@ -225,12 +227,12 @@ let check_space_property space player playerList board property =  (**FIX FOR NE
   else begin 
     if String.equal (property_owner property) (name player)
     then begin
-      print_endline ("You landed on " ^ property_name property ^". You own this property. You get to stay for free!"); (**Implement level update *)
+      print_endline ("You landed on " ^ property_name property ^
+                     ". You own this property. You get to stay for free!"); 
       if (property_level property = 2) then 
         let () = print_endline ("This propertry's level is MAX") in
         (replace_player playerList player, board)
-      else
-        let () = print_level_prices player playerList board property in
+      else let () = print_level_prices player playerList board property in
         try_level_property (read_line()) player playerList board property 
     end
     else
@@ -243,9 +245,9 @@ let check_space_property space player playerList board property =  (**FIX FOR NE
    [player_lst] which is ALLLLL of the players in the CURRENT turn,
    pass in [board] which is the CURRENT board. *)
 
-(**[check_space space player playerList board] is the updated playerList board tuple given from pattern-matching 
-   the [space] the [player] lands on, and updates the [player] information 
-   and [board] *)
+(**[check_space space player playerList board] is the updated playerList 
+   board tuple given from pattern-matching the [space] the [player] lands on, 
+   and updates the [player] information and [board] *)
 let check_space (space: space) player (playerList: Player.player list) 
     (board: Space.space list) : (Player.player list * Space.space list) =
   match space with
@@ -263,7 +265,8 @@ let check_space (space: space) player (playerList: Player.player list)
     check_space_justvisiting playerList board 
 
 (** [counter] is a counter for the number of doubles a player rolls in a row.
-    This can we shared amoungst all players because player turns are discrete. *)
+    This can we shared amoungst all players because player turns are discrete.
+*)
 let counter = ref 0
 
 (** [iterate playerlist sp acc] is one turn in the game of Cornopoly in which 
@@ -296,8 +299,8 @@ let rec iterate playerlist (sp: space list) acc =
     is when a double is rolled and keeps track of the number of doubles.
     If 3 doubles are rolled then the [new_player]'s location is set to 
     jail and passed into iterate along with [new_t], [updated_sp], [new_acc]. 
-    Otherwise,[current_player] and the other parameters are passed into iterate.
-*)
+    Otherwise,[current_player] and the other parameters are passed into 
+    [iterate]. *)
 and double_rolled new_player new_t updated_sp new_acc current_player = 
   (* if a double is rolled *)
   print_endline("You rolled a double!");
@@ -307,7 +310,8 @@ and double_rolled new_player new_t updated_sp new_acc current_player =
     let () = print_endline ("You rolled 3 doubles in total! Go to Jail.") in
     let jail_player = move_to_space new_player 10 in 
     iterate new_t (updated_sp) (jail_player :: (fst new_acc), updated_sp) 
-  else iterate (current_player :: new_t) (updated_sp) (fst new_acc, updated_sp)
+  else 
+    iterate (current_player :: new_t) (updated_sp) (fst new_acc, updated_sp)
 
 (** [player_in_jail h acc sp t] is the function called when the player [h]
     is in jail. The player will be in jail for 3 turns or the player can 
@@ -316,7 +320,7 @@ and double_rolled new_player new_t updated_sp new_acc current_player =
 and player_in_jail h acc sp t = 
   incr (jail_count h);
   if !(jail_count h) = 1 then 
-    print_endline (name h^" is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, \nor try to roll a double to leave jail early.");
+    print_endline (name h ^" is in jail! You will be stuck here for three turns. \nYou can pay a fine of $100, use your get out of jail free card, \nor try to roll a double to leave jail early.");
   let rec try_command s =         
     print_string ("> ");
     try 
@@ -375,10 +379,11 @@ and jail_card_command player acc sp playerlist =
     in print_string ("> ");
     jail_rules (parse_jail (read_line())) player acc sp playerlist
 
-(**[jail_roll_command] checks to see if they player rolls a double to exit jail.
-   If the player rolls a double, they are removed from jail. If they don't roll
-    a double, the player's turn is passed on. If player has remained in jail for
-     three turns, they are taken out of jail automatically.  *)
+(**[jail_roll_command] checks to see if they player rolls a double to exit 
+   jail. If the player rolls a double, they are removed from jail. 
+   If they don't roll a double, the player's turn is passed on. 
+   If player has remained in jail for three turns, 
+   they are taken out of jail automatically.  *)
 and jail_roll_command player acc sp playerlist = 
   if !(jail_count player) = 3 
   then 
@@ -409,8 +414,8 @@ and player_bankrupt player playerlist sp acc =
   iterate (remove_player player playerlist) new_board (fst acc, new_board)
 
 (** [player_not_bankrupt current_player new_player playerlist sp acc roll] 
-    returns the tuple of the updated [playerlist] and updated [sp] when [player]
-    is not bankrupt (not yet eliminated)*)
+    returns the tuple of the updated [playerlist] and updated [sp] 
+    when [player] is not bankrupt (not yet eliminated). *)
 and player_not_bankrupt current_player new_player playerlist sp acc roll = 
   if (snd roll) then 
     begin
@@ -422,7 +427,6 @@ and player_not_bankrupt current_player new_player playerlist sp acc roll =
         let jail_player = move_to_space new_player 10 in 
         iterate playerlist (sp) (jail_player :: (fst acc), sp)
       else iterate (current_player :: playerlist) (sp) (fst acc, sp) 
-
     end 
   else begin
     counter := 0;
@@ -438,7 +442,7 @@ let end_game lst : unit =
     exit 0;
   | h :: t -> if List.length t = 0 then 
       (print_endline 
-         (name h ^  " is the winner! Everyone else has gone bankrupt.Thank you for playing Cornopoly! Created by Amy Ouyang, Aaron Kang, Michelle Keoy, Meghana Avvaru."); 
+         (name h ^  " is the winner! Everyone else has gone bankrupt. Thank you for playing Cornopoly! Created by Amy Ouyang, Aaron Kang, Michelle Keoy, Meghana Avvaru."); 
        exit 0; ) 
     else ()
 
