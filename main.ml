@@ -157,7 +157,7 @@ let land_someone_else_property player playerList board property =  (**FIX FOR NE
   let cur_price = get_level_price property in
   print_endline ("You have landed on " ^(property_name property) ^ 
                  ". It is owned by " ^ property_owner property ^ 
-                ". \nYou must pay rent of $" ^ 
+                 ". \nYou must pay rent of $" ^ 
                  (string_of_int (cur_price) ^ "."));
   let pl = update_balance player (-1 * cur_price) in
   let updated_owner = update_balance (find_player (property_owner property) 
@@ -194,7 +194,7 @@ let rec try_level_property s p pl board property =
     try_level_property (read_line()) p pl board property
 
 (**[print_prop_prices player pList board property] displays the current 
-property landed on and the prices and prompts the player to input a command*)
+   property landed on and the prices and prompts the player to input a command*)
 let print_prop_prices player pList board property : unit = 
   print_endline ("You landed on " ^ property_name property ^".");
   print_endline ("The property prices are");
@@ -203,12 +203,12 @@ let print_prop_prices player pList board property : unit =
   print_string "> "
 
 (**[print_level_prices player pList board property] displays the current 
-level of the property landed on and the associated prices as well as
- prompts the player to input a command*)
+   level of the property landed on and the associated prices as well as
+   prompts the player to input a command*)
 let print_level_prices player pList board property : unit = 
   print_endline ("\nThis property's level is currently " ^  
-     string_of_int (property_level property) 
-     ^". \nDo you want to level up this property?");
+                 string_of_int (property_level property) 
+                 ^". \nDo you want to level up this property?");
   print_endline ("The property prices are: ");
   print_buy_prices property;
   print_string "> "
@@ -263,7 +263,7 @@ let check_space (space: space) player (playerList: Player.player list)
     check_space_justvisiting playerList board 
 
 (** [counter] is a counter for the number of doubles a player rolls in a row.
-This can we shared amoungst all players because player turns are discrete. *)
+    This can we shared amoungst all players because player turns are discrete. *)
 let counter = ref 0
 
 (** [iterate playerlist sp acc] is one turn in the game of Cornopoly in which 
@@ -290,7 +290,7 @@ let rec iterate playerlist (sp: space list) acc =
         else begin counter := 0;
           iterate new_t (upd_sp) (current_player :: fst new_acc, upd_sp) 
         end 
-      end else player_in_jail h acc sp t
+    end else player_in_jail h acc sp t
 
 (** [double_rolled new_player new_t updated_sp new_acc current_player]
     is when a double is rolled and keeps track of the number of doubles.
@@ -305,7 +305,7 @@ and double_rolled new_player new_t updated_sp new_acc current_player =
   if !counter = 3 
   then (*if the # of doubles is 3, then send the player to jail. *)
     let () = print_endline ("You rolled 3 doubles in total! Go to Jail.") in
-    let jail_player = (change_jail (set_location new_player 10) true ) in 
+    let jail_player = move_to_space new_player 10 in 
     iterate new_t (updated_sp) (jail_player :: (fst new_acc), updated_sp) 
   else iterate (current_player :: new_t) (updated_sp) (fst new_acc, updated_sp)
 
@@ -353,7 +353,7 @@ and jail_pay_command player acc sp playerlist =
     in jail_rules (parse_jail (read_line())) player acc sp playerlist
   else 
     let pay_jail_player = update_balance player (-100) in
-   (jail_count player) := 0;
+    (jail_count player) := 0;
     let not_in_jail = change_jail pay_jail_player false in 
     print_endline ("Congrats! You have paid $100 to get out of jail.");
     iterate playerlist sp (not_in_jail :: fst acc , snd acc)
@@ -419,10 +419,10 @@ and player_not_bankrupt current_player new_player playerlist sp acc roll =
       if !counter = 3 
       then 
         let () = print_endline ("You rolled 3 doubles! Go to Jail.") in
-        let jail_player = (change_jail (set_location new_player 10) true )in 
+        let jail_player = move_to_space new_player 10 in 
         iterate playerlist (sp) (jail_player :: (fst acc), sp)
       else iterate (current_player :: playerlist) (sp) (fst acc, sp) 
-      
+
     end 
   else begin
     counter := 0;

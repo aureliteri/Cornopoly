@@ -52,11 +52,6 @@ val change_jail_card: player -> bool -> player
    attribute set to value *)
 val change_jail: player -> bool -> player
 
-(**[set_location player location_id] is a new player with
-   the current_location_id attribute set to [location_id]. 
-   [location_id] represents the new space id of the players new location. *)
-val set_location: player -> int -> player
-
 (**[move player int'] is the new player with their current_location_id updated
    after moving [int'] number of spaces.*)
 val move: player -> int -> player
@@ -108,21 +103,10 @@ val player3 : player
 (**[player4] is a player in the game. *)
 val player4 : player
 
-(**[sample_player] is a sample player used for testing *)
-val sample_player : player
-
 (**[playerlist] is the list of player in the game. *)
 val playerlist: player list
 
 (**[remove_player player plist] is the same list of players as [plist] except 
    with [player] removed.*)
 val remove_player: player -> player list -> player list
-
-(** These players are for testing purposes only. *)
-val player_blue_full_test : player 
-val player_blood_full_test : player 
-val player_brown_full_test : player 
-val player_pink_full_test : player 
-val player_yellow_full_test : player 
-val player_not_full_test : player 
 

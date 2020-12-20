@@ -8,7 +8,7 @@ open Card
 (*----------------------------TEST PLAN--------------------------------------)
   Our testing plan consists of two parts: OUnit testing and Play Testing.
 
-  1. OUnit Testing - Glassbox testing
+  1. OUnit Testing - Blackbox testing
   Our goal with the OUnit testing is to demonstrate that specific, testable
    functions in our Board, Player, Space, Command, and Card modules demonstrate
    accuracy and maintain their expected behaviors. It is important to note that
@@ -38,7 +38,7 @@ open Card
   -We constructed OUnit test suites for the functions that do not require user
   inputs.
 
-  2. Manual/Play Testing - Blackbox testing
+  2. Manual/Play Testing - Glassbox testing
   -We play tested our game to mainly test the functions in the main and board
   modules.
   - For every command input to be parsed, we inputed valid inputs and checked 
@@ -54,22 +54,6 @@ open Card
 
   3. Why our testing 
 *)
-
-(** [pp_string s] pretty-prints string [s]. *)
-let pp_string s = "\"" ^ s ^ "\""
-
-(** [pp_list pp_elt lst] pretty-prints list [lst], using [pp_elt]
-    to pretty-print each element of [lst]. *)
-let pp_list pp_elt lst =
-  let pp_elts lst =
-    let rec loop n acc = function
-      | [] -> acc
-      | [h] -> acc ^ pp_elt h
-      | h1 :: (h2 :: t as t') ->
-        if n = 100 then acc ^ "..."  (* stop printing long list *)
-        else loop (n + 1) (acc ^ (pp_elt h1) ^ "; ") t'
-    in loop 0 "" lst
-  in "[" ^ pp_elts lst ^ "]"
 
 (** [property_order list1 list2] compares two lists to see whether
     they are equivalent lists. list1 and list2 must contain the same elements,
@@ -89,79 +73,163 @@ let rec property_name_printer (property_list : Space.property list)
   | [] -> acc
   | h :: t -> property_name_printer t (acc @ [(property_name h)])
 
-let current_location_test name player expected_output = 
+let player_test_getters name funcname player expected_out = 
   name >:: (fun ctxt -> 
-      assert_equal expected_output (current_location_id player)
-        ~printer: string_of_int )
+      assert_equal expected_out (funcname player ))
 
-let player_name_test fun_name player expected_output = 
-  fun_name >:: (fun ctxt -> 
-      assert_equal expected_output (name player)~printer: String.escaped)
-
-let player_balance_test 
-    name
-    player 
-    expected_output = 
-  name >:: (fun ctxt -> 
-      assert_equal expected_output (balance player)~printer: string_of_int)
-
-let player_property_test 
-    (name : string )
-    (player : Player.player)
+let player_property_test (name : string ) (player : Player.player)
     (expected_output : string list) = 
   let property_list = property_list player in 
   let string_property_list = property_name_printer 
       (fst (List.split property_list)) [] in
   name >:: (fun ctxt -> 
-      assert_equal ~printer:(pp_list pp_string)
-        expected_output string_property_list
-    )
+      assert_equal expected_output string_property_list)
 
+let bool_jail_test name func_name player ex_out = 
+  name >:: (fun ctxt -> 
+      assert_equal ex_out (func_name player))
+
+let update_player_test name func player input ex_out = 
+  name >:: (fun ctxt -> 
+      assert_equal ex_out (func player input))
+
+let add_property_test name player level property ex_out = 
+  name >:: (fun ctxt -> 
+      assert_equal ex_out (add_property player level property))
+
+let replace_player_test name pl new_player ex_out = 
+  name >:: (fun ctxt -> 
+      assert_equal ex_out (replace_player pl new_player))
+
+let remove_property_test name player property ex_out = 
+  name >:: (fun ctxt -> 
+      assert_equal ex_out (remove_property player property))
+
+let find_player_test name pl_name p_list ex_out = 
+  name >:: (fun ctxt -> 
+      assert_equal ex_out (find_player pl_name p_list))
 
 let space_list = spacelist
 let player_list = playerlist
 let player1 = List.nth playerlist 0
+let sample_player = {
+  id = 4;
+  name = "catpotato";
+  current_location_id = 11;
+  balance = 400;
+  property_list = [(get_property space3, 0);(get_property space7,1);
+                   (get_property space39, 2);];
+  in_jail = false;
+  jail_card = false;
+  jail_count = ref 0;
+}
+let player_brown_full_test = {
+  sample_player with 
+  property_list = [(get_property space34,0);(get_property space35,0);
+                   (get_property space37,0)];
+}
+let player_pink_full_test = {
+  sample_player with 
+  property_list = [(get_property space27,0);(get_property space28,0);
+                   (get_property space29,0)];
+}
 
+let player_blue_full_test = {
+  sample_player with 
+  property_list = [(get_property space38,0); (get_property space39,0)];
+}
+
+let player_yellow_full_test = {
+  sample_player with
+
+  property_list = [(get_property space6, 0);(get_property space7,1);
+                   (get_property space8,1)];
+}
+
+let player_blood_full_test = {
+  sample_player with
+  id = 9;
+  property_list = [(get_property space54,0);(get_property space56,0);
+                   (get_property space57,0)];
+}
+
+let player_not_full_test = {
+  sample_player with
+  id = 5;
+  property_list = [(get_property space7,1);(get_property space8,1)];
+}
 let move_player_18 = move sample_player 7
 let move_player_wraparound_1 = move move_player_18 22
 let move_player_wraparound_9 = move move_player_18 30
 
+let player_in_jail_true = {sample_player with in_jail = true; jail_card = true}
+let sample_player_bankrupt = {sample_player with balance = (-100)}
+let player_at_20 = {sample_player with current_location_id = 20}
+let player_catlover = {sample_player with name = "CATLUVER"}
+let sample_player_100 = {sample_player with balance = 500}
+let sample_player_with_prop1 = {sample_player with property_list = 
+                                                     [(property1, 1);
+                                                      (get_property space3, 0);
+                                                      (get_property space7,1);
+                                                      (get_property space39,2);]
+                               }
+let player_amy = {player3 with name = "Amy"}
+let fake_playerlist = [player1;player2; player3; sample_player]
 
+let player_tests = [ 
+  player_test_getters "player1 curr loc id" id player1 1;
+  player_test_getters "player1 name - Meghana" name player1 "Meghana";
+  player_test_getters "player1 initial balance" balance player1 3000; 
+  player_property_test "player1 intiial [] property" player1 [];
+  player_test_getters "sample player curr loc id" current_location_id 
+    sample_player 11;
+  player_test_getters "sample player name catpotato" name sample_player 
+    "catpotato";
+  player_test_getters "sample player balance" balance sample_player 400;
+  player_property_test "sample player property" sample_player 
+    ["Donlon";  "Goldwin Smith Hall"; "Collegetown Bagels"]; 
+  player_test_getters "sample player moved 7 to 18" current_location_id 
+    move_player_18 18;
+  player_test_getters "move function w/ mod wraparound" current_location_id
+    move_player_wraparound_1 1;
+  player_test_getters "move function w/ mod wraparound" current_location_id
+    move_player_wraparound_9 9;
+  bool_jail_test "in_jail for sample_player false" in_jail sample_player 
+    false;
+  bool_jail_test "in_jail for sample_player true" in_jail player_in_jail_true 
+    true;
+  bool_jail_test "jail_card for sample_player true" jail_card sample_player 
+    false;
+  bool_jail_test "jail_card for sample_player false" jail_card 
+    player_in_jail_true true;
+  player_test_getters "sample_player is_bankrupt true" is_bankrupt 
+    sample_player_bankrupt true;
+  player_test_getters "sample_player is_bankrupt false" is_bankrupt 
+    sample_player false;
+  player_test_getters "sample_player jail_count" jail_count sample_player 
+    (ref 0);
+  update_player_test "move sample_player to space 20" move_to_space
+    sample_player 20 player_at_20;
+  update_player_test "update name of sample_player with CATLUVER" update_name
+    sample_player "CATLUVER" player_catlover;
+  update_player_test "update balance of sample_player with $100 more dollars" 
+    update_balance sample_player 100 sample_player_100;
+  add_property_test "add property 1 to sample_player" sample_player 1 property1
+    sample_player_with_prop1;
+  remove_property_test "remove property1 from sample player's property list"
+    sample_player_with_prop1 property1 sample_player;
+  replace_player_test "replace sample_player w/ player 4" fake_playerlist 
+    player4 playerlist;
+  find_player_test "find player1 in playerList" "Amy" 
+    [player1; {player2 with name = "Aaron"}; player_amy;
+     {player4 with name = "Michelle"}] player_amy;
+  {|find_player raise UnknownPlayer|}
+  >:: (fun _ -> assert_raises (UnknownPlayer "aerg")
+          (fun () -> find_player "aerg" [player1; {player2 with name = "Aaron"};
+                                         player_amy; 
+                                         {player4 with name = "Michelle"}]));
+]
 
-let player_tests =
-  [ current_location_test "player1 curr loc id" player1 1;
-    player_name_test "player1 name - Meghana" player1 "Meghana";
-    player_balance_test "player1 initial balance" player1 3000; 
-    player_property_test "player1 intiial [] property" player1 [];
-    current_location_test "sample player curr loc id" sample_player 11;
-    player_name_test "sample player name catpotato" sample_player "catpotato";
-    player_balance_test "sample player balance" sample_player 400;
-    player_property_test "sample player property" sample_player 
-      ["Donlon";  "Goldwin Smith Hall"; "Collegetown Bagels"]; 
-    current_location_test "sample player moved 7 to 18" move_player_18 18;
-    current_location_test "move function w/ mod wraparound" 
-      move_player_wraparound_1 1;
-    current_location_test "move function w/ mod wraparound" 
-      move_player_wraparound_9 9;
-  ]
-
-
-(* let check_space_test 
-    (name : string)
-    (space: Space.space)
-    (player: Player.player)
-    (spacelist : Space.space list)
-    (expected_output : Player.player * Space.space list) = 
-   name >:: (fun ctxt -> 
-      assert_equal expected_output (check_space space player spacelist))
-
-    (* let buy_property command player board property=  *)
-    (space: Space.space)
-    (player: Player.player)
-    (spacelist : Space.space list)
-    (expected_output : Player.player * Space.space list) = 
-   name >:: (fun ctxt -> 
-      assert_equal expected_output (check_space space player spacelist)) *)
 
 (** <----------------TEST FOR SPACE --------------------> *)
 
@@ -177,13 +245,9 @@ let space_getproperty_test name space expected_output =
   name >:: (fun ctxt -> 
       assert_equal expected_output (get_property space))
 
-let space_getcardspace_test name space expected_output =
-  name >:: (fun ctxt -> 
-      assert_equal expected_output (get_cardspace space))
-
 let space_getlevelprice_test name property expected_output =
   name >:: (fun ctxt -> 
-      assert_equal expected_output (get_level_price property))
+      assert_equal expected_output (get_level_price property) ~printer:string_of_int)
 
 let space_rentprice_test name property expected_output = 
   name >:: (fun ctxt -> 
@@ -214,13 +278,15 @@ let space_tests=
     space_getname_test "Space name of Go" space1 "Go";
     space_getid_test "Space_id test: Cafe Jennie" space8 8;
     space_getid_test "Jail id" space10 10;
-    (* space_getproperty_test  "Check if space 5 is property" space5  (Property space2); *)
-    space_getlevelprice_test "property1 level is 2" property1 10; (**FAIL *)
-    space_rentprice_test "property1 rent_price list" property1 [|20;10;10|];
-    space_buyprice_test "property1 buy_price list" property1 [|20;10;10|];
+    space_getproperty_test "getting property Low Rise 5 from space2" space2 
+      property1;
+    space_getlevelprice_test "property1 level prive" property1 8;
+    space_rentprice_test "property1 rent_price list" property1 [|8;20;36|];
+    space_buyprice_test "property1 buy_price list" property1 [|60;110;160|];
     space_getcolor_test "property1 color test" property1 "green";
-    space_getlevel_test "property1 level = 2" property1 2;
-    space_getspace_test "get space3" 3 [space12; space14; space15; space29; space3] space3;
+    space_getlevel_test "property1 level = 0" property1 0;
+    space_getspace_test "get space3" 3 [space12; space14; space15; space29;
+                                        space3] space3;
   ]
 
 let property_getter_test name funcname prop ex_out =
@@ -237,7 +303,6 @@ let property_change_level name prop level ex_out =
 
 let ex_prop = get_property space3
 let new_ex_prop = change_owner ex_prop "ME"
-let new_level_prop =  change_level property1 2
 
 let property_tests=
   [
@@ -255,8 +320,7 @@ let property_tests=
     property_getter_test "Buy price of Donlon" buy_price 
       ex_prop [|70;120;170|]; 
     property_change_test "changeowner of donlon to me" 
-      change_owner ex_prop "ME" 
-      new_ex_prop;
+      change_owner ex_prop "ME" new_ex_prop;
     property_getter_test "Property level of donlon" property_level ex_prop 0;
     property_change_level "change level to 2" (get_property space3) 2 2;
   ]
@@ -282,11 +346,8 @@ let penalty_tests =
 
 (** <---------------------------TEST FOR BOARD ----------------> *)
 
-(** ADD PICK CARD TEST -> Can't do pick card test because it is random. We cannot expect anything *)
-
 let rec lots_rolls input num bool=  
   let dice_num = fst (roll_dice input)  in
-  (* print_endline (string_of_int  dice_num); *)
   match num with 
   | 0 -> bool
   | _ -> if dice_num <= (12) && dice_num >= (0) 
@@ -301,9 +362,6 @@ let card_action_test name act_lst player output =
   name >:: (fun ctxt -> 
       assert_equal output (card_action act_lst player))
 
-
-(* let bursar_player = update_balance sample_player (-200)
-   let duffield_player = move_to_space sample_player 35 *)
 let bursar_player = {sample_player with balance = 200}
 let duffield_player = {sample_player with current_location_id = 35}
 let go_player = {sample_player with current_location_id = 1; balance = 450;}
@@ -328,10 +386,6 @@ let board_tests =
       [Move 35] sample_player duffield_player;
     card_action_test "card4 aciton lst go to go on sample player" 
       [Move 1; Change 50] sample_player go_player;
-    (* test roll dice *)
-    (* test check_space *)
-    (* check_space_test "player lands on unowned property" space2 player1 space_list 
-       ?? *)
     player_if_full_set "player buys the last yellow property to become a
     full set" player_yellow_full_test (get_property space8) true;
     player_if_full_set "player buys the last blue property to become a
@@ -342,12 +396,8 @@ let board_tests =
     full set" player_pink_full_test (get_property space29) true;
     player_if_full_set "player buys the last blood property to become a
     full set" player_blood_full_test (get_property space57) true;
-
-
     player_if_full_set "player not full" player_not_full_test 
       (get_property space39) false;
-
-
   ]
 (**<-----------------TESTS FOR COMMAND-------------------------------------> *)
 

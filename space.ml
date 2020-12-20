@@ -482,11 +482,11 @@ let space39 : space = Property {
 let property1 = {
   space_id = 2;
   name = "Low Rise 5";
-  rent_price = [|20;10;10|];
+  rent_price = [|8;20;36|];
   owner = "";
-  buy_price = [|20;10;10|];
+  buy_price = [|60;110;160|];
   color = "green";
-  level = 2;
+  level = 0;
 }
 
 let cardspace1 = {
