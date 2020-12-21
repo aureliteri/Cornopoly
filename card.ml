@@ -389,7 +389,7 @@ let card57 = {
 
 let card58 = {
   card_id = 58;
-  description = "You got hit by the invisible spooky TCAT bus, but the school decides not to compensate you. \nTake the L. You loose $150.";
+  description = "You got hit by the invisible spooky TCAT bus, but the school decides not to compensate you. \nTake the L. You lose $150.";
   act = [Change (-150)]
 }
 

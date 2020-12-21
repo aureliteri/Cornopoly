@@ -272,7 +272,7 @@ let counter = ref 0
     tuple of the updated [playerlist] and the updated [sp]. *)
 let rec iterate playerlist (sp: space list) acc =
   match playerlist with
-  | [] -> acc | h :: t -> print_endline (" \nIt's "^ name h ^ " turn!");
+  | [] -> acc | h :: t -> print_endline (" \nIt's "^ name h ^ "'s turn!");
     if in_jail h = false then begin let roll = roll_dice 6 in 
       let new_player = move h (fst roll) in 
       print_endline (name h ^" has rolled a "^ string_of_int (fst roll) ^"!");
