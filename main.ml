@@ -162,6 +162,7 @@ let rec try_command_buy_off_p s p pl board property level buy_price =
 let land_someone_else_property player playerList board property =  
   let cur_price = get_level_price property in
   print_endline ("You have landed on " ^ property_name property ^ 
+                 ". The color is " ^ property_color property ^
                  ". It is owned by " ^ property_owner property ^ 
                  ". \nYou must pay rent of $" ^ 
                  string_of_int cur_price ^ ".");
