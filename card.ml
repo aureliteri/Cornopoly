@@ -395,14 +395,14 @@ let card58 = {
 
 let card59 = {
   card_id = 59;
-  description = "";
-  act = []
+  description = "You were attacked by the Big Red Bear. Pay for 100 dollars for hospital fees.";
+  act = [Change (-100)]
 }
 
 let card60 = {
   card_id = 60;
-  description = "";
-  act = []
+  description = "The dark lord has blessed you. You get 200 dollars";
+  act = [Change 200]
 }
 
 
